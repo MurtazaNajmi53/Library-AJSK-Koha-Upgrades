@@ -1,0 +1,25 @@
+<!-- Maktabat Aljamea home page widgets (FINAL)
+     Tools > HTML customizations > New entry
+     Display location: OpacMainUserBlock
+     Paste with "Edit with text editor", not the visual editor.
+     FINAL_OPACUserJS.js fills these boxes.
+     This replaces aj-my-library-block.html: if that entry is installed,
+     delete it, or the page will have two "My library" boxes. -->
+<div id="aj-home" class="aj-home">
+  <section id="aj-my-library" class="aj-ml" aria-live="polite" aria-label="My library">
+    <p class="aj-ml__loading">Loading your account…</p>
+  </section>
+
+  <section id="aj-popular" class="aj-shelf aj-pop" aria-live="polite" aria-label="Most borrowed">
+    <p class="aj-shelf__status">Loading the most borrowed books…</p>
+  </section>
+
+  <section id="aj-new-books" class="aj-shelf aj-new" aria-live="polite" aria-label="New in the library">
+    <p class="aj-shelf__status">Loading new books…</p>
+  </section>
+
+  <noscript>
+    <p class="aj-ml__message">Turn on JavaScript to see your account and book lists here, or open
+      <a href="/cgi-bin/koha/opac-user.pl">Your summary</a>.</p>
+  </noscript>
+</div>

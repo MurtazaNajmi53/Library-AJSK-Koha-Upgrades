@@ -1,0 +1,371 @@
+/* =====================================================================
+   Home page widgets — add to the end of OPACUserCSS
+   1. Layout  2. "My library" card  3. Shelves  4. Most borrowed
+   Uses the --aj-* tokens already defined in your stylesheet.
+   ===================================================================== */
+
+/* 1. Layout
+   ------------------------------------------------------------------------ */
+/* The right column is empty now that the built-in summary is off.
+   The script marks the row, and the main column takes the full width. */
+@media (min-width: 992px) {
+  #opac-main .row.aj-no-right > .maincontent {
+    flex: 0 0 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+#opac-main .row.aj-no-right > .aj-right-col {
+  display: none;
+}
+
+#opac-main .aj-home {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "me" "new" "pop";
+  margin-bottom: 2rem;
+}
+#opac-main .aj-home > .aj-ml  { grid-area: me; }
+#opac-main .aj-home > .aj-new { grid-area: new; }
+#opac-main .aj-home > .aj-pop { grid-area: pop; }
+
+@media (min-width: 768px) {
+  #opac-main .aj-home {
+    grid-template-columns: minmax(260px, 1fr) minmax(0, 2fr);
+    grid-template-areas: "me pop" "new new";
+    align-items: start;
+  }
+}
+
+/* 2. "My library" card
+   ------------------------------------------------------------------------ */
+#opac-main .aj-ml {
+  background: #fff;
+  border: 1px solid var(--aj-hairline);
+  border-top: 3px solid var(--aj-copper);
+  border-radius: 4px;
+  padding: 1.25rem 1.25rem 0.5rem;
+  margin: 0;
+  color: var(--aj-ink);
+  font-family: var(--aj-font-ui);
+}
+
+#opac-main .aj-ml__loading,
+#opac-main .aj-ml__message {
+  margin: 0 0 0.75rem;
+  color: var(--aj-muted);
+}
+
+#opac-main .aj-ml__hello {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  color: var(--aj-muted);
+}
+#opac-main .aj-ml__hello a {
+  font-weight: 600;
+}
+
+/* The yearly count is the one bold element */
+#opac-main .aj-ml__year {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--aj-hairline);
+}
+#opac-main .aj-ml__count {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+}
+#opac-main .aj-ml__num {
+  font-family: var(--aj-font-display);
+  font-size: clamp(2.75rem, 6vw, 3.5rem);
+  line-height: 1;
+  color: var(--aj-blue);
+  font-variant-numeric: lining-nums;
+}
+#opac-main .aj-ml__unit {
+  font-family: var(--aj-font-title);
+  font-size: 1.15rem;
+}
+#opac-main .aj-ml__term {
+  margin: 0.5rem 0 0;
+  line-height: 1.45;
+}
+#opac-main .aj-ml__term-name {
+  display: block;
+  font-weight: 600;
+}
+#opac-main .aj-ml__term-dates {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--aj-muted);
+}
+#opac-main .aj-ml__note {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: var(--aj-muted);
+}
+
+/* Status rows: label left, number right */
+#opac-main .aj-ml__status {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#opac-main .aj-ml__row + .aj-ml__row {
+  border-top: 1px solid var(--aj-hairline);
+}
+#opac-main .aj-ml__link,
+#opac-main .aj-ml__link:visited {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.6rem 0.25rem;
+  color: var(--aj-ink);
+  text-decoration: none;
+}
+#opac-main .aj-ml__link:hover .aj-ml__label {
+  text-decoration: underline;
+}
+#opac-main .aj-ml__link:focus-visible {
+  outline: 2px solid var(--aj-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+#opac-main .aj-ml__value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Zero rows stay quiet; non-zero rows with meaning get colour */
+#opac-main .aj-ml__row.is-zero .aj-ml__link {
+  color: var(--aj-muted);
+}
+#opac-main .aj-ml__row.is-zero .aj-ml__value {
+  font-weight: 400;
+}
+#opac-main .aj-ml__row.is-soon .aj-ml__value {
+  color: var(--aj-copper-deep);
+}
+#opac-main .aj-ml__row.is-alert .aj-ml__link {
+  color: var(--aj-copper-dark);
+  font-weight: 600;
+}
+#opac-main .aj-ml__row.is-good .aj-ml__value {
+  color: var(--aj-blue);
+}
+
+/* Built-in box is switched off, but hide it too in case the setting is turned back on */
+#opac-main #user_summary {
+  display: none;
+}
+
+/* 3. Shelves (shared by "New in the library" and "Most borrowed")
+   ------------------------------------------------------------------------ */
+#opac-main .aj-shelf {
+  min-width: 0;
+  font-family: var(--aj-font-ui);
+  color: var(--aj-ink);
+}
+#opac-main .aj-shelf__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--aj-hairline);
+}
+#opac-main .aj-shelf__title {
+  margin: 0;
+  font-family: var(--aj-font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--aj-blue);
+}
+#opac-main .aj-shelf__more {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+#opac-main .aj-shelf__status {
+  margin: 0;
+  color: var(--aj-muted);
+}
+
+/* New in the library: a sideways row of covers */
+#opac-main .aj-new {
+  --aj-cover-w: 120px;
+  --aj-cover-h: 180px;
+}
+#opac-main .aj-shelf__wrap {
+  position: relative;
+}
+#opac-main .aj-shelf__track {
+  display: flex;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0.25rem 0.25rem 0.75rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 0.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--aj-copper) transparent;
+}
+#opac-main .aj-shelf__track:focus-visible {
+  outline: 2px solid var(--aj-blue);
+  outline-offset: 2px;
+}
+#opac-main .aj-shelf__item {
+  flex: 0 0 var(--aj-cover-w);
+  scroll-snap-align: start;
+}
+#opac-main .aj-shelf__link,
+#opac-main .aj-shelf__link:visited {
+  display: block;
+  color: var(--aj-ink);
+  text-decoration: none;
+}
+#opac-main .aj-shelf__link:hover .aj-shelf__caption {
+  text-decoration: underline;
+}
+#opac-main .aj-shelf__link:focus-visible {
+  outline: 2px solid var(--aj-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+#opac-main .aj-shelf__cover {
+  margin: 0 0 0.5rem;
+}
+/* The cover sits above the bookplate, as on the results page */
+#opac-main .aj-shelf__img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+#opac-main .aj-shelf__caption,
+#opac-main .aj-shelf__byline {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  unicode-bidi: plaintext;
+}
+#opac-main .aj-shelf__caption {
+  -webkit-line-clamp: 2;
+  font-family: var(--aj-font-title);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+#opac-main .aj-shelf__byline {
+  -webkit-line-clamp: 1;
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  color: var(--aj-muted);
+}
+
+#opac-main .aj-shelf__btn {
+  position: absolute;
+  top: calc(var(--aj-cover-h) / 2 - 18px);
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--aj-copper);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--aj-blue);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(24, 34, 78, 0.15);
+}
+#opac-main .aj-shelf__btn--prev { left: -12px; }
+#opac-main .aj-shelf__btn--next { right: -12px; }
+#opac-main .aj-shelf__btn:hover {
+  background: var(--aj-cream);
+}
+#opac-main .aj-shelf__btn:focus-visible {
+  outline: 2px solid var(--aj-blue);
+  outline-offset: 2px;
+}
+#opac-main .aj-shelf__btn:disabled {
+  visibility: hidden;
+}
+/* Touch screens swipe instead */
+@media (hover: none) {
+  #opac-main .aj-shelf__btn { display: none; }
+}
+
+/* 4. Most borrowed: a ranked list
+   ------------------------------------------------------------------------ */
+#opac-main .aj-pop__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: aj-rank;
+}
+#opac-main .aj-pop__item {
+  counter-increment: aj-rank;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+}
+#opac-main .aj-pop__item + .aj-pop__item {
+  border-top: 1px solid var(--aj-hairline);
+}
+#opac-main .aj-pop__item::before {
+  content: counter(aj-rank);
+  font-family: var(--aj-font-display);
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--aj-copper-deep);
+  text-align: right;
+  font-variant-numeric: lining-nums;
+}
+#opac-main .aj-pop__link,
+#opac-main .aj-pop__link:visited {
+  min-width: 0;
+  color: var(--aj-ink);
+  text-decoration: none;
+}
+#opac-main .aj-pop__link:hover .aj-pop__title {
+  text-decoration: underline;
+}
+#opac-main .aj-pop__link:focus-visible {
+  outline: 2px solid var(--aj-blue);
+  outline-offset: 2px;
+}
+#opac-main .aj-pop__title,
+#opac-main .aj-pop__author {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  unicode-bidi: plaintext;
+}
+#opac-main .aj-pop__title {
+  font-family: var(--aj-font-title);
+  font-weight: 600;
+}
+#opac-main .aj-pop__author {
+  font-size: 0.8rem;
+  color: var(--aj-muted);
+}
+#opac-main .aj-pop__count {
+  font-size: 0.8rem;
+  color: var(--aj-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,487 @@
+@import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=DM+Sans:opsz,wght@9..40,400..700&family=Noto+Sans:wght@400;600;700&display=swap");
+
+/* ==========================================================================
+   Maktabat Aljamea (Sindh) — SCOUserCSS for Koha 25.11        (v1, 20 Sep 2026)
+   Self-checkout kiosks: 21-inch screens, mounted portrait, touch input.
+
+   Paste this whole file into:
+   Administration › System preferences › SCOUserCSS
+
+   Goes with  SCOUserJS_V1.js    (SCOUserJS)
+              OPACUserCSS_V3.css (OPACUserCSS — section 17 of that file
+                                  switches off the OPAC furniture here)
+
+   WHY THIS FILE EXISTS
+   --------------------
+   Koha's sco-main.tt loads OPACUserCSS first and SCOUserCSS second. So
+   the kiosk was already inheriting the whole catalogue stylesheet — which
+   is why its appearance changed when the OPAC was restyled. The colours
+   and fonts are worth keeping; the layout is not. Koha lays the scan row
+   out as Bootstrap col / col-3 / col-auto, which is sensible on a wide
+   desk monitor and cramped on a screen turned on its side. Everything
+   below rebuilds that for a tall, touched screen.
+
+   The @import at the top is deliberate, and is the opposite of the advice
+   in OPACUserCSS_V3. On the OPAC it was removed because thousands of
+   readers pay that cost on a cold cache. A kiosk is one machine, left
+   running all day, with a warm cache after the first page — and it cannot
+   use the opacheader customization, because Koha does not render that
+   location on the self-checkout screen.
+   ========================================================================== */
+
+
+/* 1. Settings
+   ------------------------------------------------------------------------ */
+body#sco_main {
+  /* Everything below scales from this. A 21-inch portrait panel is
+     usually 1080 x 1920; readers stand about an arm's length away, so
+     text runs noticeably larger than on the OPAC. */
+  --sco-step: clamp(1rem, 1.35vh, 1.5rem);
+  --sco-gap: clamp(16px, 2.2vh, 32px);
+  --sco-pad: clamp(20px, 3vw, 56px);
+  --sco-touch: 64px;            /* smallest comfortable tap target */
+  --sco-radius: 12px;
+  /* The one column width everything on the page lines up to. Section 10
+     widens it for a real kiosk. Kept as a variable on purpose: setting
+     max-width per selector meant an id-heavy selector could quietly beat
+     the kiosk override, and the checkout list ended up narrower than the
+     scan box above it. */
+  --sco-col: 44rem;
+}
+
+/* Koha loads Bootstrap, which sets this globally — but the kiosk layout
+   depends on padding being inside the width, so it is stated here too. */
+body#sco_main,
+body#sco_main *,
+body#sco_main *::before,
+body#sco_main *::after {
+  box-sizing: border-box;
+}
+
+
+/* 2. Page frame
+   ------------------------------------------------------------------------ */
+body#sco_main {
+  background: var(--aj-cream);
+  color: var(--aj-ink);
+  font-family: var(--aj-font-ui);
+  font-size: var(--sco-step);
+  line-height: 1.5;
+  /* No rubber-banding when a finger drags past the end of the page */
+  overscroll-behavior: none;
+}
+
+body#sco_main .main,
+body#sco_main #wrapper,
+body#sco_main .container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+}
+
+body#sco_main .main > .container-fluid > .row {
+  margin: 0;
+}
+
+body#sco_main .main > .container-fluid > .row > [class^="col"],
+body#sco_main .main > .container-fluid > .row > [class*=" col"] {
+  padding: 0 var(--sco-pad);
+}
+
+/* Nothing on a kiosk should be selectable or long-press-able: a stray
+   drag used to pop up the text selection handles over the barcode box. */
+body#sco_main {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/* ...except the fields a reader actually types in */
+body#sco_main input,
+body#sco_main textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+
+/* 3. Masthead
+   ------------------------------------------------------------------------ */
+body#sco_main #masthead {
+  margin: 0 0 var(--sco-gap);
+  padding: var(--sco-gap) 0 calc(var(--sco-gap) * 0.75);
+  border-bottom: 2px solid var(--aj-sand-line);
+  text-align: center;
+}
+
+/* The Jamea rosette above the title, as on the login page */
+body#sco_main #masthead::before {
+  content: "";
+  display: block;
+  height: clamp(56px, 7vh, 104px);
+  margin: 0 auto calc(var(--sco-gap) * 0.5);
+  background: var(--aj-rosette-url) center top / contain no-repeat;
+}
+
+body#sco_main #masthead h1 {
+  margin: 0;
+  font-family: var(--aj-font-display);
+  font-size: clamp(1.6rem, 3.2vh, 2.6rem);
+  font-weight: var(--aj-display-weight);
+  color: var(--aj-blue);
+  line-height: 1.15;
+}
+
+
+/* 4. Hiding the reader's ITS number
+   ------------------------------------------------------------------------
+   THE PROBLEM
+   Patron names in this catalogue begin with the ITS number, so Koha's
+   "You are logged in as 30454007-Mulla ... Najmi." and the "Checkouts
+   for ..." caption both put a reader's number on a screen in a public
+   part of the library. Anyone standing behind them can read it and then
+   ask someone to issue books against their name.
+
+   THE FIX, IN TWO HALVES
+   (a) Section 5 below masks the number as it is typed or scanned in.
+   (b) These two rules hide the places the number is printed, until
+       SCOUserJS has trimmed it out and marked the page ready. Doing it
+       in CSS rather than only in JavaScript means the number is never
+       painted, not even for one frame.
+
+   If SCOUserJS is ever removed or fails, these stay hidden. That is the
+   safe way round: the reader loses a greeting, not their privacy.
+   ------------------------------------------------------------------------ */
+body#sco_main:not(.aj-sco-ready) .alert-info,
+body#sco_main:not(.aj-sco-ready) table caption {
+  visibility: hidden;
+}
+
+
+/* 5. The login screen (before a card is tapped)
+   ------------------------------------------------------------------------ */
+body#sco_main #mainform {
+  max-width: var(--sco-col);
+  margin: 0 auto;
+}
+
+body#sco_main #mainform fieldset,
+body#sco_main #mainform .row,
+body#sco_main #mainform [class^="col"],
+body#sco_main #mainform [class*=" col"] {
+  flex: 0 0 100%;
+  max-width: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+}
+
+body#sco_main #mainform label {
+  display: block;
+  margin: 0 0 0.5rem;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--aj-ink);
+}
+
+/* THE MASK.
+   The card reader behaves as a keyboard, so the ITS number appears in
+   this box character by character while the reader is still standing
+   there. -webkit-text-security replaces each character with a dot
+   without changing the input's type, which is what a password field
+   would do — and a password field on a kiosk makes the browser offer to
+   save it. Supported in Chrome, Edge and Safari for years, and in
+   Firefox since 122. SCOUserJS falls back to a password field on
+   anything older. */
+body#sco_main #patronid {
+  -webkit-text-security: disc;
+  text-security: disc;
+  letter-spacing: 0.35em;        /* dots read more clearly spaced out */
+}
+
+body#sco_main #patronid,
+body#sco_main #patronpw,
+body#sco_main #barcode {
+  width: 100%;
+  min-height: var(--sco-touch);
+  padding: 0 1rem;
+  font-family: var(--aj-font-ui);
+  font-size: 1.35em;
+  color: var(--aj-ink);
+  background: var(--aj-white);
+  border: 2px solid var(--aj-field-line);
+  border-radius: var(--sco-radius);
+}
+
+body#sco_main #patronid:focus,
+body#sco_main #patronpw:focus,
+body#sco_main #barcode:focus {
+  border-color: var(--aj-blue);
+  outline: 3px solid var(--aj-blue);
+  outline-offset: 2px;
+}
+
+body#sco_main textarea#barcode {
+  min-height: 10rem;
+  padding: 0.75rem 1rem;
+  line-height: 1.6;
+}
+
+
+/* 6. Buttons — everything is a tap target
+   ------------------------------------------------------------------------ */
+body#sco_main .btn {
+  min-height: var(--sco-touch);
+  padding: 0 1.6rem;
+  font-family: var(--aj-font-ui);
+  font-size: 1.1em;
+  font-weight: 600;
+  border-radius: var(--sco-radius);
+  /* Stops iOS/Android double-tap zoom stealing the first tap */
+  touch-action: manipulation;
+}
+
+body#sco_main .btn-sm {
+  min-height: 52px;
+  font-size: 1em;
+}
+
+body#sco_main .btn-primary {
+  background: var(--aj-copper-deep);
+  border-color: var(--aj-copper-deep);
+  color: var(--aj-white);
+}
+body#sco_main .btn-primary:hover,
+body#sco_main .btn-primary:active {
+  background: var(--aj-copper-dark);
+  border-color: var(--aj-copper-dark);
+}
+
+body#sco_main .btn-info {
+  background: transparent;
+  border: 2px solid var(--aj-blue);
+  color: var(--aj-blue);
+}
+body#sco_main .btn-info:hover,
+body#sco_main .btn-info:active {
+  background: var(--aj-blue);
+  color: var(--aj-white);
+}
+
+
+/* 7. The scan row
+   ------------------------------------------------------------------------
+   Koha lays this out as col / col-3 / col-auto / col — which puts the
+   barcode box in a quarter of the width. On a screen turned on its side
+   that is a very small target. Rebuilt here as a single stack.
+   ------------------------------------------------------------------------ */
+body#sco_main #newcheckout {
+  max-width: var(--sco-col);
+  margin: 0 auto var(--sco-gap);
+  padding: var(--sco-gap);
+  background: var(--aj-white);
+  border: 1px solid var(--aj-hairline);
+  border-top: 4px solid var(--aj-copper);
+  border-radius: var(--sco-radius);
+}
+
+body#sco_main #scan_form legend,
+body#sco_main #scan_form legend h2 {
+  margin: 0 0 0.75rem;
+  padding: 0;
+  font-family: var(--aj-font-display);
+  font-size: 1.35em;
+  font-weight: var(--aj-display-weight);
+  color: var(--aj-blue);
+  float: none;
+  width: auto;
+}
+
+body#sco_main #scan_form > .row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: calc(var(--sco-gap) * 0.6);
+  margin: 0;
+}
+
+body#sco_main #scan_form > .row > [class^="col"],
+body#sco_main #scan_form > .row > [class*=" col"] {
+  flex: none;
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+
+body#sco_main #scan_form label[for="barcode"] {
+  display: block;
+  font-size: 1.05em;
+  font-weight: 600;
+}
+
+/* Submit fills the width; Finish sits under it, quieter */
+body#sco_main #scan_form .btn-primary {
+  width: 100%;
+}
+body#sco_main #scan_form #logout_form {
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+
+/* 8. Messages
+   ------------------------------------------------------------------------ */
+body#sco_main .alert {
+  max-width: var(--sco-col);
+  margin: 0 auto var(--sco-gap);
+  padding: calc(var(--sco-gap) * 0.75) var(--sco-gap);
+  font-size: 1.05em;
+  border-radius: var(--sco-radius);
+  border-width: 1px;
+  border-left-width: 5px;
+}
+
+body#sco_main .alert-info {
+  background: var(--aj-sand);
+  border-color: var(--aj-sand-line);
+  border-left-color: var(--aj-copper);
+  color: var(--aj-ink);
+}
+
+body#sco_main .alert-warning {
+  background: #FFF6E8;
+  border-color: #EBD4AE;
+  border-left-color: var(--aj-copper-dark);
+  color: var(--aj-ink);
+}
+
+body#sco_main .alert h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.25em;
+  color: var(--aj-copper-dark);
+}
+
+
+/* 9. The checkouts table
+   ------------------------------------------------------------------------
+   Turned into a stack of cards. A wide table on a portrait screen either
+   scrolls sideways — which nobody discovers — or squeezes the title
+   column to nothing.
+   ------------------------------------------------------------------------ */
+/* Everything down the page shares one width, so the scan box, the
+   messages and the checkout list all line up on the same left edge. */
+body#sco_main #checkouts,
+body#sco_main .sco_entry > table,
+body#sco_main #newcheckout ~ div table,
+body#sco_main table.table {
+  width: 100%;
+  max-width: var(--sco-col);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body#sco_main table caption {
+  /* display:block matters. Once the table is turned into a stack of
+     cards below, a table-caption in a block parent shrinks to fit its
+     longest word and the heading ends up one word per line. */
+  display: block;
+  width: 100%;
+  caption-side: top;
+  padding: 0 0 0.6rem;
+  font-family: var(--aj-font-display);
+  font-size: 1.3em;
+  font-weight: var(--aj-display-weight);
+  color: var(--aj-blue);
+  text-align: left;
+}
+
+@media (orientation: portrait) {
+  /* Only on a portrait screen — a kiosk laid flat keeps the real table */
+  body#sco_main table.table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  body#sco_main table.table,
+  body#sco_main table.table tbody,
+  body#sco_main table.table tr,
+  body#sco_main table.table td {
+    display: block;
+    width: 100%;
+  }
+
+  body#sco_main table.table tr {
+    margin-bottom: calc(var(--sco-gap) * 0.6);
+    padding: calc(var(--sco-gap) * 0.6);
+    background: var(--aj-white);
+    border: 1px solid var(--aj-hairline);
+    border-radius: var(--sco-radius);
+  }
+
+  body#sco_main table.table td {
+    padding: 0.25rem 0;
+    border: 0;
+  }
+
+  /* Koha puts the column name in a data-label-ish header; where it does
+     not, the cell still reads sensibly on its own line. */
+  body#sco_main table.table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--aj-muted);
+  }
+  body#sco_main table.table td:not([data-label])::before {
+    content: none;
+  }
+}
+
+
+/* 10. Kiosk-only sizing
+   ------------------------------------------------------------------------
+   Portrait AND a screen big enough to be the kiosk rather than a phone.
+   A reader who opens the self-checkout URL on their own phone gets the
+   ordinary small-screen layout instead.
+   ------------------------------------------------------------------------ */
+@media (orientation: portrait) and (min-width: 700px) {
+  body#sco_main {
+    --sco-step: clamp(1.25rem, 1.15vh, 1.75rem);
+    --sco-touch: 76px;
+  }
+
+  body#sco_main {
+    --sco-col: 52rem;
+  }
+
+  /* Put the working area in the upper-middle of a tall screen, where
+     hands and eyes actually are — not marooned at the very top. */
+  body#sco_main .main {
+    padding-top: clamp(24px, 6vh, 140px);
+  }
+}
+
+
+/* 11. Nothing from the catalogue's chrome belongs here
+   ------------------------------------------------------------------------ */
+body#sco_main #aj-loader,
+body#sco_main .aj-home,
+body#sco_main #header-region,
+body#sco_main #opac-main-search,
+body#sco_main #breadcrumbs,
+body#sco_main #changelanguage,
+body#sco_main .cookieConsentBar {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body#sco_main * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

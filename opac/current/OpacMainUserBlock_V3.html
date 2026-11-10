@@ -1,0 +1,56 @@
+<!-- Maktabat Aljamea (Sindh) — home page widgets            (v3, 20 Sep 2026)
+
+     Tools › HTML customizations › New entry
+       Display location : OpacMainUserBlock
+       Library          : All libraries
+     Paste this with "Edit with text editor", NOT the visual editor.
+
+     OPACUserJS_V3.js fills all three boxes; OPACUserCSS_V3.css lays them
+     out side by side and gives them their shared card design.
+
+     Replaces FINAL_OpacMainUserBlock_V2.html. If an older entry
+     (aj-my-library-block.html or FINAL_OpacMainUserBlock_V2.html) is
+     still installed, DELETE IT — otherwise the page shows two of each box.
+
+     Reading order, left to right on a wide screen:
+       1. New in the library
+       2. My library
+       3. Library information  (fed by Tools › Additional tools › News)
+
+     The source order below is deliberately different: "My library" comes
+     first so that a reader on a phone, and anyone using a screen reader,
+     reaches their own account before the browsing lists. The CSS grid
+     puts it back in the middle on a wide screen.
+-->
+<div id="aj-home" class="aj-home">
+
+  <section id="aj-my-library" class="aj-ml" aria-live="polite" aria-label="My library">
+    <p class="aj-ml__loading">Loading your account…</p>
+  </section>
+
+  <section id="aj-new-books" class="aj-shelf aj-new" aria-live="polite" aria-label="New in the library">
+    <p class="aj-shelf__status">Loading new books…</p>
+  </section>
+
+  <section id="aj-news" class="aj-news" aria-label="Library information">
+    <div class="aj-news__head">
+      <h2 class="aj-news__title">Library information</h2>
+    </div>
+    <p class="aj-news__empty">Loading…</p>
+  </section>
+
+  <noscript>
+    <!-- With JavaScript off, nothing can fill these boxes. Put Koha's own
+         news block back and take the three empty widgets away, so the
+         page still tells a reader something useful. -->
+    <style>
+      #opac-main #news,
+      #opac-main #rssnews-container { display: block; }
+      #opac-main .aj-home > .aj-ml,
+      #opac-main .aj-home > .aj-new,
+      #opac-main .aj-home > .aj-news { display: none; }
+    </style>
+    <p class="aj-ml__message">Turn on JavaScript to see your account and the new books here, or open
+      <a href="/cgi-bin/koha/opac-user.pl">Your summary</a>.</p>
+  </noscript>
+</div>

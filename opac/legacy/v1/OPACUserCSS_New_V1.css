@@ -1,0 +1,858 @@
+@import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=DM+Sans:opsz,wght@9..40,400..700&family=DM+Serif+Display&family=Noto+Sans:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,400..700&display=swap");
+
+/* ==========================================================================
+   Maktabat Aljamea (Sindh) — OPACUserCSS for Koha 25.11
+   Matches jameasaifiyah.edu: cream, royal blue, copper.
+   Paste this whole file into: Administration › System preferences › OPACUserCSS
+   The @import line above must stay the very first line.
+   ========================================================================== */
+
+
+/* 1. Settings — change values here, not further down
+   ------------------------------------------------------------------------ */
+:root {
+  /* Colours (sampled from the Jamea website) */
+  --aj-cream: #FEF9F1;         /* page background */
+  --aj-sand: #F3E9D8;          /* search band, bookplates */
+  --aj-sand-line: #E6D6B8;     /* edge of the search band */
+  --aj-hairline: #F0E8D3;      /* thin dividers */
+  --aj-blue: #233787;          /* headings, links */
+  --aj-ink: #18224E;           /* body text */
+  --aj-muted: #55607F;         /* secondary text */
+  --aj-copper: #C58D4E;        /* decoration only (too light for text) */
+  --aj-copper-deep: #9A6630;   /* buttons, menu text */
+  --aj-copper-dark: #7A4E1C;   /* button hover, "Available" */
+  --aj-field-line: #9A8F78;    /* input borders */
+  --aj-white: #FFFFFF;
+
+  /* Fonts
+     ui      = menus, labels, buttons
+     display = fixed page headings (DM Serif lacks ḍ ṣ ṭ ẓ ḥ ʿ ʾ, so
+               Source Serif fills those letters in)
+     data    = book titles, authors, search terms (full character set)
+     arabic  = Arabic script only */
+  --aj-font-ui: "DM Sans", "Noto Sans", "Kanz-al-Marjaan", "Amiri", sans-serif;
+  --aj-font-display: "DM Serif Display", "Source Serif 4", "Kanz-al-Marjaan", "Amiri", Georgia, serif;
+  --aj-font-data: "Source Serif 4", "Kanz-al-Marjaan", "Amiri", Georgia, serif;
+  --aj-font-arabic: "Kanz-al-Marjaan", "Amiri", serif;
+
+  /* Header logo (hotlinked from the Jamea website) */
+  --aj-logo-url: url("https://jameasaifiyah.edu/wp-content/uploads/2024/05/AlJamea_Website_Menu-01.svg");
+  --aj-logo-h: 60px;
+  --aj-logo-space: 160px;      /* room left for the logo; adjust if the name overlaps it */
+  --aj-library-name: "Maktabat Aljamea (Sindh)";
+
+  /* Cover and bookplate size in search results */
+  --aj-cover-w: 100px;
+  --aj-cover-h: 150px;
+
+  --aj-radius: 10px;
+  --aj-pill: 999px;
+}
+
+
+/* 2. Page basics
+   ------------------------------------------------------------------------ */
+body {
+  background: var(--aj-cream);
+  color: var(--aj-ink);
+  font-family: var(--aj-font-ui);
+}
+
+#wrapper {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.main,
+.maincontent {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+a,
+a:link,
+a:visited {
+  color: var(--aj-blue);
+}
+
+a:hover,
+a:focus {
+  color: var(--aj-ink);
+  text-decoration: underline;
+}
+
+/* Clear keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--aj-blue);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+h1, h2, .h1, .h2 {
+  font-family: var(--aj-font-display);
+  font-weight: 400;
+  color: var(--aj-blue);
+  line-height: 1.15;
+}
+
+h3, h4, h5, h6, .h3, .h4, .h5, .h6 {
+  font-family: var(--aj-font-ui);
+  font-weight: 700;
+  color: var(--aj-ink);
+}
+
+legend {
+  font-family: var(--aj-font-display);
+  font-weight: 400;
+  font-size: 1.4rem;
+  color: var(--aj-blue);
+}
+
+.table {
+  color: var(--aj-ink);
+}
+
+/* Mixed Arabic / English text keeps its natural order */
+.title,
+.author,
+.results_summary,
+.title_summary,
+#opac-detail h1,
+.bookcover::before,
+.bookcover::after {
+  unicode-bidi: plaintext;
+}
+
+[lang="ar"],
+[dir="rtl"] {
+  font-family: var(--aj-font-arabic);
+}
+
+
+/* 3. Header
+   ------------------------------------------------------------------------ */
+#header-region .navbar,
+.navbar-expand {
+  background: var(--aj-cream);
+  box-shadow: 0 2px 14px rgba(24, 34, 78, 0.08);
+  padding: 12px 24px;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Logo + new library name.
+   The original name is hidden and the new one drawn after it.
+   If the logo image ever fails to load, the name still shows. */
+#logo {
+  background: none;
+  width: auto;
+  padding: 0;
+  margin-right: auto;
+}
+
+#logo .navbar-brand {
+  display: flex;
+  align-items: center;
+  min-height: var(--aj-logo-h);
+  padding: 0 0 0 var(--aj-logo-space);
+  background: var(--aj-logo-url) left center / auto var(--aj-logo-h) no-repeat;
+  font-size: 0;
+  color: transparent;
+  text-decoration: none;
+}
+
+#logo .navbar-brand::after {
+  content: var(--aj-library-name);
+  font-family: var(--aj-font-display);
+  font-size: 1.65rem;
+  line-height: 1.1;
+  color: var(--aj-blue);
+}
+
+#logo .navbar-brand:hover::after {
+  color: var(--aj-ink);
+}
+
+/* Menu links: Cart, Lists, account, cookies */
+#header-region .nav-link,
+.navbar-nav > li > a {
+  color: var(--aj-copper-deep);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+#header-region .nav-link:hover,
+#header-region .nav-link:focus {
+  color: var(--aj-copper-dark);
+  text-decoration: underline;
+}
+
+.fa.fa-icon-black,
+.fa.fa-icon-white {
+  color: var(--aj-copper-deep);
+}
+
+.dropdown-menu {
+  background: var(--aj-white);
+  border: 1px solid var(--aj-hairline);
+  border-radius: var(--aj-radius);
+  box-shadow: 0 8px 24px rgba(24, 34, 78, 0.12);
+}
+
+.dropdown-item {
+  color: var(--aj-ink);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: var(--aj-sand);
+  color: var(--aj-ink);
+}
+
+.cart-message {
+  background: var(--aj-ink);
+  color: var(--aj-white);
+}
+
+
+/* 4. Search band
+   ------------------------------------------------------------------------ */
+#opac-main-search {
+  background: var(--aj-sand);
+  border-bottom: 1px solid var(--aj-sand-line);
+  border-radius: 0;
+  padding: 18px 24px 14px;
+  font-family: var(--aj-font-ui);
+}
+
+#opac-main-search label {
+  color: var(--aj-ink);
+  font-weight: 600;
+}
+
+#opac-main-search .form-select,
+#opac-main-search .form-control {
+  min-height: 46px;
+  color: var(--aj-ink);
+  background-color: var(--aj-white);
+  border: 1px solid var(--aj-field-line);
+  border-radius: var(--aj-radius);
+}
+
+/* Search box: what people type may be Arabic or transliterated */
+#translControl1,
+#opac-main-search input[name="q"] {
+  font-family: var(--aj-font-data);
+  font-size: 1.05rem;
+}
+
+#searchsubmit {
+  min-height: 46px;
+  padding: 0 1.4rem;
+}
+
+#moresearches {
+  padding: 8px 24px;
+  font-size: 0.925rem;
+}
+
+#moresearches a {
+  color: var(--aj-blue);
+  font-weight: 500;
+}
+
+
+/* 5. Buttons
+   ------------------------------------------------------------------------ */
+.btn {
+  border-radius: var(--aj-pill);
+  font-family: var(--aj-font-ui);
+  font-weight: 600;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Main action: deep copper (the website copper is too light for white text) */
+.btn-primary,
+.btn-primary:link,
+.btn-primary:visited {
+  background: var(--aj-copper-deep);
+  border: 1px solid var(--aj-copper-deep);
+  color: var(--aj-white);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+  background: var(--aj-copper-dark);
+  border-color: var(--aj-copper-dark);
+  color: var(--aj-white);
+  box-shadow: none;
+}
+
+/* Secondary actions: blue outline */
+.btn-default,
+.btn-secondary,
+.btn-light,
+.btn-default:link,
+.btn-default:visited,
+.btn-secondary:link,
+.btn-secondary:visited {
+  background: transparent;
+  border: 1px solid var(--aj-blue);
+  color: var(--aj-blue);
+}
+
+.btn-default:hover,
+.btn-secondary:hover,
+.btn-light:hover,
+.btn-default:focus,
+.btn-secondary:focus,
+.btn-light:focus,
+.btn-default:active,
+.btn-secondary:active,
+.btn-light:active {
+  background: var(--aj-blue);
+  border-color: var(--aj-blue);
+  color: var(--aj-white);
+  box-shadow: none;
+}
+
+.btn.disabled,
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+
+/* 6. Breadcrumbs, tabs, pagination
+   ------------------------------------------------------------------------ */
+#breadcrumbs .breadcrumb {
+  background: transparent;
+  font-size: 0.9rem;
+}
+
+#breadcrumbs .breadcrumb-item.active,
+#breadcrumbs .breadcrumb-item + .breadcrumb-item::before {
+  color: var(--aj-muted);
+}
+
+.nav-tabs {
+  border-bottom-color: var(--aj-hairline);
+}
+
+.nav-tabs .nav-link {
+  color: var(--aj-blue);
+}
+
+.nav-tabs .nav-link.active,
+.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+  color: var(--aj-ink);
+  font-weight: 700;
+  background: var(--aj-cream);
+  border-color: var(--aj-hairline) var(--aj-hairline) var(--aj-cream);
+}
+
+.pagination .page-link {
+  color: var(--aj-blue);
+  background: transparent;
+  border-color: var(--aj-hairline);
+}
+
+.pagination .page-link:hover {
+  background: var(--aj-sand);
+  color: var(--aj-ink);
+}
+
+.pagination .page-item.active .page-link {
+  background: var(--aj-blue);
+  border-color: var(--aj-blue);
+  color: var(--aj-white);
+}
+
+
+/* 7. Search results
+   ------------------------------------------------------------------------ */
+.searchresults .table,
+.searchresults .table > :not(caption) > * > * {
+  background: transparent;
+  box-shadow: none;
+}
+
+.searchresults .table td {
+  border-top: 1px solid var(--aj-hairline);
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  vertical-align: top;
+}
+
+a.title,
+.title_summary .title {
+  font-family: var(--aj-font-data);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--aj-blue);
+  text-decoration: none;
+}
+
+a.title:hover {
+  color: var(--aj-ink);
+  text-decoration: underline;
+}
+
+.author,
+.byAuthor,
+.results_summary.publisher {
+  font-family: var(--aj-font-data);
+  color: var(--aj-ink);
+}
+
+.results_summary .label {
+  color: var(--aj-muted);
+  font-weight: 600;
+}
+
+/* Availability */
+.available,
+.results_summary.availability .available {
+  color: var(--aj-copper-dark);
+  font-weight: 700;
+}
+
+.unavailable {
+  color: var(--aj-muted);
+}
+
+/* Facets ("Refine your search") */
+#search-facets {
+  background: transparent;
+  border: 0;
+}
+
+#search-facets h2 {
+  font-size: 1.5rem;
+}
+
+#search-facets h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--aj-hairline);
+}
+
+#search-facets .facet-label a,
+#search-facets a {
+  color: var(--aj-blue);
+}
+
+.facet-count,
+.facet-count-selected {
+  background: var(--aj-sand) !important;
+  color: var(--aj-ink) !important;
+  border-radius: var(--aj-pill);
+}
+
+.menu-collapse-toggle {
+  color: var(--aj-blue);
+}
+
+/* "Did you mean" box */
+.suggestion {
+  width: auto;
+  max-width: 40rem;
+  background: var(--aj-white);
+  border: 1px solid var(--aj-hairline);
+  border-radius: var(--aj-radius);
+  color: var(--aj-ink);
+}
+
+
+/* 8. Covers and bookplates
+   ------------------------------------------------------------------------
+   A bookplate is always drawn in the cover space, with the book's
+   title and author. Real covers sit on top and hide it. When there is
+   no cover (Koha removes empty sources), or while covers are loading,
+   the bookplate shows. */
+.covercol {
+  width: calc(var(--aj-cover-w) + 16px);
+}
+
+.bookcover {
+  position: relative;
+  float: none;
+  width: var(--aj-cover-w);
+  height: var(--aj-cover-h);
+  margin: 0 auto;
+  border-radius: 4px;
+  background: var(--aj-sand);
+  /* inner copper frame */
+  box-shadow:
+    inset 0 0 0 6px var(--aj-sand),
+    inset 0 0 0 7px var(--aj-copper),
+    0 1px 3px rgba(24, 34, 78, 0.12);
+  text-align: center;
+}
+
+/* Small ring + title */
+.bookcover::before {
+  content: attr(data-title);
+  position: absolute;
+  top: 16px;
+  left: 12px;
+  right: 12px;
+  z-index: 0;
+  padding-top: 20px;
+  background: radial-gradient(circle, transparent 5px, var(--aj-copper) 5.5px, var(--aj-copper) 6.5px, transparent 7px) center top / 16px 16px no-repeat;
+  font-family: var(--aj-font-data);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--aj-blue);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+/* Author */
+.bookcover::after {
+  content: attr(data-author);
+  position: absolute;
+  bottom: 14px;
+  left: 12px;
+  right: 12px;
+  z-index: 0;
+  font-family: var(--aj-font-data);
+  font-size: 0.625rem;
+  line-height: 1.2;
+  color: var(--aj-muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* Record page: no title data is available there, so the bookplate
+   carries the library name instead */
+.bookcover:not([data-title]) {
+  --aj-cover-w: 180px;
+  --aj-cover-h: 270px;
+}
+
+.bookcover:not([data-title])::before {
+  content: "Maktabat Aljamea";
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--aj-font-display);
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.bookcover:not([data-title])::after {
+  content: none;
+}
+
+/* Cover area sits above the bookplate */
+.bookcover .cover-slider,
+.covercol .cover-slider {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: var(--aj-cover-h);
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+/* Koha shows one slide at a time; the rest stay hidden */
+.bookcover .cover-image {
+  display: none;
+}
+
+.bookcover .cover-image,
+.bookcover .cover-image > div,
+.bookcover .cover-image a {
+  height: 100%;
+  width: 100%;
+}
+
+.bookcover .cover-image a {
+  display: block;
+}
+
+/* Every cover fills the same 2:3 shape. No background on the image,
+   so Amazon's see-through "no cover" pixel lets the bookplate show. */
+.bookcover .cover-image img,
+.bookcover img.item-thumbnail {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Hide source captions, "No cover image available" text and Google sticker */
+.bookcover .hint,
+.bookcover .no-image,
+.bookcover .google-books-preview {
+  display: none;
+}
+
+/* Dots to switch between covers from different sources */
+.bookcover .cover-nav {
+  position: relative;
+  top: 4px;
+  padding: 4px 3px;
+  font-size: 0.5rem;
+  color: var(--aj-copper);
+}
+
+.bookcover .cover-nav.nav-active,
+.cover-slider a.nav-active:link,
+.cover-slider a.nav-active:visited {
+  color: var(--aj-blue);
+}
+
+.bookcover:has(.cover-nav) {
+  margin-bottom: 22px;
+}
+
+
+/* 9. Login page
+   ------------------------------------------------------------------------ */
+#opac-login-page .col-lg-6 {
+  flex: 0 0 auto;
+  width: min(100%, 940px);
+  max-width: 940px;
+}
+
+#opac-login-page #opac-auth {
+  text-align: center;
+  padding: 16px 0 48px;
+}
+
+/* Jamea rosette (hotlinked from the website) */
+#opac-login-page #opac-auth::before {
+  content: "";
+  display: block;
+  height: 72px;
+  margin: 0 auto 12px;
+  background: url("https://jameasaifiyah.edu/wp-content/uploads/2024/04/Group-39490.png") center / contain no-repeat;
+}
+
+#opac-login-page #opac-auth > h1 {
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  margin-bottom: 1.75rem;
+}
+
+#opac-login-page #opac-auth > h1::before {
+  content: "Library catalogue";
+  display: block;
+  margin-bottom: 0.6rem;
+  font-family: var(--aj-font-ui);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aj-copper-deep);
+}
+
+/* Form on the left, help text on the right */
+#opac-login-page #auth {
+  display: grid;
+  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+  grid-template-areas:
+    "form help"
+    "forgot help"
+    "register help";
+  column-gap: 48px;
+  align-items: start;
+  text-align: left;
+}
+
+#opac-login-page #auth .local-login {
+  grid-area: form;
+  background: var(--aj-white);
+  border: 1px solid var(--aj-hairline);
+  border-radius: 14px;
+  padding: 28px 28px 20px;
+}
+
+#opac-login-page #auth fieldset.brief,
+#opac-login-page #auth fieldset.action {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+#opac-login-page #auth .form-group {
+  margin-bottom: 1.1rem;
+}
+
+#opac-login-page #auth label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  color: var(--aj-ink);
+}
+
+#opac-login-page #auth .form-control {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 1rem;
+  font-size: 1rem;
+  color: var(--aj-ink);
+  background: var(--aj-white);
+  border: 1px solid var(--aj-field-line);
+  border-radius: var(--aj-radius);
+}
+
+#opac-login-page #auth input[type="submit"] {
+  width: 100%;
+  min-height: 52px;
+  font-size: 1.05rem;
+}
+
+#opac-login-page #forgotpassword {
+  grid-area: forgot;
+  text-align: center;
+  margin-top: 14px;
+}
+
+#opac-login-page #registrationinstructions {
+  grid-area: register;
+  text-align: center;
+}
+
+#opac-login-page #nologininstructions {
+  grid-area: help;
+}
+
+#opac-login-page #nologininstructions h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--aj-hairline);
+}
+
+#opac-login-page #nologininstructions p {
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+
+/* 10. Account pages and misc
+   ------------------------------------------------------------------------ */
+#menu li a {
+  background: transparent;
+  border: 0;
+  border-left: 3px solid transparent;
+  color: var(--aj-blue);
+  padding: 0.6em 0.9em;
+}
+
+#menu li a:hover {
+  background: var(--aj-sand);
+}
+
+/* Current page in the account menu stands out */
+#menu li.active a {
+  background: var(--aj-sand);
+  border-left-color: var(--aj-copper-deep);
+  color: var(--aj-ink);
+  font-weight: 700;
+}
+
+.alert-info {
+  background: var(--aj-sand);
+  border-color: var(--aj-sand-line);
+  color: var(--aj-ink);
+}
+
+.form-control,
+.form-select {
+  border-color: var(--aj-field-line);
+  color: var(--aj-ink);
+}
+
+
+/* 11. Phones and small tablets
+   ------------------------------------------------------------------------ */
+@media (max-width: 991.98px) {
+  #opac-login-page #auth {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "form"
+      "forgot"
+      "register"
+      "help";
+  }
+
+  #opac-login-page #nologininstructions {
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --aj-logo-h: 40px;
+    --aj-logo-space: 108px;
+    --aj-cover-w: 76px;
+    --aj-cover-h: 114px;
+  }
+
+  #header-region .navbar,
+  .navbar-expand {
+    padding: 8px 12px;
+  }
+
+  #logo .navbar-brand::after {
+    font-size: 1.05rem;
+  }
+
+  #opac-main-search {
+    padding: 14px 12px 10px;
+  }
+
+  .bookcover::before {
+    top: 10px;
+    left: 8px;
+    right: 8px;
+    font-size: 0.6rem;
+    -webkit-line-clamp: 4;
+  }
+
+  .bookcover::after {
+    content: none;
+  }
+
+  .bookcover:not([data-title]) {
+    --aj-cover-w: 140px;
+    --aj-cover-h: 210px;
+  }
+
+  #opac-login-page #auth .local-login {
+    padding: 22px 18px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}

@@ -1,0 +1,127 @@
+/* =====================================================================
+   "My library" card — add to the end of OPACUserCSS
+   Uses the --aj-* tokens already defined in your stylesheet.
+   ===================================================================== */
+#opac-main .aj-ml {
+  background: #fff;
+  border: 1px solid var(--aj-hairline);
+  border-top: 3px solid var(--aj-copper);
+  border-radius: 4px;
+  padding: 1.25rem 1.25rem 0.5rem;
+  margin: 0 0 1.5rem;
+  color: var(--aj-ink);
+  font-family: var(--aj-font-ui);
+}
+
+#opac-main .aj-ml__loading,
+#opac-main .aj-ml__message {
+  margin: 0 0 0.75rem;
+  color: var(--aj-muted);
+}
+
+#opac-main .aj-ml__hello {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  color: var(--aj-muted);
+}
+#opac-main .aj-ml__hello a {
+  font-weight: 600;
+}
+
+/* The yearly count is the one bold element */
+#opac-main .aj-ml__year {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--aj-hairline);
+}
+#opac-main .aj-ml__count {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+}
+#opac-main .aj-ml__num {
+  font-family: var(--aj-font-display);
+  font-size: clamp(2.75rem, 6vw, 3.5rem);
+  line-height: 1;
+  color: var(--aj-blue);
+  font-variant-numeric: lining-nums;
+}
+#opac-main .aj-ml__unit {
+  font-family: var(--aj-font-title);
+  font-size: 1.15rem;
+}
+#opac-main .aj-ml__term {
+  margin: 0.5rem 0 0;
+  line-height: 1.45;
+}
+#opac-main .aj-ml__term-name {
+  display: block;
+  font-weight: 600;
+}
+#opac-main .aj-ml__term-dates {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--aj-muted);
+}
+#opac-main .aj-ml__note {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: var(--aj-muted);
+}
+
+/* Status rows: label left, number right */
+#opac-main .aj-ml__status {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#opac-main .aj-ml__row + .aj-ml__row {
+  border-top: 1px solid var(--aj-hairline);
+}
+#opac-main .aj-ml__link,
+#opac-main .aj-ml__link:visited {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.6rem 0.25rem;
+  color: var(--aj-ink);
+  text-decoration: none;
+}
+#opac-main .aj-ml__link:hover .aj-ml__label {
+  text-decoration: underline;
+}
+#opac-main .aj-ml__link:focus-visible {
+  outline: 2px solid var(--aj-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+#opac-main .aj-ml__value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Zero rows stay quiet; non-zero rows with meaning get colour */
+#opac-main .aj-ml__row.is-zero .aj-ml__link {
+  color: var(--aj-muted);
+}
+#opac-main .aj-ml__row.is-zero .aj-ml__value {
+  font-weight: 400;
+}
+#opac-main .aj-ml__row.is-soon .aj-ml__value {
+  color: var(--aj-copper-deep);
+}
+#opac-main .aj-ml__row.is-alert .aj-ml__link {
+  color: var(--aj-copper-dark);
+  font-weight: 600;
+}
+#opac-main .aj-ml__row.is-good .aj-ml__value {
+  color: var(--aj-blue);
+}
+
+/* Built-in box is switched off, but hide it too in case the setting is turned back on */
+#opac-main #user_summary {
+  display: none;
+}

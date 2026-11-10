@@ -1,0 +1,2683 @@
+/* ==========================================================================
+   Maktabat Aljamea (Sindh) — OPACUserCSS for Koha 25.11        (v4, 20 Sep 2026)
+   Matches jameasaifiyah.edu: cream, royal blue, copper.
+
+   Paste this whole file into:
+   Administration › System preferences › OPACUserCSS
+
+   Goes with  OPACUserJS_V4.js              (OPACUserJS — unchanged by v4 of this file)
+              OpacMainUserBlock_V3.html     (HTML customizations, OpacMainUserBlock)
+              OpacLoginInstructions_V1.html (HTML customizations, OpacLoginInstructions)
+              OpacHeaderFonts_V1.html       (HTML customizations, opacheader)
+              SCOUserCSS_V1.css             (SCOUserCSS)
+              SCOUserJS_V1.js               (SCOUserJS)
+
+   WHAT CHANGED IN v4
+   ------------------
+   * Section 15a rewritten. Koha was rendering an EMPTY col-lg-3 beside
+     the main column on the home page — 342px of a 1368px row, measured
+     live — so the widgets only ever had three quarters of the page. That
+     column is now hidden and the main column takes the full width.
+   * The three widgets are now half / quarter / quarter on a desktop, and
+     rearrange sensibly on tablets and phones. See the section for why.
+   * Covers grow on wider screens now that there is room for them.
+
+   WHAT CHANGED IN v3
+   ------------------
+   * The Google Fonts @import that used to be the first line of this file
+     has MOVED to the opacheader HTML customization, as a <link> tag.
+     This is the single biggest speed change in the whole set. Koha puts
+     OPACUserCSS inside an inline <style> in the <head>, and an @import
+     inside inline CSS is serialised: the browser must download and parse
+     all 47 KB of this file before it even discovers that a font request
+     exists, and only then start it. A <link> in the HTML is found by the
+     browser's preload scanner immediately, and fetched in parallel.
+     >> If you paste this file WITHOUT also adding the opacheader
+        customization, the catalogue still works; it simply falls back to
+        the fonts already on the reader's machine.
+   * Section 9b added: the new "Trouble signing in?" panel on the login
+     page (wording lives in the OpacLoginInstructions customization).
+   * Section 14 rewritten: the page-loading rosette was invisible on
+     phones and mispositioned on the self-checkout kiosks.
+   * Section 15a rewritten: three home page widgets side by side —
+     New in the library, My library, Library information — sharing one
+     card design so that they line up.
+   * Section 15d added: the "Library information" widget.
+   * Section 17 added: stops the OPAC's own furniture rules reaching the
+     self-checkout screen, which loads this file too.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Maktabat Aljamea (Sindh) — OPACUserCSS for Koha 25.11  (FINAL v2, 17 Sep 2026)
+   Matches jameasaifiyah.edu: cream, royal blue, copper.
+   Paste this whole file into: Administration › System preferences › OPACUserCSS
+   Works with FINAL_v2_OPACUserJS.js: account menu, cart, first name,
+   "ITS Number" label, page-loading rosette and the home page widgets
+   need both files. Home page boxes: FINAL_v2_OpacMainUserBlock.html.
+   The @import line above must stay the very first line.
+   ========================================================================== */
+
+
+/* 1. Settings — change values here, not further down
+   ------------------------------------------------------------------------ */
+:root {
+  /* Colours (sampled from the Jamea website) */
+  --aj-cream: #FEF9F1;         /* page background */
+  --aj-sand: #F3E9D8;          /* search band, bookplates */
+  --aj-sand-line: #E6D6B8;     /* edge of the search band */
+  --aj-hairline: #F0E8D3;      /* thin dividers */
+  --aj-blue: #233787;          /* headings, links */
+  --aj-ink: #18224E;           /* body text */
+  --aj-muted: #55607F;         /* secondary text */
+  --aj-copper: #C58D4E;        /* decoration only (too light for text) */
+  --aj-copper-deep: #9A6630;   /* buttons, menu text */
+  --aj-copper-dark: #7A4E1C;   /* button hover, "Available" */
+  --aj-field-line: #9A8F78;    /* input borders */
+  --aj-white: #FFFFFF;
+
+  /* Fonts
+     ui      = everything by default: body text, menus, search box,
+               authors (DM Sans, as on the website; Noto Sans fills in
+               ḍ ṣ ṭ ẓ ḥ ʿ ʾ, which DM Sans lacks)
+     display = page headings and the library name
+     title   = book titles
+     display and title use Noto Sans: a plain sans with every
+     transliteration letter, and the same font DM Sans borrows from,
+     so borrowed letters in body text match the titles.
+     To try another sans, change the first name in these two lines
+     and in the @import line at the top.
+     arabic  = Arabic script: Kanz-al-Marjaan, then Amiri */
+  --aj-font-ui: "DM Sans", "Noto Sans", "Kanz-al-Marjaan", "Amiri", sans-serif;
+  --aj-font-display: "Noto Sans", "Kanz-al-Marjaan", "Amiri", sans-serif;
+  --aj-font-title: "Noto Sans", "Kanz-al-Marjaan", "Amiri", sans-serif;
+  --aj-display-weight: 700;    /* the old serif used 400; a sans needs bold */
+  --aj-font-arabic: "Kanz-al-Marjaan", "Amiri", serif;
+
+  /* Header logo (hotlinked from the Jamea website) */
+  --aj-logo-url: url("https://jameasaifiyah.edu/wp-content/uploads/2024/05/AlJamea_Website_Menu-01.svg");
+  --aj-logo-h: 60px;
+  /* Jamea rosette: login page and page-loading mark */
+  --aj-rosette-url: url("https://jameasaifiyah.edu/wp-content/uploads/2024/04/Group-39490.png");
+  --aj-logo-space: 160px;      /* room left for the logo; adjust if the name overlaps it */
+  --aj-library-name: "Maktabat Aljamea (Sindh)";
+
+  /* Cover and bookplate size in search results */
+  --aj-cover-w: 100px;
+  --aj-cover-h: 150px;
+
+  /* Page margin: the logo, search bar, links, breadcrumbs, page
+     content and footer all start at this distance from the edge */
+  --aj-gutter: clamp(16px, 3.5vw, 48px);
+  /* Koha's grid (Bootstrap) adds this much inside its containers */
+  --aj-grid-pad: 0.75rem;
+
+  --aj-radius: 10px;
+  --aj-pill: 999px;
+}
+
+
+/* 2. Page basics
+   ------------------------------------------------------------------------ */
+body {
+  background: var(--aj-cream);
+  color: var(--aj-ink);
+}
+
+/* Koha sets its own font with ".fonts-loaded body" etc.,
+   which beats a plain "body" rule, so these match it exactly */
+body,
+button,
+input,
+optgroup,
+option,
+select,
+textarea,
+.fonts-loaded body,
+.fonts-loaded button,
+.fonts-loaded input,
+.fonts-loaded optgroup,
+.fonts-loaded option,
+.fonts-loaded select,
+.fonts-loaded textarea,
+#basketcount span {
+  font-family: var(--aj-font-ui);
+}
+
+/* Koha makes every placeholder italic and right-aligned */
+::placeholder,
+.form-control::placeholder {
+  font-family: var(--aj-font-ui);
+  font-style: normal;
+  text-align: left;
+  color: var(--aj-muted);
+  opacity: 1;
+}
+
+#wrapper {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.main,
+.maincontent {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+a,
+a:link,
+a:visited {
+  color: var(--aj-blue);
+}
+
+a:hover,
+a:focus {
+  color: var(--aj-ink);
+  text-decoration: underline;
+}
+
+/* Clear keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--aj-blue);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+h1, h2, .h1, .h2 {
+  font-family: var(--aj-font-display);
+  letter-spacing: -0.01em;
+  font-weight: var(--aj-display-weight);
+  color: var(--aj-blue);
+  line-height: 1.15;
+}
+
+h3, h4, h5, h6, .h3, .h4, .h5, .h6 {
+  font-family: var(--aj-font-ui);
+  font-weight: 700;
+  color: var(--aj-ink);
+}
+
+legend {
+  font-family: var(--aj-font-display);
+  font-weight: var(--aj-display-weight);
+  font-size: 1.4rem;
+  color: var(--aj-blue);
+}
+
+.table {
+  color: var(--aj-ink);
+}
+
+/* Mixed Arabic / English text keeps its natural letter order,
+   but lines stay left-aligned with the rest of the record
+   (plaintext alone would push Arabic lines to the right) */
+.title,
+.author,
+.results_summary,
+.title_summary,
+.record,
+#opac-detail h1,
+#opac-detail h2.title {
+  unicode-bidi: plaintext;
+  text-align: left;
+}
+
+.bookcover::before,
+.bookcover::after {
+  unicode-bidi: plaintext;
+}
+
+[lang="ar"],
+[dir="rtl"] {
+  font-family: var(--aj-font-arabic);
+}
+
+
+/* 2b. One shared page margin
+   ------------------------------------------------------------------------
+   Koha wraps each part of the page in its own container, and each adds
+   its own padding or margin, so nothing lined up. These rules cancel
+   those extras so everything starts at --aj-gutter. */
+
+/* Search band + "Advanced search" bar: stretch edge to edge,
+   content starts at the page margin */
+#header-region + .container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#header-region + .container-fluid > .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#header-region + .container-fluid > .row > .col {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Main area: Koha's inner grid adds --aj-grid-pad, so subtract it here */
+.main {
+  margin: 0;
+  padding-left: calc(var(--aj-gutter) - var(--aj-grid-pad));
+  padding-right: calc(var(--aj-gutter) - var(--aj-grid-pad));
+}
+
+/* Breadcrumbs sit outside that grid, so they add the same amount back */
+#breadcrumbs .breadcrumb {
+  --bs-breadcrumb-padding-x: 0;
+  margin: 1rem var(--aj-grid-pad) 0.5rem;
+}
+
+/* Footer block from HTML customizations */
+#wrapper > .container-fluid:has(#opaccredits) {
+  padding-left: var(--aj-gutter);
+  padding-right: var(--aj-gutter);
+}
+
+
+/* 3. Header
+   ------------------------------------------------------------------------ */
+#header-region .navbar,
+.navbar-expand {
+  background: var(--aj-cream);
+  box-shadow: 0 2px 14px rgba(24, 34, 78, 0.08);
+  padding: 12px var(--aj-gutter);
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Logo + new library name.
+   The original name is hidden and the new one drawn after it.
+   If the logo image ever fails to load, the name still shows. */
+#logo {
+  background: none;
+  width: auto;
+  padding: 0;
+  margin: 0 auto 0 0;   /* Koha adds a 14px left margin on phones */
+}
+
+#logo .navbar-brand {
+  display: flex;
+  align-items: center;
+  /* Koha fixes this link at 100px wide, 0 high, overflow hidden,
+     which cut off the library name */
+  width: auto !important;
+  height: auto !important;
+  overflow: visible;
+  min-height: var(--aj-logo-h);
+  padding: 0 0 0 var(--aj-logo-space);
+  background: var(--aj-logo-url) left center / auto var(--aj-logo-h) no-repeat;
+  font-size: 0;
+  color: transparent;
+  text-decoration: none;
+}
+
+#logo .navbar-brand::after {
+  content: var(--aj-library-name);
+  font-family: var(--aj-font-display);
+  font-weight: var(--aj-display-weight);
+  font-size: 1.16rem;          /* 30% smaller than before (1.65rem) */
+  line-height: 1.1;
+  color: var(--aj-blue);
+}
+
+#logo .navbar-brand:hover::after {
+  color: var(--aj-ink);
+}
+
+/* Menu links: Cart, Lists, account, cookies */
+#header-region .nav-link,
+.navbar-nav > li > a {
+  color: var(--aj-copper-deep);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+#header-region .nav-link:hover,
+#header-region .nav-link:focus {
+  color: var(--aj-copper-dark);
+  text-decoration: underline;
+}
+
+.fa.fa-icon-black,
+.fa.fa-icon-white {
+  color: var(--aj-copper-deep);
+}
+
+.dropdown-menu {
+  background: var(--aj-white);
+  border: 1px solid var(--aj-hairline);
+  border-radius: var(--aj-radius);
+  box-shadow: 0 8px 24px rgba(24, 34, 78, 0.12);
+}
+
+.dropdown-item {
+  color: var(--aj-ink);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: var(--aj-sand);
+  color: var(--aj-ink);
+}
+
+.cart-message {
+  background: var(--aj-ink);
+  color: var(--aj-white);
+}
+
+
+/* 3b. Account menu (now holds Lists) and Cart (now after the account menu)
+   OPACUserJS moves these; the rules below only style the result.
+   ------------------------------------------------------------------------ */
+#members .dropdown-menu {
+  min-width: 240px;
+  max-width: min(340px, calc(100vw - 2 * var(--aj-gutter)));
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+  padding: 6px 0;
+}
+
+#loggedinuser-menu {
+  padding: 0;
+  line-height: 1.35;
+}
+
+#loggedinuser-menu p {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+#loggedinuser-menu p .dropdown-item:first-child {
+  flex: 1 1 auto;
+}
+
+/* "Clear" sits at the end of the "Search history" row */
+#loggedinuser-menu p .dropdown-item.clearsh {
+  flex: 0 0 auto;
+  width: auto;
+  color: var(--aj-muted);
+}
+
+#loggedinuser-menu p .divider-vertical {
+  display: none;
+}
+
+#loggedinuser-menu .dropdown-item {
+  padding: 7px 16px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Lists block: moved in from the old Lists menu */
+#loggedinuser-menu .aj-menu-lists {
+  margin: 6px 0;
+  padding: 6px 0;
+  border-top: 1px solid var(--aj-hairline);
+  border-bottom: 1px solid var(--aj-hairline);
+}
+
+#loggedinuser-menu .aj-menu-lists .dropdown-divider {
+  margin: 4px 16px;
+  border-color: var(--aj-hairline);
+}
+
+/* List names sit under their heading ("Your lists", "Public lists") */
+#loggedinuser-menu .aj-menu-lists .dropdown-item:not(:has(strong)) {
+  padding-left: 28px;
+}
+
+#loggedinuser-menu .aj-menu-lists .dropdown-item.disabled {
+  color: var(--aj-muted);
+}
+
+#loggedinuser-menu .aj-menu-lists .listmenulink {
+  color: var(--aj-copper-deep);
+  font-weight: 600;
+}
+
+#loggedinuser-menu #logout {
+  color: var(--aj-copper-deep);
+  font-weight: 600;
+}
+
+/* Account menu and Cart stay at the right, also when they wrap
+   under the logo on phones */
+#header-region #members {
+  margin-left: auto;
+}
+
+/* Cart beside the account menu */
+#members > .aj-cart-item {
+  margin-left: 4px;
+}
+
+/* "Added to your cart" note: Koha pins it top-left; the cart is now right */
+#cartDetails {
+  left: auto;
+  right: var(--aj-gutter);
+  top: calc(var(--aj-logo-h) + 32px);
+  width: auto;
+  max-width: 260px;
+  padding: 10px 16px;
+  background: var(--aj-white);
+  color: var(--aj-ink);
+  border: 1px solid var(--aj-hairline);
+  border-radius: var(--aj-radius);
+  box-shadow: 0 8px 24px rgba(24, 34, 78, 0.12);
+}
+
+/* OPACUserJS changes these on load. Hide them until it has, so the old
+   version doesn't flash. If the script ever fails, they show anyway
+   after 1.5 seconds. */
+#user-menu .userlabel,
+label[for="userid"],
+label[for="muserid"],
+#cart-list-nav {
+  animation: aj-reveal 0s linear 1.5s both;
+}
+
+.aj-ready #user-menu .userlabel,
+.aj-ready label[for="userid"],
+.aj-ready label[for="muserid"],
+.aj-ready #cart-list-nav {
+  animation: none;
+}
+
+@keyframes aj-reveal {
+  from { visibility: hidden; }
+  to { visibility: visible; }
+}
+
+
+/* 4. Search band
+   ------------------------------------------------------------------------ */
+#opac-main-search {
+  background: var(--aj-sand);
+  border-bottom: 1px solid var(--aj-sand-line);
+  border-radius: 0;
+  margin: 0;
+  padding: 18px var(--aj-gutter) 14px;
+  font-family: var(--aj-font-ui);
+}
+
+#opac-main-search label {
+  color: var(--aj-ink);
+  font-weight: 600;
+}
+
+#opac-main-search .form-select,
+#opac-main-search .form-control {
+  min-height: 46px;
+  color: var(--aj-ink);
+  background-color: var(--aj-white);
+  border: 1px solid var(--aj-field-line);
+  border-radius: var(--aj-radius);
+}
+
+/* Search box: website sans for typed text; Arabic falls to Kanz/Amiri */
+#translControl1,
+#opac-main-search input[name="q"] {
+  font-family: var(--aj-font-ui);
+  font-size: 1rem;
+  text-align: left;
+  padding-left: 16px;
+}
+
+#opac-main-search .form-control::placeholder {
+  font-size: 1rem;
+}
+
+/* Koha draws a funnel icon in the search box when searches are limited
+   to one library. There is only one library, so the icon says nothing,
+   and it sat under the typed text. */
+#opac-main-search .form-control-filtered {
+  background-image: none;
+}
+
+#searchsubmit {
+  min-height: 46px;
+  padding: 0 1.4rem;
+}
+
+#moresearches {
+  margin: 0;
+  padding: 10px var(--aj-gutter) 0;
+  font-size: 0.925rem;
+}
+
+#moresearches a {
+  color: var(--aj-blue);
+  font-weight: 500;
+}
+
+/* Remove "Contact" next to "Advanced search" */
+#moresearches .nav-item:has(> #library_page) {
+  display: none;
+}
+
+/* Koha puts " | " after every item but the last; Contact was the last,
+   so the item before it now ends the row */
+#moresearches .nav-item:has(+ .nav-item:last-child > #library_page)::after {
+  content: "";
+}
+
+
+/* 5. Buttons
+   ------------------------------------------------------------------------ */
+.btn {
+  border-radius: var(--aj-pill);
+  font-family: var(--aj-font-ui);
+  font-weight: 600;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Main action: deep copper (the website copper is too light for white text) */
+.btn-primary,
+.btn-primary:link,
+.btn-primary:visited {
+  background: var(--aj-copper-deep);
+  border: 1px solid var(--aj-copper-deep);
+  color: var(--aj-white);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+  background: var(--aj-copper-dark);
+  border-color: var(--aj-copper-dark);
+  color: var(--aj-white);
+  box-shadow: none;
+}
+
+/* Secondary actions: blue outline */
+.btn-default,
+.btn-secondary,
+.btn-light,
+.btn-default:link,
+.btn-default:visited,
+.btn-secondary:link,
+.btn-secondary:visited {
+  background: transparent;
+  border: 1px solid var(--aj-blue);
+  color: var(--aj-blue);
+}
+
+.btn-default:hover,
+.btn-secondary:hover,
+.btn-light:hover,
+.btn-default:focus,
+.btn-secondary:focus,
+.btn-light:focus,
+.btn-default:active,
+.btn-secondary:active,
+.btn-light:active {
+  background: var(--aj-blue);
+  border-color: var(--aj-blue);
+  color: var(--aj-white);
+  box-shadow: none;
+}
+
+.btn.disabled,
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+
+/* 6. Breadcrumbs, tabs, pagination
+   ------------------------------------------------------------------------ */
+#breadcrumbs .breadcrumb {
+  background: transparent;
+  font-size: 0.9rem;
+}
+
+#breadcrumbs .breadcrumb-item.active,
+#breadcrumbs .breadcrumb-item + .breadcrumb-item::before {
+  color: var(--aj-muted);
+}
+
+.nav-tabs {
+  border-bottom-color: var(--aj-hairline);
+}
+
+.nav-tabs .nav-link {
+  color: var(--aj-blue);
+}
+
+.nav-tabs .nav-link.active,
+.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+  color: var(--aj-ink);
+  font-weight: 700;
+  background: var(--aj-cream);
+  border-color: var(--aj-hairline) var(--aj-hairline) var(--aj-cream);
+}
+
+.pagination .page-link {
+  color: var(--aj-blue);
+  background: transparent;
+  border-color: var(--aj-hairline);
+}
+
+.pagination .page-link:hover {
+  background: var(--aj-sand);
+  color: var(--aj-ink);
+}
+
+.pagination .page-item.active .page-link {
+  background: var(--aj-blue);
+  border-color: var(--aj-blue);
+  color: var(--aj-white);
+}
+
+
+/* 7. Search results
+   ------------------------------------------------------------------------ */
+.searchresults .table,
+.searchresults .table > :not(caption) > * > * {
+  background: transparent;
+  box-shadow: none;
+}
+
+.searchresults .table td {
+  border-top: 1px solid var(--aj-hairline);
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  vertical-align: top;
+}
+
+a.title,
+.title_summary .title,
+#opac-detail h1.title,
+#opac-detail h2.title {
+  font-family: var(--aj-font-title);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--aj-blue);
+  text-decoration: none;
+}
+
+a.title:hover {
+  color: var(--aj-ink);
+  text-decoration: underline;
+}
+
+.author,
+.byAuthor,
+.results_summary,
+.results_summary.publisher {
+  font-family: var(--aj-font-ui);
+  color: var(--aj-ink);
+}
+
+.results_summary .label {
+  color: var(--aj-muted);
+  font-weight: 600;
+}
+
+/* Availability */
+.available,
+.results_summary.availability .available {
+  color: var(--aj-copper-dark);
+  font-weight: 700;
+}
+
+.unavailable {
+  color: var(--aj-muted);
+}
+
+/* "Your search returned ... results." */
+#numresults {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.4rem, 2vw, 1.75rem);
+  color: var(--aj-blue);
+}
+
+/* Facets ("Refine your search") */
+#search-facets {
+  background: transparent;
+  border: 0;
+}
+
+#search-facets h2,
+#search-facets .h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  text-align: left;
+}
+
+/* Koha gives this heading a pale blue-grey bar with blue text */
+#search-facets h2 a,
+#search-facets .h2 a,
+a.menu-collapse-toggle:link,
+a.menu-collapse-toggle:visited,
+a.menu-collapse-toggle:hover,
+a.menu-collapse-toggle:active {
+  display: block;
+  padding: 0.25rem 0;
+  background: transparent;
+  border: 0;
+  font-family: var(--aj-font-display);
+  font-weight: var(--aj-display-weight);
+  color: var(--aj-blue);
+  text-decoration: none;
+}
+
+#search-facets h2 a.menu-open,
+#search-facets .h2 a.menu-open {
+  border-bottom: 0;
+}
+
+#search-facets h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--aj-hairline);
+}
+
+#search-facets .facet-label a,
+#search-facets a {
+  color: var(--aj-blue);
+}
+
+.facet-count,
+.facet-count-selected {
+  background: var(--aj-sand) !important;
+  color: var(--aj-ink) !important;
+  border-radius: var(--aj-pill);
+}
+
+
+/* "Not finding what you're looking for?" box (below results, and on the
+   "No results found" page). Koha centres it at 35% width; here it lines
+   up with the page text. */
+.suggestion {
+  width: auto;
+  max-width: 36rem;
+  margin: 1.75rem 0 0;
+  padding: 1rem 1.25rem;
+  background: var(--aj-sand);
+  border: 0;
+  border-radius: var(--aj-radius);
+  color: var(--aj-ink);
+  font-weight: 600;
+}
+
+.suggestion ul {
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-weight: 400;
+}
+
+.suggestion li + li {
+  margin-top: 0.25rem;
+}
+
+.suggestion a {
+  font-weight: 600;
+}
+
+
+/* 8. Covers and bookplates
+   ------------------------------------------------------------------------
+   A bookplate is always drawn in the cover space, with the book's
+   title and author. Real covers sit on top and hide it. When there is
+   no cover (Koha removes empty sources), or while covers are loading,
+   the bookplate shows. */
+.covercol {
+  width: calc(var(--aj-cover-w) + 16px);
+}
+
+.bookcover {
+  position: relative;
+  float: none;
+  width: var(--aj-cover-w);
+  height: var(--aj-cover-h);
+  margin: 0 auto;
+  border-radius: 4px;
+  background: var(--aj-sand);
+  /* inner copper frame */
+  box-shadow:
+    inset 0 0 0 6px var(--aj-sand),
+    inset 0 0 0 7px var(--aj-copper),
+    0 1px 3px rgba(24, 34, 78, 0.12);
+  text-align: center;
+}
+
+/* Small ring + title */
+.bookcover::before {
+  content: attr(data-title);
+  position: absolute;
+  top: 16px;
+  left: 12px;
+  right: 12px;
+  z-index: 0;
+  padding-top: 20px;
+  background: radial-gradient(circle, transparent 5px, var(--aj-copper) 5.5px, var(--aj-copper) 6.5px, transparent 7px) center top / 16px 16px no-repeat;
+  font-family: var(--aj-font-title);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--aj-blue);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+/* Author */
+.bookcover::after {
+  content: attr(data-author);
+  position: absolute;
+  bottom: 14px;
+  left: 12px;
+  right: 12px;
+  z-index: 0;
+  font-family: var(--aj-font-ui);
+  font-size: 0.625rem;
+  line-height: 1.2;
+  color: var(--aj-muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* Record page: no title data is available there, so the bookplate
+   carries the library name instead */
+.bookcover:not([data-title])::before {
+  content: "Maktabat Aljamea";
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--aj-font-display);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.bookcover:not([data-title])::after {
+  content: none;
+}
+
+/* Cover area sits above the bookplate */
+.bookcover .cover-slider,
+.covercol .cover-slider {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: var(--aj-cover-h);
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+/* Koha shows one slide at a time; the rest stay hidden */
+.bookcover .cover-image {
+  display: none;
+}
+
+.bookcover .cover-image,
+.bookcover .cover-image > div,
+.bookcover .cover-image a {
+  height: 100%;
+  width: 100%;
+}
+
+.bookcover .cover-image a {
+  display: block;
+}
+
+/* Every cover fills the same 2:3 shape. No background on the image,
+   so Amazon's see-through "no cover" pixel lets the bookplate show. */
+.bookcover .cover-image img,
+.bookcover img.item-thumbnail {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Hide source captions, "No cover image available" text and Google sticker */
+.bookcover .hint,
+.bookcover .no-image,
+.bookcover .google-books-preview {
+  display: none;
+}
+
+/* Dots to switch between covers from different sources */
+.bookcover .cover-nav {
+  position: relative;
+  top: 4px;
+  padding: 4px 3px;
+  font-size: 0.5rem;
+  color: var(--aj-copper);
+}
+
+.bookcover .cover-nav.nav-active,
+.cover-slider a.nav-active:link,
+.cover-slider a.nav-active:visited {
+  color: var(--aj-blue);
+}
+
+.bookcover .cover-nav:focus-visible {
+  outline-width: 2px;
+  outline-offset: 0;
+  border-radius: 50%;
+}
+
+.bookcover:has(.cover-nav) {
+  margin-bottom: 22px;
+}
+
+
+/* 9. Login page
+   ------------------------------------------------------------------------ */
+#opac-login-page .col-lg-6 {
+  flex: 0 0 auto;
+  width: min(100%, 940px);
+  max-width: 940px;
+}
+
+#opac-login-page #opac-auth {
+  text-align: center;
+  padding: 16px 0 48px;
+}
+
+/* Jamea rosette (hotlinked from the website) */
+#opac-login-page #opac-auth::before {
+  content: "";
+  display: block;
+  height: 72px;
+  margin: 0 auto 12px;
+  background: var(--aj-rosette-url) center / contain no-repeat;
+}
+
+#opac-login-page #opac-auth > h1 {
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  margin-bottom: 1.75rem;
+}
+
+#opac-login-page #opac-auth > h1::before {
+  content: "Library catalogue";
+  display: block;
+  margin-bottom: 0.6rem;
+  font-family: var(--aj-font-ui);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aj-copper-deep);
+}
+
+/* Form on the left, help text on the right */
+#opac-login-page #auth {
+  display: grid;
+  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+  grid-template-areas:
+    "form help"
+    "forgot help"
+    "register help";
+  column-gap: 48px;
+  align-items: start;
+  text-align: left;
+}
+
+#opac-login-page #auth .local-login {
+  grid-area: form;
+  background: var(--aj-white);
+  border: 1px solid var(--aj-hairline);
+  border-radius: 14px;
+  padding: 28px 28px 20px;
+}
+
+#opac-login-page #auth fieldset.brief,
+#opac-login-page #auth fieldset.action {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+#opac-login-page #auth .form-group {
+  margin-bottom: 1.1rem;
+}
+
+#opac-login-page #auth label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  color: var(--aj-ink);
+}
+
+/* "Show password": checkbox and text on one line */
+#opac-login-page #auth .show-password-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+#opac-login-page #auth .show-password-toggle label,
+#opac-login-page #auth .show-password-toggle-label {
+  display: inline;
+  margin: 0;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+#opac-login-page #auth .show-password-toggle-checkbox {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--aj-blue);
+  cursor: pointer;
+}
+
+#opac-login-page #auth .form-control {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 1rem;
+  font-size: 1rem;
+  color: var(--aj-ink);
+  background: var(--aj-white);
+  border: 1px solid var(--aj-field-line);
+  border-radius: var(--aj-radius);
+}
+
+#opac-login-page #auth input[type="submit"] {
+  width: 100%;
+  min-height: 52px;
+  font-size: 1.05rem;
+}
+
+#opac-login-page #forgotpassword {
+  grid-area: forgot;
+  text-align: center;
+  margin-top: 14px;
+}
+
+#opac-login-page #registrationinstructions {
+  grid-area: register;
+  text-align: center;
+}
+
+#opac-login-page #nologininstructions {
+  grid-area: help;
+}
+
+#opac-login-page #nologininstructions h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--aj-hairline);
+}
+
+#opac-login-page #nologininstructions p {
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+
+/* 9b. Login page: the "Trouble signing in?" panel
+   ------------------------------------------------------------------------
+   The words come from an HTML customization, not from this file:
+     Tools › HTML customizations › New entry
+     Display location: OpacLoginInstructions
+   Paste OpacLoginInstructions_V1.html there with "Edit with text editor".
+
+   That replaces Koha's built-in "Don't have a password yet? ... stop by
+   the circulation desk" text at source, so there is no flash of the old
+   wording before a script can change it, and nothing here depends on
+   JavaScript being on.
+   ------------------------------------------------------------------------ */
+#opac-login-page #nologininstructions .aj-help {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+#opac-login-page #nologininstructions .aj-help__item {
+  padding: 1rem 1.1rem;
+  background: var(--aj-white);
+  border: 1px solid var(--aj-hairline);
+  border-left: 3px solid var(--aj-copper);
+  border-radius: var(--aj-radius);
+}
+
+#opac-login-page #nologininstructions .aj-help__item h3 {
+  margin: 0 0 0.35rem;
+  font-family: var(--aj-font-ui);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--aj-blue);
+}
+
+#opac-login-page #nologininstructions .aj-help__item p {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+#opac-login-page #nologininstructions .aj-help__item p:last-child {
+  margin-bottom: 0;
+}
+
+/* The email address is long, so it gets to break rather than widen
+   the column on a phone. */
+#opac-login-page #nologininstructions .aj-help__mail,
+#opac-login-page #nologininstructions .aj-help__mail:visited {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;              /* comfortable as a tap target */
+  padding: 0.35rem 1rem;
+  border: 1px solid var(--aj-copper-deep);
+  border-radius: var(--aj-pill);
+  color: var(--aj-copper-deep);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+#opac-login-page #nologininstructions .aj-help__mail:hover,
+#opac-login-page #nologininstructions .aj-help__mail:focus {
+  background: var(--aj-copper-deep);
+  color: var(--aj-white);
+  text-decoration: none;
+}
+
+/* Opening hours */
+#opac-login-page #nologininstructions .aj-help__hours {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+#opac-login-page #nologininstructions .aj-help__hours th,
+#opac-login-page #nologininstructions .aj-help__hours td {
+  padding: 0.3rem 0;
+  text-align: left;
+  vertical-align: baseline;
+  border-bottom: 1px solid var(--aj-hairline);
+}
+#opac-login-page #nologininstructions .aj-help__hours tr:last-child th,
+#opac-login-page #nologininstructions .aj-help__hours tr:last-child td {
+  border-bottom: 0;
+}
+#opac-login-page #nologininstructions .aj-help__hours th {
+  font-weight: 600;
+  color: var(--aj-muted);
+  white-space: nowrap;
+  padding-right: 1rem;
+}
+#opac-login-page #nologininstructions .aj-help__hours td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+
+
+/* 10. Results toolbar (sort, page numbers, select/add to cart)
+   ------------------------------------------------------------------------ */
+#floating {
+  background: var(--aj-cream);
+}
+
+/* Koha adds .floating when the bar sticks to the top while scrolling */
+#floating.floating {
+  box-shadow: 0 8px 12px -10px rgba(24, 34, 78, 0.35);
+}
+
+#toolbar,
+#toolbar.clearfix,
+.toolbar {
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: 10px 0;
+  font-size: 0.925rem;
+}
+
+#toolbar {
+  border-bottom: 1px solid var(--aj-hairline);
+  row-gap: 8px;
+}
+
+#toolbar .sort_by {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#toolbar .sort_by label:not(.sr-only) {
+  margin: 0;
+  font-weight: 500;
+  color: var(--aj-muted);
+}
+
+#toolbar .form-select {
+  width: auto;
+  min-height: 38px;
+  padding-left: 14px;
+  padding-right: 2.4rem;
+  font-size: 0.925rem;
+  color: var(--aj-ink);
+  background-color: var(--aj-white);
+  border: 1px solid var(--aj-field-line);
+  border-radius: var(--aj-pill);
+}
+
+#sortsubmit .btn {
+  min-height: 38px;
+  padding: 0 1.1rem;
+}
+
+/* Page numbers as small round buttons */
+.pagination {
+  gap: 4px;
+  margin: 0;
+}
+
+.pagination .page-item .page-link,
+.toolbar .pagination li a {
+  min-width: 36px;
+  margin: 0;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--aj-blue);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--aj-pill);
+}
+
+.pagination .page-item .page-link:hover {
+  background: var(--aj-sand);
+  border-color: var(--aj-sand-line);
+  color: var(--aj-ink);
+}
+
+.pagination .page-item.active .page-link {
+  background: var(--aj-blue);
+  border-color: var(--aj-blue);
+  color: var(--aj-white);
+}
+
+.pagination .page-item.disabled .page-link {
+  color: var(--aj-muted);
+  opacity: 0.5;
+}
+
+/* Select all / Clear all / Add to cart / Add to list / Place hold */
+.selections-toolbar {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--aj-hairline);
+  padding: 8px 0;
+  align-items: center;
+  gap: 4px 12px;
+}
+
+.selections-toolbar .btn-link,
+.selections-toolbar a {
+  padding: 4px 6px;
+  font-weight: 500;
+  color: var(--aj-blue);
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.selections-toolbar .btn-link:hover,
+.selections-toolbar a:hover {
+  background: var(--aj-sand);
+  color: var(--aj-ink);
+}
+
+.selections-toolbar .btn-link.disabled,
+.selections-toolbar .btn-link:disabled {
+  color: var(--aj-muted);
+  opacity: 0.55;
+}
+
+/* With Highlight removed, the divider before "Select all" has nothing to divide */
+.check_control::before {
+  content: none;
+}
+
+/* Koha's hidden "Sort by:" label for screen readers was showing */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Koha's blue toolbar icons */
+.toolbar a i.fa,
+.toolbar a i.fa-solid,
+.toolbar button i.fa,
+.toolbar button i.fa-solid,
+.actions a i.fa,
+.actions a i.fa-solid,
+.actions button i.fa,
+.actions button i.fa-solid,
+.view a i.fa,
+.view a i.fa-solid,
+.view button i.fa,
+.view button i.fa-solid,
+#action a i.fa,
+#action a i.fa-solid,
+#action button i.fa,
+#action button i.fa-solid {
+  color: var(--aj-copper-deep);
+}
+
+.toolbar a:hover i.fa,
+.toolbar a:hover i.fa-solid,
+.toolbar button:hover i.fa,
+.toolbar button:hover i.fa-solid,
+.actions a:hover i.fa,
+.actions a:hover i.fa-solid,
+.view a:hover i.fa,
+.view a:hover i.fa-solid,
+#action a:hover i.fa,
+#action a:hover i.fa-solid,
+#action button:hover i.fa,
+#action button:hover i.fa-solid {
+  color: var(--aj-copper-dark);
+}
+
+.toolbar a:hover,
+.toolbar button:hover,
+.actions a:hover,
+.view a:hover {
+  color: var(--aj-ink);
+}
+
+/* Remove the Highlight / Unhighlight toggle */
+.highlight_controls,
+a.highlight_toggle,
+#highlight_toggle_on,
+#highlight_toggle_off {
+  display: none !important;
+}
+
+
+/* 11. Record page: cover on the left, details beside it
+   ------------------------------------------------------------------------ */
+#catalogue_detail_biblio {
+  --aj-cover-w: 200px;
+  --aj-cover-h: 300px;
+  --aj-detail-gap: 40px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(var(--aj-cover-h) + 32px);
+  padding-left: calc(var(--aj-cover-w) + var(--aj-detail-gap));
+}
+
+/* Cover sits in its own column at the top left */
+#catalogue_detail_biblio > .bookcover {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  margin: 0;
+}
+
+/* Title and main details first, then the rest,
+   then the Normal / MARC / ISBD view switch */
+#catalogue_detail_biblio > * {
+  order: 2;
+}
+
+#catalogue_detail_biblio > .record {
+  order: 1;
+}
+
+#catalogue_detail_biblio > #views {
+  order: 3;
+}
+
+#opac-detail h1.title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+#opac-detail h2.title {
+  font-size: 1.15rem;
+  color: var(--aj-muted);
+}
+
+#catalogue_detail_biblio .results_summary {
+  display: block;
+  padding: 0;
+  margin: 0 0 0.45rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+#catalogue_detail_biblio .results_summary .label {
+  color: var(--aj-muted);
+  font-weight: 600;
+}
+
+/* View switch: small pills below the details */
+#catalogue_detail_biblio > #views {
+  margin: 1.25rem 0 0;
+  padding: 0.9rem 0 0;
+  border: 0;
+  border-top: 1px solid var(--aj-hairline);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  white-space: normal;
+}
+
+#views .view {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  font-size: 0.875rem;
+  background: transparent;
+  border: 1px solid var(--aj-sand-line);
+  border-radius: var(--aj-pill);
+}
+
+#views .view a,
+#views .view .btn-link {
+  padding: 0;
+  color: var(--aj-blue);
+  text-decoration: none;
+}
+
+#views .current-view {
+  background: var(--aj-sand);
+  border-color: var(--aj-sand);
+  color: var(--aj-ink);
+  font-weight: 600;
+}
+
+/* Actions box on the right (Place hold, Print, Cite...) */
+#action {
+  background: var(--aj-white);
+  border: 1px solid var(--aj-hairline);
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+}
+
+#action a,
+#action button {
+  color: var(--aj-blue);
+  font-weight: 600;
+}
+
+#action a:hover,
+#action button:hover {
+  color: var(--aj-ink);
+}
+
+/* Holdings table */
+#bibliodescriptions .tab-content,
+#bibliodescriptions .tab-pane {
+  background: var(--aj-white);
+  border-color: var(--aj-hairline);
+}
+
+#bibliodescriptions .table > thead > tr > th {
+  background: var(--aj-sand);
+  color: var(--aj-ink);
+  border-color: var(--aj-sand-line);
+}
+
+#bibliodescriptions .table > :not(caption) > * > * {
+  background-color: var(--aj-white);
+  box-shadow: none;
+  border-color: var(--aj-hairline);
+}
+
+
+/* 12. Footer (text comes from Tools › HTML customizations › opaccredits)
+   Paste opaccredits-footer.html using "Edit with text editor", not the
+   visual editor, which adds its own fonts and removes the layout classes.
+   ------------------------------------------------------------------------ */
+#opaccredits {
+  position: relative;
+  margin-top: 56px;
+  padding: 28px 0 36px;
+  border-top: 1px solid var(--aj-sand-line);
+  font-size: 0.925rem;
+  line-height: 1.6;
+  color: var(--aj-muted);
+}
+
+/* A short copper mark on the rule, like a ribbon bookmark */
+#opaccredits::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 56px;
+  height: 3px;
+  background: var(--aj-copper);
+}
+
+/* The three blocks sit side by side, then stack on narrow screens.
+   Koha names the wrapper after the language (default_body, en_body...) */
+#opaccredits [class$="_body"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 20px 64px;
+}
+
+#opaccredits .aj-footer-id {
+  flex: 1 1 280px;
+}
+
+#opaccredits .aj-footer-contact {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+#opaccredits .aj-footer-links {
+  flex: 0 0 auto;
+}
+
+/* Undo fonts and sizes the visual editor may paste in */
+#opaccredits [class$="_body"] [style] {
+  font-family: inherit !important;
+  font-size: inherit !important;
+}
+
+#opaccredits p,
+#opaccredits address {
+  margin: 0;
+  font-style: normal;
+}
+
+/* Library name: same size as the footer text, just a little heavier */
+#opaccredits .aj-footer-name {
+  margin: 0 0 4px;
+  font-family: var(--aj-font-ui);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--aj-ink);
+}
+
+#opaccredits .aj-footer-lead {
+  margin-bottom: 4px;
+}
+
+#opaccredits ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#opaccredits li + li {
+  margin-top: 4px;
+}
+
+#opaccredits a,
+#opaccredits a:link,
+#opaccredits a:visited {
+  color: var(--aj-copper-deep);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#opaccredits a:hover,
+#opaccredits a:focus {
+  color: var(--aj-copper-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* The email address is long; let it break instead of widening the page */
+#opaccredits a[href^="mailto:"] {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 575.98px) {
+  #opaccredits {
+    margin-top: 40px;
+  }
+
+  #opaccredits [class$="_body"] {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  #opaccredits .aj-footer-id,
+  #opaccredits .aj-footer-contact,
+  #opaccredits .aj-footer-links {
+    flex: none;
+    width: 100%;
+  }
+}
+
+
+/* 13. Account pages and misc
+   ------------------------------------------------------------------------ */
+#menu li a {
+  background: transparent;
+  border: 0;
+  border-left: 3px solid transparent;
+  color: var(--aj-blue);
+  padding: 0.6em 0.9em;
+}
+
+#menu li a:hover {
+  background: var(--aj-sand);
+}
+
+/* Current page in the account menu stands out */
+#menu li.active a {
+  background: var(--aj-sand);
+  border-left-color: var(--aj-copper-deep);
+  color: var(--aj-ink);
+  font-weight: 700;
+}
+
+.alert-info {
+  background: var(--aj-sand);
+  border-color: var(--aj-sand-line);
+  color: var(--aj-ink);
+}
+
+.form-control,
+.form-select {
+  border-color: var(--aj-field-line);
+  color: var(--aj-ink);
+}
+
+
+
+/* 14. Page changes
+   ------------------------------------------------------------------------
+   a) Browsers that support it fade from one page to the next.
+      Others simply load the next page.
+   b) If a page takes longer than 0.4 seconds, the Jamea rosette appears,
+      turning slowly and gently pulsing.
+
+   v3 — why this section was rewritten
+   -----------------------------------
+   The rosette never appeared on phones, and sat in the wrong place on the
+   self-checkout kiosks. Both had the same cause. The overlay was sized
+   with "position: fixed; inset: 0", which measures the *layout* viewport,
+   not the part of the page the reader can actually see. Pinch-zoom on a
+   touchscreen, or a page a few pixels wider than the display, makes those
+   two different — and the rosette gets centred somewhere off-screen.
+
+   The overlay is now given an explicit size and offset by OPACUserJS from
+   window.visualViewport, which is exactly what the reader can see, and it
+   is re-measured whenever they scroll or zoom. The rules below only have
+   to provide a sensible fallback for the rare browser with no
+   visualViewport support.
+
+   The 0.4-second wait is also no longer a CSS transition delay: a browser
+   busy starting the next page could skip it entirely. OPACUserJS now adds
+   .aj-loading after its own timer, and this file makes it appear at once.
+   ------------------------------------------------------------------------ */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+
+#aj-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* Fallback only — OPACUserJS overwrites width, height and transform
+     with the visual viewport's real measurements. */
+  width: 100%;
+  height: 100dvh;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  background: rgba(254, 249, 241, 0.78);
+  opacity: 0;
+  visibility: hidden;
+  /* Promote to its own layer up front, so switching it on costs no
+     main-thread work at the moment the browser is busiest. */
+  will-change: opacity;
+  transition: opacity 0.15s ease, visibility 0s linear 0.15s;
+}
+
+/* No transition-delay here any more: by the time this class is added,
+   OPACUserJS has already waited. */
+.aj-loading #aj-loader {
+  opacity: 1;
+  visibility: visible;
+  cursor: progress;
+  transition: opacity 0.2s ease, visibility 0s;
+}
+
+/* Rosette only. The image file is the rosette with a thin line drawn
+   below it (100 x 204 px). Sizing it to the box width and pinning it to
+   the top shows just the square rosette and leaves the line outside. */
+.aj-loader-mark {
+  display: block;
+  width: 72px;
+  height: 72px;
+  animation: aj-breathe 1.6s ease-in-out infinite paused;
+}
+
+.aj-loader-mark::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--aj-rosette-url) center top / 100% auto no-repeat;
+  animation: aj-turn 4s linear infinite paused;
+}
+
+.aj-loading .aj-loader-mark,
+.aj-loading .aj-loader-mark::before {
+  animation-play-state: running;
+}
+
+@keyframes aj-turn {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes aj-breathe {
+  0%, 100% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1); opacity: 1; }
+}
+
+@media print {
+  #aj-loader {
+    display: none;
+  }
+}
+
+
+
+/* 15. Home page widgets
+   ------------------------------------------------------------------------
+   Boxes come from FINAL_v2_OpacMainUserBlock.html (HTML customizations,
+   OpacMainUserBlock); OPACUserJS fills them.
+   15a. Layout  15b. "My library" card  15c. "New in the library" shelf */
+
+/* 15a. Layout — three widgets across the WHOLE width of the page
+   ------------------------------------------------------------------------
+   FIRST, RECLAIMING THE EMPTY COLUMN
+
+   Koha's home page is a Bootstrap row of col-lg-9 (the main column) beside
+   col-lg-3, which holds the login box or the built-in user summary. With
+   OPACUserSummary set to "Don't show" and no OpacNavRight entry, that
+   second column is still rendered — and stays completely empty. Measured
+   on the live catalogue at 1440px: 342px of a 1368px row, a quarter of the
+   page given to nothing. That, not the grid ratios, is why the widgets
+   stopped short of the right-hand edge.
+
+   :empty will NOT find it. Koha leaves whitespace inside the div, and
+   whitespace is a text node, which disqualifies :empty. The test used
+   below asks instead whether the column contains any ELEMENT, which is
+   what is actually meant here.
+
+   Doing this in CSS rather than JavaScript means the page is laid out
+   correctly on first paint, with no shuffle a moment later when a script
+   runs. A browser without :has() support simply keeps the old narrower
+   layout — everything still works, it is just not as wide. That is a fair
+   trade for not having to touch the JavaScript.
+
+   Scoped to #opac-main, so search results and record pages keep the
+   sidebar they do use.
+   ------------------------------------------------------------------------ */
+/* Read the selector as: "a row that does NOT have a col-lg-3 containing
+   any element".
+
+   It is written this way round for a reason. The obvious version —
+   .row:has(> .col-lg-3:not(:has(*))) — is INVALID CSS, because :has()
+   may not be nested inside another :has(). The browser drops such a rule
+   silently, which is exactly what happened on the first attempt: the
+   empty column vanished but the main column never widened, and the local
+   tests missed it because the test page had no Bootstrap grid loaded.
+   Keeping the :has() inside :not() holds it to one level.
+
+   Hiding the column is safe at every width; only the widening is tied to
+   the breakpoint, because below 992px Koha stacks the columns anyway. */
+#opac-main .row:not(:has(> [class*="col-lg-3"] > *)) > [class*="col-lg-3"] {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  #opac-main .row:not(:has(> [class*="col-lg-3"] > *)) > .maincontent,
+  #opac-main .row.aj-no-right > .maincontent {
+    flex: 0 0 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+/* Left over from an earlier version that marked the column from
+   JavaScript. Harmless, and still honoured if anything sets the class. */
+#opac-main .row.aj-no-right > .aj-right-col {
+  display: none;
+}
+
+
+/* THEN, THE GRID
+   ------------------------------------------------------------------------
+   Phone      (< 768px)   one column:  account, new books, information
+   Tablet     (768–991)   two rows:    account + information, then new books
+   Laptop     (992–1199)  three across, new books widest
+   Desktop    (>= 1200)   three across at half / quarter / quarter
+
+   Why the account card leads everywhere below the full three-across
+   layout: a reader on a small screen has almost always come to check what
+   they have out and when it is due, not to browse. Keeping it first means
+   the reading order never reshuffles as the screen narrows — phone and
+   tablet agree, and the source order in OpacMainUserBlock puts "My
+   library" first so screen readers agree too.
+
+   Why the new-books shelf is not squeezed into a third at tablet size:
+   at 768px a quarter column is about 190px. The account card's "Due in
+   the next 7 days" row and the news prose both break badly at that width,
+   so the row becomes two and the carousel takes the full width, which is
+   the thing it benefits from most.
+   ------------------------------------------------------------------------ */
+#opac-main .aj-home {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "me"
+    "new"
+    "news";
+  margin-bottom: 2rem;
+  /* The tallest box sets the height; the others stretch to match. */
+  align-items: stretch;
+}
+
+#opac-main .aj-home > .aj-ml   { grid-area: me; }
+#opac-main .aj-home > .aj-new  { grid-area: new; }
+#opac-main .aj-home > .aj-news { grid-area: news; }
+
+/* Tablets: account and information share the top row, the shelf spans
+   the full width beneath them. */
+@media (min-width: 768px) {
+  #opac-main .aj-home {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "me  news"
+      "new new";
+  }
+}
+
+/* Laptops: all three across. The two right-hand columns are given a
+   floor of 240px so they cannot be squeezed to nothing — the shelf
+   gives up width first, because it degrades gracefully (fewer covers
+   visible) while the other two do not. */
+@media (min-width: 992px) {
+  #opac-main .aj-home {
+    grid-template-columns:
+      minmax(0, 1.6fr)
+      minmax(240px, 1fr)
+      minmax(240px, 1fr);
+    grid-template-areas: "new me news";
+  }
+}
+
+/* Desktops: the proportions asked for — the shelf takes half the row,
+   the other two split the rest evenly. 2fr : 1fr : 1fr is 50 / 25 / 25.
+   At 1440px that works out at roughly 648 / 324 / 324 after the gaps. */
+@media (min-width: 1200px) {
+  #opac-main .aj-home {
+    grid-template-columns:
+      minmax(0, 2fr)
+      minmax(250px, 1fr)
+      minmax(250px, 1fr);
+  }
+}
+
+
+/* 15b. "My library" card
+   ------------------------------------------------------------------------ */
+#opac-main .aj-ml {
+  background: #fff;
+  border: 1px solid var(--aj-hairline);
+  border-top: 3px solid var(--aj-copper);
+  border-radius: 4px;
+  padding: 1.25rem 1.25rem 0.5rem;
+  margin: 0;
+  color: var(--aj-ink);
+  font-family: var(--aj-font-ui);
+}
+
+#opac-main .aj-ml__loading,
+#opac-main .aj-ml__message {
+  margin: 0 0 0.75rem;
+  color: var(--aj-muted);
+}
+
+#opac-main .aj-ml__hello {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  color: var(--aj-muted);
+}
+#opac-main .aj-ml__hello a {
+  font-weight: 600;
+}
+
+/* The yearly count is the one bold element */
+#opac-main .aj-ml__year {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--aj-hairline);
+}
+#opac-main .aj-ml__count {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+}
+#opac-main .aj-ml__num {
+  font-family: var(--aj-font-display);
+  font-size: clamp(2.75rem, 6vw, 3.5rem);
+  font-weight: var(--aj-display-weight);
+  line-height: 1;
+  color: var(--aj-blue);
+  font-variant-numeric: lining-nums;
+}
+#opac-main .aj-ml__unit {
+  font-family: var(--aj-font-title);
+  font-size: 1.15rem;
+}
+#opac-main .aj-ml__term {
+  margin: 0.5rem 0 0;
+  line-height: 1.45;
+}
+#opac-main .aj-ml__term-name {
+  display: block;
+  font-weight: 600;
+}
+#opac-main .aj-ml__term-dates {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--aj-muted);
+}
+#opac-main .aj-ml__note {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: var(--aj-muted);
+}
+
+/* Status rows: label left, number right */
+#opac-main .aj-ml__status {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#opac-main .aj-ml__row + .aj-ml__row {
+  border-top: 1px solid var(--aj-hairline);
+}
+#opac-main .aj-ml__link,
+#opac-main .aj-ml__link:visited {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.6rem 0.25rem;
+  color: var(--aj-ink);
+  text-decoration: none;
+}
+#opac-main .aj-ml__link:hover .aj-ml__label {
+  text-decoration: underline;
+}
+#opac-main .aj-ml__link:focus-visible {
+  outline: 2px solid var(--aj-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+#opac-main .aj-ml__value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Zero rows stay quiet; non-zero rows with meaning get colour */
+#opac-main .aj-ml__row.is-zero .aj-ml__link {
+  color: var(--aj-muted);
+}
+#opac-main .aj-ml__row.is-zero .aj-ml__value {
+  font-weight: 400;
+}
+#opac-main .aj-ml__row.is-soon .aj-ml__value {
+  color: var(--aj-copper-deep);
+}
+#opac-main .aj-ml__row.is-alert .aj-ml__link {
+  color: var(--aj-copper-dark);
+  font-weight: 600;
+}
+#opac-main .aj-ml__row.is-good .aj-ml__value {
+  color: var(--aj-blue);
+}
+
+/* Built-in box is switched off, but hide it too in case the setting is turned back on */
+#opac-main #user_summary {
+  display: none;
+}
+
+/* 15c. "New in the library" shelf
+   ------------------------------------------------------------------------ */
+#opac-main .aj-shelf {
+  min-width: 0;
+  font-family: var(--aj-font-ui);
+  color: var(--aj-ink);
+}
+#opac-main .aj-shelf__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--aj-hairline);
+}
+#opac-main .aj-shelf__title {
+  margin: 0;
+  font-family: var(--aj-font-display);
+  font-size: 1.5rem;
+  font-weight: var(--aj-display-weight);
+  color: var(--aj-blue);
+}
+#opac-main .aj-shelf__more {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+#opac-main .aj-shelf__status {
+  margin: 0;
+  color: var(--aj-muted);
+}
+
+/* New in the library: a sideways row of covers */
+#opac-main .aj-new {
+  --aj-cover-w: 120px;
+  --aj-cover-h: 180px;
+}
+#opac-main .aj-shelf__wrap {
+  position: relative;
+}
+#opac-main .aj-shelf__track {
+  display: flex;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0.25rem 0.25rem 0.75rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 0.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--aj-copper) transparent;
+}
+#opac-main .aj-shelf__track:focus-visible {
+  outline: 2px solid var(--aj-blue);
+  outline-offset: 2px;
+}
+#opac-main .aj-shelf__item {
+  flex: 0 0 var(--aj-cover-w);
+  scroll-snap-align: start;
+}
+#opac-main .aj-shelf__link,
+#opac-main .aj-shelf__link:visited {
+  display: block;
+  color: var(--aj-ink);
+  text-decoration: none;
+}
+#opac-main .aj-shelf__link:hover .aj-shelf__caption {
+  text-decoration: underline;
+}
+#opac-main .aj-shelf__link:focus-visible {
+  outline: 2px solid var(--aj-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+#opac-main .aj-shelf__cover {
+  margin: 0 0 0.5rem;
+}
+/* The cover fills the bookplate's box exactly. Koha gives every image in
+   a .bookcover a 1em margin, which pushed covers right and down and let
+   the bookplate show at the edge; margin: 0 undoes that. */
+#opac-main .aj-shelf__img {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+  border-radius: 4px;
+}
+/* Once a real cover has loaded (OPACUserJS adds .has-cover),
+   the bookplate underneath is switched off entirely */
+#opac-main .aj-shelf__cover.has-cover {
+  background: transparent;
+  box-shadow: 0 1px 3px rgba(24, 34, 78, 0.12);
+}
+#opac-main .aj-shelf__cover.has-cover::before,
+#opac-main .aj-shelf__cover.has-cover::after {
+  content: none;
+}
+#opac-main .aj-shelf__caption,
+#opac-main .aj-shelf__byline {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  unicode-bidi: plaintext;
+}
+#opac-main .aj-shelf__caption {
+  -webkit-line-clamp: 2;
+  font-family: var(--aj-font-title);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+#opac-main .aj-shelf__byline {
+  -webkit-line-clamp: 1;
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  color: var(--aj-muted);
+}
+
+#opac-main .aj-shelf__btn {
+  position: absolute;
+  top: calc(var(--aj-cover-h) / 2 - 18px);
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--aj-copper);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--aj-blue);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(24, 34, 78, 0.15);
+}
+#opac-main .aj-shelf__btn--prev { left: -12px; }
+#opac-main .aj-shelf__btn--next { right: -12px; }
+#opac-main .aj-shelf__btn:hover {
+  background: var(--aj-cream);
+}
+#opac-main .aj-shelf__btn:focus-visible {
+  outline: 2px solid var(--aj-blue);
+  outline-offset: 2px;
+}
+#opac-main .aj-shelf__btn:disabled {
+  visibility: hidden;
+}
+/* Touch screens swipe instead */
+@media (hover: none) {
+  #opac-main .aj-shelf__btn { display: none; }
+}
+
+
+/* 15-card. The shared panel the three widgets sit in.
+   ------------------------------------------------------------------------
+   One rule, three boxes: this is what makes them line up. Changing the
+   padding or the border here changes all three together. */
+#opac-main .aj-home > .aj-ml,
+#opac-main .aj-home > .aj-new,
+#opac-main .aj-home > .aj-news {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 1.25rem;
+  background: var(--aj-white);
+  border: 1px solid var(--aj-hairline);
+  border-top: 3px solid var(--aj-copper);
+  border-radius: var(--aj-radius);
+  color: var(--aj-ink);
+  font-family: var(--aj-font-ui);
+}
+
+/* Each widget's heading sits on the same baseline as the others' */
+#opac-main .aj-home > * > .aj-shelf__head,
+#opac-main .aj-home > * > .aj-news__head {
+  min-height: 2.25rem;
+}
+
+/* A box whose content outgrows the row scrolls inside itself, so one
+   long notice cannot drag the whole row out of alignment. */
+#opac-main .aj-home .aj-news__list,
+#opac-main .aj-home .aj-ml__status {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--aj-sand-line) transparent;
+}
+
+/* Until the script has filled a box, hold its height so the page
+   does not jump about as each one arrives. */
+#opac-main .aj-home > [aria-busy="true"],
+#opac-main .aj-home > :has(> .aj-ml__loading),
+#opac-main .aj-home > :has(> .aj-shelf__status:only-child) {
+  min-height: 18rem;
+}
+
+/* Placed after 15b and 15c on purpose: the card treatment above must
+   override the panel styling those sections give "My library" on its
+   own, so that all three boxes end up identical. */
+#opac-main .aj-home > .aj-ml {
+  padding: 1.25rem;
+  border-radius: var(--aj-radius);
+}
+
+/* The heading row of each widget shares one baseline */
+#opac-main .aj-home > * > .aj-shelf__head,
+#opac-main .aj-home > * > .aj-news__head {
+  min-height: 2.25rem;
+}
+
+/* Content that outgrows the row scrolls inside its own box, so one long
+   notice cannot drag the whole row out of alignment. */
+#opac-main .aj-home .aj-news__list,
+#opac-main .aj-home .aj-ml__status {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--aj-sand-line) transparent;
+}
+
+/* Hold a sensible height while the script is still filling a box, so the
+   page does not jump about as the three arrive at different moments. */
+#opac-main .aj-home > [aria-busy="true"] {
+  min-height: 18rem;
+}
+@media (max-width: 767.98px) {
+  #opac-main .aj-home > [aria-busy="true"] {
+    min-height: 11rem;
+  }
+}
+
+/* Cover size follows the width available to the shelf. Below a laptop
+   the shelf has the full page width and small covers show more of them;
+   on a wide screen it has half the row, and bigger covers read better
+   than more of them. Roughly 5 visible at 1440px, 7 at 1920px. */
+#opac-main .aj-home > .aj-new {
+  --aj-cover-w: 108px;
+  --aj-cover-h: 162px;
+}
+@media (min-width: 1200px) {
+  #opac-main .aj-home > .aj-new {
+    --aj-cover-w: 116px;
+    --aj-cover-h: 174px;
+  }
+}
+@media (min-width: 1500px) {
+  #opac-main .aj-home > .aj-new {
+    --aj-cover-w: 124px;
+    --aj-cover-h: 186px;
+  }
+}
+#opac-main .aj-home > .aj-new .aj-shelf__wrap {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-start;
+}
+#opac-main .aj-home > .aj-new .aj-shelf__track {
+  flex: 1 1 auto;
+  gap: 1rem;
+}
+#opac-main .aj-home > .aj-new .aj-shelf__btn--prev { left: -2px; }
+#opac-main .aj-home > .aj-new .aj-shelf__btn--next { right: -2px; }
+
+
+/* 15d. "Library information" — the news widget
+   ------------------------------------------------------------------------
+   The text comes from Koha's own News tool:
+     Staff interface › Tools › Additional tools › News › New entry
+   with "Display location" set to OPAC (or All).
+
+   Koha prints those entries into <div id="news"> higher up the page.
+   OPACUserJS moves them in here and hides the original, so nothing is
+   fetched and the widget costs nothing to load. Each entry's expiration
+   date makes it disappear on its own, which is what keeps a holiday
+   notice from sitting there until March.
+   ------------------------------------------------------------------------ */
+
+/* Hide Koha's own news block. Kept as a rule rather than left to the
+   script so there is no flash of it before the script runs. */
+#opac-main #news,
+#opac-main #rssnews-container {
+  display: none;
+}
+
+#opac-main .aj-news {
+  min-width: 0;
+}
+
+#opac-main .aj-news__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--aj-hairline);
+}
+
+#opac-main .aj-news__title {
+  margin: 0;
+  font-family: var(--aj-font-display);
+  font-size: 1.5rem;
+  font-weight: var(--aj-display-weight);
+  color: var(--aj-blue);
+}
+
+#opac-main .aj-news__empty {
+  margin: 0;
+  color: var(--aj-muted);
+}
+
+#opac-main .aj-news__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1 1 auto;
+  /* Roughly the height of the covers beside it, so the three boxes
+     settle at a similar height before anything has to scroll. */
+  max-height: 22rem;
+  /* Fade the last line out rather than slicing a sentence in half, so a
+     part-visible notice reads as "there is more below" instead of as a
+     bug. Removed once the reader has scrolled to the end. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
+}
+#opac-main .aj-news__list.is-at-end,
+#opac-main .aj-news__list.is-short {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+#opac-main .aj-news__item + .aj-news__item {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--aj-hairline);
+}
+
+#opac-main .aj-news__item-title {
+  margin: 0 0 0.3rem;
+  font-family: var(--aj-font-title);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--aj-ink);
+  unicode-bidi: plaintext;
+}
+#opac-main .aj-news__item-title a,
+#opac-main .aj-news__item-title a:visited {
+  color: var(--aj-ink);
+  text-decoration: none;
+}
+#opac-main .aj-news__item-title a:hover,
+#opac-main .aj-news__item-title a:focus {
+  color: var(--aj-blue);
+  text-decoration: underline;
+}
+
+/* The body is whatever staff typed in the News editor, so these rules
+   tidy the common cases — paragraphs, lists, tables of timings — without
+   dictating what they may write. */
+#opac-main .aj-news__body {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  unicode-bidi: plaintext;
+}
+#opac-main .aj-news__body > :first-child { margin-top: 0; }
+#opac-main .aj-news__body > :last-child { margin-bottom: 0; }
+#opac-main .aj-news__body p {
+  margin: 0 0 0.5rem;
+}
+#opac-main .aj-news__body ul,
+#opac-main .aj-news__body ol {
+  margin: 0 0 0.5rem;
+  padding-left: 1.2rem;
+}
+#opac-main .aj-news__body li + li {
+  margin-top: 0.2rem;
+}
+#opac-main .aj-news__body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+/* A timings table is the obvious thing staff will paste in, so it is
+   worth making one look right without them having to style it. */
+#opac-main .aj-news__body table {
+  width: 100%;
+  margin: 0 0 0.5rem;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+#opac-main .aj-news__body th,
+#opac-main .aj-news__body td {
+  padding: 0.3rem 0.5rem 0.3rem 0;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--aj-hairline);
+}
+#opac-main .aj-news__body th {
+  font-weight: 600;
+  color: var(--aj-muted);
+  white-space: nowrap;
+}
+#opac-main .aj-news__body td:last-child,
+#opac-main .aj-news__body th:last-child {
+  padding-right: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#opac-main .aj-news__when {
+  margin: 0.4rem 0 0;
+  font-size: 0.76rem;
+  color: var(--aj-muted);
+}
+
+
+
+/* 16. Phones and small tablets
+   ------------------------------------------------------------------------ */
+@media (max-width: 991.98px) {
+  #search-facets h2 a,
+  #search-facets .h2 a,
+  a.menu-collapse-toggle:link,
+  a.menu-collapse-toggle:visited {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 0 1.1rem;
+    border: 1px solid var(--aj-blue);
+    border-radius: var(--aj-pill);
+    font-family: var(--aj-font-ui);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  #opac-login-page #auth {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "form"
+      "forgot"
+      "register"
+      "help";
+  }
+
+  #opac-login-page #nologininstructions {
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --aj-logo-h: 40px;
+    --aj-logo-space: 108px;
+    --aj-cover-w: 76px;
+    --aj-cover-h: 114px;
+  }
+
+  #header-region .navbar,
+  .navbar-expand {
+    padding: 8px var(--aj-gutter);
+  }
+
+  #logo .navbar-brand::after {
+    font-size: 1.05rem;
+  }
+
+  #opac-main-search {
+    padding: 14px var(--aj-gutter) 10px;
+  }
+
+  #logo .navbar-brand {
+    white-space: normal;
+  }
+
+  /* Record page: cover on top, details below */
+  #catalogue_detail_biblio {
+    --aj-cover-w: 140px;
+    --aj-cover-h: 210px;
+    padding-left: 0;
+    min-height: 0;
+  }
+
+  #catalogue_detail_biblio > .bookcover {
+    position: relative;
+    top: 0;
+    order: 0;
+    margin: 0 0 20px;
+  }
+
+  #toolbar .sort_by {
+    width: 100%;
+  }
+
+  #userresults {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .bookcover::before {
+    top: 10px;
+    left: 8px;
+    right: 8px;
+    font-size: 0.6rem;
+    -webkit-line-clamp: 4;
+  }
+
+  .bookcover::after {
+    content: none;
+  }
+
+
+  #opac-login-page #auth .local-login {
+    padding: 22px 18px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+
+  /* No page fade; the loader shows a still rosette */
+  @view-transition {
+    navigation: none;
+  }
+
+  .aj-loader-mark,
+  .aj-loader-mark::before,
+  .aj-loading .aj-loader-mark,
+  .aj-loading .aj-loader-mark::before {
+    animation: none;
+  }
+}
+
+
+
+/* 17. Keeping this file out of the self-checkout kiosk
+   ------------------------------------------------------------------------
+   Koha's sco-main.tt loads OPACUserCSS as well as SCOUserCSS, in that
+   order. The colours, fonts and buttons from this file are wanted on the
+   kiosk — they keep it looking like the rest of the catalogue — but the
+   rules written for the OPAC's own furniture are not. This section turns
+   those off; SCOUserCSS then builds the kiosk layout on top.
+
+   Everything here is scoped to body#sco_main, so it has no effect at all
+   on a normal OPAC page.
+   ------------------------------------------------------------------------ */
+
+/* The page-loading rosette belongs to the catalogue. OPACUserJS no longer
+   creates it on the kiosk, but this keeps an older cached copy of the
+   script from putting one on screen in the wrong place. */
+body#sco_main #aj-loader {
+  display: none !important;
+}
+
+/* The OPAC's page margins assume Koha's header and search band, neither
+   of which exists on the kiosk. */
+body#sco_main .main,
+body#sco_main #wrapper {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Home page widgets never appear here; make sure a stray rule cannot
+   reserve space for them. */
+body#sco_main .aj-home,
+body#sco_main .aj-ml,
+body#sco_main .aj-new,
+body#sco_main .aj-news {
+  display: none !important;
+}
+
+/* The cover and bookplate sizes are tuned for search results on a
+   laptop. The kiosk sets its own in SCOUserCSS. */
+body#sco_main {
+  --aj-cover-w: auto;
+  --aj-cover-h: auto;
+}
+
+

@@ -1,0 +1,206 @@
+body {
+    background-image: url("https://jameasaifiyah.edu/wp-content/uploads/2018/01/Kaafur-3.png");
+    
+  }
+  #logo {
+  background-image: url("https://jameasaifiyah.edu/wp-content/uploads/2024/05/AlJamea_Website_Menu-01.svg");
+    width: 100%;
+  height: auto;
+  background-size: contain;
+  padding: 12px;
+}
+  @media only screen and (max-width: 700px) {
+    #logo{
+      background-image: url("https://yourwebsite.com/images/Jamea_Logo-removebg-preview.png");
+    }
+  }
+
+
+  #opac-main-search {
+    background: #e4c494;
+    border-radius: 15px;
+    font-family: 'Kanz-al-Marjaan';
+  }
+  .available {
+      color: #804000;
+      font-weight: bold;
+  }
+  .table {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: #00203f;
+  }
+  .navbar-expand {
+      -ms-flex-flow: row nowrap;
+      flex-flow: row nowrap;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+        background: #fcfcf4;
+      border: 100px;
+        padding-bottom: 12px;
+   
+  }
+  .navbar-nav>li>a {
+      color: #1c388c;
+      font-weight: 700;
+  }
+  
+  
+  .fa.fa-icon-black, .fa.fa-icon-white {
+      color: #1c388c;
+  }
+  #wrapper {
+      -ms-flex: 1 0 auto;
+      flex: 1 0 auto;
+      padding-left: 0px;
+      padding-right: 0px;
+  }
+  .h1,.h2,.h3,.h4,.h5,.h6,
+  h1,h2,h3,h4,h5,h6 {
+    color: #1c388c;
+  }
+  a:link, a:visited {
+      color: #1c3c8c;  	
+  }
+  .btn-default:link, .btn-default:visited, .btn-secondary:link, .btn-secondary:visited {
+      color: #ffffff;
+  }
+   .title,.author{
+    font-family: 'Kanz-al-Marjaan';
+  }
+  a.title {
+      font-size: 150%;
+      font-weight: 700;
+  }
+  .available {
+      color: #804000;
+  }
+  .btn-primary {
+      background-image: linear-gradient(180deg, #00203F, #00203F);
+      background-color: #00203F;
+      background-position: 0;
+      border: solid #00203F;
+      color: #fff;
+  }
+  
+  .btn-primary:active,.btn-primary:hover {
+     background-color: #00203F;
+      border-color: #00203F;
+      box-shadow: 0 0 0 1px #00203F;
+      color: #fff
+  }
+  
+  .btn-primary.disabled, .btn-primary:disabled {
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff;
+  }
+  .btn-default, .btn-secondary {
+       background-image: linear-gradient(180deg, #00203F, #00203F);
+      background-color: #00203F;
+      border: solid #00203F;
+      color: #fff;
+  }
+  
+  .btn-default:active,.btn-default:hover {
+      background-image: linear-gradient(180deg, #00203F, #00203F);
+      background-color: #00203F;
+      background-position: 0;
+        box-shadow: 0 0 0 1px #00203F;
+      border: solid #00203F;
+      color: #fff;
+  }
+  a:hover {
+  color:#00203F;
+  }
+  
+  #search-facets h3 {
+      font-size: 120%;
+  }
+  #opac-main-search label {
+    color: #ffffff;
+  }
+  .main {
+    background-color: rgba(235, 231, 207, 0.6);
+    border: 1px solid white;
+  }
+  
+  legend {
+      color: #6a1229;
+      font-size: 110%;
+      font-weight: 700;
+  }
+  .ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+      color: #6A1229;
+      font-weight: 700;
+  }
+  #advsearch_limits label, #subtypes label {
+      color: #6a1229;
+      display: block;
+      font-size: 110%;
+      font-weight: 700;
+  }
+  
+  .ui-widget-content {
+      background: #fff none;
+      border: 1px solid #aaa;
+      color: #6A1229;
+  }
+  
+  #menu li a {
+      background-color: #00203f;
+      border: 1px solid #d8d8d8;
+      border-bottom-width: 0;
+      display: block;
+      margin: 0;
+      padding: 0.6em 0.8em;
+      text-decoration: none;
+        color: #e9ecef;
+  }
+  
+  #menu li.active a {
+      background-color: #00203f;
+      border-top: 1px solid #ffffff;
+  }
+  
+  .suggestion {
+      background-color: #f7f4f4;
+      border: 1px solid #f0f3f3;
+      color: #000;
+      margin: 1em auto;
+      padding: 0.5em;
+      width: 35%;
+  }
+/* Floating chat button */
+#opac-chat-fab{
+  position:fixed; right:18px; bottom:22px; z-index:2147483647; /* huge so it never hides */
+  width:56px; height:56px; border-radius:9999px; display:flex; align-items:center; justify-content:center;
+  background:#2563eb; color:#fff; font-size:22px; cursor:pointer; box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+
+/* Panel */
+#opac-chat-panel{
+  position:fixed; right:18px; bottom:90px; z-index:2147483646;
+  width:min(360px, 92vw); max-height:70vh; background:#fff; border:1px solid #e5e7eb; border-radius:14px;
+  box-shadow:0 20px 40px rgba(0,0,0,.18); display:none; overflow:hidden;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+#opac-chat-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f8fafc;border-bottom:1px solid #e5e7eb;font-weight:600;color:#0f172a;}
+#opac-chat-messages{padding:12px;overflow:auto;height:46vh;background:#fff;}
+.opac-msg{margin:10px 0;line-height:1.35;}
+.opac-msg.user{text-align:right;}
+.opac-msg.user .bubble{display:inline-block;background:#2563eb;color:#fff;padding:8px 10px;border-radius:12px 12px 2px 12px;max-width:85%;}
+.opac-msg.assistant .bubble{display:inline-block;background:#f1f5f9;color:#0f172a;padding:8px 10px;border-radius:12px 12px 12px 2px;max-width:85%;}
+#opac-chat-composer{border-top:1px solid #e5e7eb;padding:8px;background:#f8fafc;display:flex;gap:8px;}
+#opac-chat-input{flex:1;resize:none;border:1px solid #e5e7eb;border-radius:10px;padding:10px;height:44px;}
+#opac-chat-send{background:#2563eb;color:#fff;border:none;border-radius:10px;padding:0 14px;font-weight:600;cursor:pointer;}
+#opac-chat-send[disabled]{opacity:.6;cursor:not-allowed;}
+.opac-typing{font-size:12px;color:#64748b;margin-left:6px;}
+#opac-chat-test {
+  position: fixed; right: 10px; bottom: 10px;
+  z-index: 2147483647; /* very high */
+  background: #ef4444; color: #fff; font-weight: 700;
+  padding: 10px 12px; border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  cursor: default;
+}

@@ -1,0 +1,12 @@
+<!-- "My library" card holder.
+     Tools > HTML customizations > New entry
+     Display location: OpacNavRight (right column, where the old summary sat)
+                    or OpacMainUserBlock (top of the main column)
+     The JavaScript in OPACUserJS fills this box. -->
+<section id="aj-my-library" class="aj-ml" aria-live="polite" aria-label="My library">
+  <p class="aj-ml__loading">Loading your account…</p>
+  <noscript>
+    <p class="aj-ml__message">Turn on JavaScript to see your account here, or open
+      <a href="/cgi-bin/koha/opac-user.pl">Your summary</a>.</p>
+  </noscript>
+</section>

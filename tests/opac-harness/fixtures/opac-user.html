@@ -1,0 +1,10 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Your account</title></head>
+<body ID="opac-user" class="branch-AJSK scrollto" >
+<div class="modal" id="loginModal"><h1>Log in to your account</h1><form action="/cgi-bin/koha/opac-user.pl"><label for="muserid">Card number:</label><input id="muserid" name="userid"></form></div>
+<div class="main"><div id="opac-user-views"><ul class="nav"><li><a id="opac-user-checkouts-tab" href="#"><span>Checked out (4)</span></a></li><li><a id="opac-user-overdues-tab" href="#"><span>Overdue (1)</span></a></li><li><a id="opac-user-fines-tab" href="#"><span>Charges (Rs 120.00)</span></a></li><li><a id="opac-user-holds-tab" href="#"><span>Holds (2)</span></a></li></ul><div id="opac-user-checkouts_panel" class="tab-pane">
+<table class="table table-bordered table-striped"><thead><tr><th>Title</th><th>Due</th></tr></thead>
+<tbody><tr><td class="title">Book 1</td><td class="date_due" data-order="2026-09-25 23:59">2026-09-25</td></tr><tr><td class="title">Book 2</td><td class="date_due" data-order="2026-09-22 23:59">2026-09-22</td></tr><tr><td class="title">Book 3</td><td class="date_due overdue" data-order="2026-08-01 23:59">2026-08-01</td></tr><tr><td class="title">Book 4</td><td class="date_due" data-order="2026-11-30 23:59">2026-11-30</td></tr></tbody></table></div><div id="opac-user-holds_panel" class="tab-pane">
+<table class="table table-bordered table-striped"><thead><tr><th>Title</th><th>Status</th></tr></thead>
+<tbody><tr><td class="title">Held A</td><td class="status"><span><strong>Item waiting</strong> at Maktabat</span></td></tr><tr><td class="title">Held B</td><td class="status"><span>Pending</span></td></tr></tbody></table></div></div></div>
+__INLINE_JS__
+</body></html>
