@@ -29,7 +29,7 @@ HITS = []
 # The harness originally read "out/" (current builds) and "src/" (v2) folders.
 # In this repository those files live under opac/, so look them up there.
 REPO = os.path.abspath(os.path.join(ROOT, "..", ".."))
-SEARCH = [os.path.join(REPO, "opac", d) for d in ("current", "legacy/v3", "legacy/v2")]
+SEARCH = [os.path.join(REPO, "opac", d) for d in ("current", "legacy/v4", "legacy/v3", "legacy/v2")]
 
 
 def read(name):
@@ -43,7 +43,11 @@ def read(name):
 
 def build(tpl):
     html = read("fixtures/" + tpl)
-    if VARIANT == "v4paste":
+    if VARIANT == "v5paste":
+        css, js = read("out/OPACUserCSS_V5.paste.css"), read("out/OPACUserJS_V5.paste.js")
+    elif VARIANT == "v5":
+        css, js = read("out/OPACUserCSS_V5.css"), read("out/OPACUserJS_V5.js")
+    elif VARIANT == "v4paste":
         css, js = read("out/OPACUserCSS_V4.paste.css"), read("out/OPACUserJS_V4.paste.js")
     elif VARIANT == "v4":
         css, js = read("out/OPACUserCSS_V4.css"), read("out/OPACUserJS_V4.js")
@@ -69,7 +73,11 @@ def inline_js(html):
     its own source text inside that inlined copy."""
     if "__INLINE_JS__" not in html:
         return html
-    if VARIANT == "v3paste":
+    if VARIANT == "v5paste":
+        js = read("out/OPACUserJS_V5.paste.js")
+    elif VARIANT == "v5":
+        js = read("out/OPACUserJS_V5.js")
+    elif VARIANT == "v3paste":
         js = read("out/OPACUserJS_V3.paste.js")
     elif VARIANT == "v4paste":
         js = read("out/OPACUserJS_V4.paste.js")

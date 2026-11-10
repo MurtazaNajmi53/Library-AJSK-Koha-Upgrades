@@ -37,7 +37,9 @@ async function widgetTiming(browser, base, label) {
 }
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] });
+  const browser = await chromium.launch(process.env.CHROME_PATH
+    ? { executablePath: process.env.CHROME_PATH, args: ['--no-sandbox'] }
+    : { args: ['--no-sandbox'] });
 
   /* ---------- 1. Speed: v3 against the currently installed v1.2 ---------- */
   const oldRun = await widgetTiming(browser, V2, 'v3 (broken)');
@@ -284,10 +286,11 @@ async function widgetTiming(browser, base, label) {
 
     const res = await page.evaluate(async () => {
       window.ajOpac.loader.start();
-      await new Promise(r => setTimeout(r, 700));
+      // v5: the rosette joins the progress bar after 1.2s, then fades in
+      await new Promise(r => setTimeout(r, 1700));
       const el = document.getElementById('aj-loader');
       const r = el.getBoundingClientRect();
-      const mark = document.querySelector('.aj-loader-mark').getBoundingClientRect();
+      const mark = document.querySelector('.aj-loader__mark, .aj-loader-mark').getBoundingClientRect();
       const cs = getComputedStyle(el);
       return {
         visible: cs.visibility === 'visible' && +cs.opacity > 0.5,
@@ -331,11 +334,11 @@ async function widgetTiming(browser, base, label) {
         { type: 'mouseWheel', x: 10, y: 10, deltaX: 180, deltaY: 0 });
       await page.waitForTimeout(250);
       await page.evaluate(drive);
-      await page.waitForTimeout(800);
+      await page.waitForTimeout(1700);
       const r = await page.evaluate(() => {
         const el = document.getElementById('aj-loader');
         if (!el) return { missing: true };
-        const m = document.querySelector('.aj-loader-mark').getBoundingClientRect();
+        const m = document.querySelector('.aj-loader__mark, .aj-loader-mark').getBoundingClientRect();
         const vv = window.visualViewport;
         // Where the rosette sits relative to what the reader can see
         const relX = m.x - vv.offsetLeft, relY = m.y - vv.offsetTop;
@@ -379,7 +382,7 @@ async function widgetTiming(browser, base, label) {
       await new Promise(r => setTimeout(r, 900));
       const el = document.getElementById('aj-loader');
       if (!el) return { missing: true };
-      const mark = document.querySelector('.aj-loader-mark').getBoundingClientRect();
+      const mark = document.querySelector('.aj-loader__mark, .aj-loader-mark').getBoundingClientRect();
       return {
         onScreen: mark.x >= 0 && mark.x + mark.width <= innerWidth + 1,
         centreOffset: Math.round((mark.x + mark.width / 2) - innerWidth / 2),
@@ -423,7 +426,7 @@ async function widgetTiming(browser, base, label) {
     const sco = await page.evaluate(() => {
       const t = document.body.innerText;
       const bc = document.getElementById('barcode').getBoundingClientRect();
-      const loader = document.getElementById('aj-loader');
+      const loader = document.querySelector('#aj-loader, .aj-loader, .aj-progress');
       return {
         leaksNumber: /30454007/.test(t),
         greeting: document.querySelector('.alert-info').textContent.trim(),
@@ -529,6 +532,97 @@ async function widgetTiming(browser, base, label) {
     console.log(real.length ? real.map(e => '  ' + e).join('\n') : '  clean');
     check('no script errors on any page', real.length === 0, real.join(' | '));
     await ctx.close();
+  }
+
+  /* ---------- 10. Design system (v5) ----------
+     The rules from design-system/README.md that CSS can break: semantic
+     tokens present, no top rule on cards, 3px focus, 44px targets, no
+     uppercase eyebrow, the two-layer loader. */
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+    const page = await ctx.newPage();
+    await page.goto(V3 + '/home');
+    await page.waitForSelector('.aj-shelf__item', { timeout: 25000 });
+    await page.waitForSelector('.aj-ml__row', { timeout: 25000 });
+    await page.waitForTimeout(300);
+
+    const d = await page.evaluate(() => {
+      const cs = (sel, pseudo) => { const e = document.querySelector(sel); return e ? getComputedStyle(e, pseudo) : null; };
+      const box = sel => { const e = document.querySelector(sel); if (!e) return null;
+        const r = e.getBoundingClientRect(); return { w: Math.round(r.width), h: Math.round(r.height) }; };
+      const root = getComputedStyle(document.documentElement);
+      const cards = ['#aj-new-books', '#aj-my-library', '#aj-news'].map(s => cs(s).borderTopWidth);
+      return {
+        tokens: ['--surface-page', '--action', '--focus-ring', '--text-accent', '--size-target']
+                  .every(t => root.getPropertyValue(t).trim() !== ''),
+        legacyAliases: ['--aj-blue', '--aj-copper-deep', '--aj-white', '--aj-font-ui']
+                  .every(t => root.getPropertyValue(t).trim() !== ''),
+        cardTops: cards,
+        cardRadius: cs('#aj-my-library').borderTopLeftRadius,
+        shelfBtn: box('.aj-shelf__btn--next'),
+        chevronSvg: !!document.querySelector('.aj-shelf__btn svg.aj-flip'),
+        statusRow: box('.aj-ml__link'),
+        progressBuilt: !!document.querySelector('.aj-progress .aj-progress__bar'),
+        rosetteArt: (document.getElementById('aj-loader') || { style: { getPropertyValue: () => '' } })
+                      .style.getPropertyValue('--aj-ros-line').indexOf('data:image/svg+xml') !== -1,
+      };
+    });
+
+    // Focus ring: tab to the first shelf link
+    await page.focus('.aj-shelf__link');
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Shift+Tab');
+    const focus = await page.evaluate(() => {
+      const s = getComputedStyle(document.activeElement);
+      return { w: s.outlineWidth, style: s.outlineStyle, off: s.outlineOffset };
+    });
+
+    // Loader: the bar starts at once, the rosette waits, then says what is happening
+    const loader = await page.evaluate(async () => {
+      const bar = document.querySelector('.aj-progress');
+      const l = document.getElementById('aj-loader');
+      window.ajOpac.loader.start('/cgi-bin/koha/opac-search.pl?q=x');
+      await new Promise(r => setTimeout(r, 400));
+      const early = { bar: bar.classList.contains('is-active'), rosette: l.classList.contains('is-active') };
+      await new Promise(r => setTimeout(r, 1100));
+      const late = { rosette: l.classList.contains('is-active'),
+                     label: l.querySelector('.aj-loader__label').textContent };
+      window.ajOpac.loader.stop();
+      return { early, late, stopped: !l.classList.contains('is-active') && !bar.classList.contains('is-active') };
+    });
+    await ctx.close();
+
+    console.log('\n=== DESIGN SYSTEM ===');
+    console.log(' ', JSON.stringify({ ...d, focus, loader }));
+    check('semantic tokens are defined', d.tokens);
+    check('legacy --aj-* aliases kept for SCOUserCSS and Part E', d.legacyAliases);
+    check('home cards have no top rule', d.cardTops.every(w => w === '1px'), d.cardTops.join('/'));
+    check('home cards use radius-md', d.cardRadius === '10px', d.cardRadius);
+    check('shelf arrows are 44px', d.shelfBtn && d.shelfBtn.w >= 44 && d.shelfBtn.h >= 44,
+      d.shelfBtn && `${d.shelfBtn.w}x${d.shelfBtn.h}`);
+    check('shelf arrows draw a mirrored SVG chevron', d.chevronSvg);
+    check('account card rows are 44px targets', d.statusRow.h >= 44, String(d.statusRow.h));
+    check('focus ring is 3px solid with a 2px+ offset',
+      focus.w === '3px' && focus.style === 'solid' && parseFloat(focus.off) >= 2, JSON.stringify(focus));
+    check('progress bar is built', d.progressBuilt);
+    check('rosette artwork is inline SVG from the script', d.rosetteArt);
+    check('progress bar starts at once, rosette waits', loader.early.bar && !loader.early.rosette,
+      JSON.stringify(loader.early));
+    check('rosette appears after the wait and names the task',
+      loader.late.rosette && /Searching the catalogue/.test(loader.late.label), loader.late.label);
+    check('stop() clears both layers', loader.stopped);
+
+    // Login: no uppercase eyebrow
+    const ctx2 = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const p2 = await ctx2.newPage();
+    await p2.goto(V3 + '/login');
+    await p2.waitForTimeout(300);
+    const eyebrow = await p2.evaluate(() => {
+      const h = document.querySelector('#opac-auth > h1');
+      return h ? getComputedStyle(h, '::before').content : 'none';
+    });
+    check('login page has no uppercase eyebrow', eyebrow === 'none' || eyebrow === 'normal', eyebrow);
+    await ctx2.close();
   }
 
   await browser.close();

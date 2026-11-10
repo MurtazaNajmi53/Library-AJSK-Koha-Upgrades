@@ -38,15 +38,15 @@ Seven pieces are pasted into Koha's staff interface. None of them needs server a
 
 | File | Goes into |
 | --- | --- |
-| `OpacHeaderFonts_V1.html` | HTML customizations › `opacheader` |
+| `OpacHeaderFonts_V2.html` | HTML customizations › `opacheader` |
 | `OpacLoginInstructions_V1.html` | HTML customizations › `OpacLoginInstructions` |
 | `OpacMainUserBlock_V3.html` | HTML customizations › `OpacMainUserBlock` |
-| `OPACUserCSS_V4.paste.css` | System preference `OPACUserCSS` |
-| `OPACUserJS_V4.paste.js` | System preference `OPACUserJS` |
+| `OPACUserCSS_V5.paste.css` | System preference `OPACUserCSS` |
+| `OPACUserJS_V5.paste.js` | System preference `OPACUserJS` (Parts 0–D; keep the Click & Collect Part E after them) |
 | `SCOUserCSS_V1.paste.css` | System preference `SCOUserCSS` |
 | `SCOUserJS_V1.paste.js` | System preference `SCOUserJS` |
 
-Each stylesheet and script comes in two forms. The plain file (`OPACUserCSS_V4.css`) is the documented master, which you edit. The `.paste` file is the same code with comments stripped. Koha prints these preferences inline on every page, so stripping the comments saves about 13 KB gzipped per page view. To regenerate the paste copies after editing a master:
+Each stylesheet and script comes in two forms. The plain file (`OPACUserCSS_V5.css`) is the documented master, which you edit. The `.paste` file is the same code with comments stripped. Koha prints these preferences inline on every page, so stripping the comments saves about 13 KB gzipped per page view. To regenerate the paste copies after editing a master:
 
 ```bash
 cd opac/current

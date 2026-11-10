@@ -16,8 +16,9 @@ const WIDTHS = [
 ];
 
 (async () => {
-  const browser = await chromium.launch({
-    executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] });
+  const browser = await chromium.launch(process.env.CHROME_PATH
+    ? { executablePath: process.env.CHROME_PATH, args: ['--no-sandbox'] }
+    : { args: ['--no-sandbox'] });
 
   console.log('width          home px  |  new books   account     news    | share of row      order');
   console.log('-'.repeat(104));

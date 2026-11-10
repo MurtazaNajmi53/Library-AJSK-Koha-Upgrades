@@ -43,9 +43,9 @@ function banner(from, kind) {
 
 (async () => {
   const jobs = [
-    ['OPACUserCSS_V4.css', 'OPACUserCSS_V4.paste.css', 'css'],
+    ['OPACUserCSS_V5.css', 'OPACUserCSS_V5.paste.css', 'css'],
     ['SCOUserCSS_V1.css', 'SCOUserCSS_V1.paste.css', 'css'],
-    ['OPACUserJS_V4.js', 'OPACUserJS_V4.paste.js', 'js'],
+    ['OPACUserJS_V5.js', 'OPACUserJS_V5.paste.js', 'js'],
     ['SCOUserJS_V1.js', 'SCOUserJS_V1.paste.js', 'js'],
   ];
 

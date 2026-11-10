@@ -1,8 +1,9 @@
-# Maktabat Aljamea (Sindh) — OPAC front-end, v3
+# Maktabat Aljamea (Sindh) — OPAC front-end
 
-Koha 25.11.02 · Zebra · 20 September 2026 · **CSS v4 · JS v4**
+Koha 25.11.02 · Zebra · 10 November 2026 · **CSS v5 · JS v5 · fonts v2**
 
-Everything in this folder is current. Older versions are in [`../legacy/`](../legacy/).
+Everything in this folder is current. Older versions are in [`../legacy/`](../legacy/)
+(v4 is in [`../legacy/v4/`](../legacy/v4/)).
 
 ---
 
@@ -12,13 +13,125 @@ Seven things to paste, in this order. Nothing here needs server access.
 
 | # | Paste this file | Into |
 |---|---|---|
-| 1 | `OpacHeaderFonts_V1.html` | Tools › HTML customizations › **opacheader** |
+| 1 | `OpacHeaderFonts_V2.html` | Tools › HTML customizations › **opacheader** |
 | 2 | `OpacLoginInstructions_V1.html` | Tools › HTML customizations › **OpacLoginInstructions** |
 | 3 | `OpacMainUserBlock_V3.html` | Tools › HTML customizations › **OpacMainUserBlock** |
-| 4 | `OPACUserCSS_V4.paste.css` | System preferences › **OPACUserCSS** |
-| 5 | `OPACUserJS_V4.paste.js` | System preferences › **OPACUserJS** |
+| 4 | `OPACUserCSS_V5.paste.css` | System preferences › **OPACUserCSS** |
+| 5 | `OPACUserJS_V5.paste.js` | System preferences › **OPACUserJS**, Parts 0–D only (see below) |
 | 6 | `SCOUserCSS_V1.paste.css` | System preferences › **SCOUserCSS** |
 | 7 | `SCOUserJS_V1.paste.js` | System preferences › **SCOUserJS** |
+
+---
+
+## v5 — the OPAC moves onto the design system
+
+**Three things change: #1, #4 and #5.** The other four stay as they are.
+
+### Installing it
+
+1. **Back up first.** Copy the current OPACUserCSS, OPACUserJS and the
+   opacheader entry into a dated note, and record the change in the project
+   log with those old values. That is the rollback.
+2. **opacheader** — open the existing entry and replace its contents with
+   `OpacHeaderFonts_V2.html`. It adds Tajawal (Arabic interface pages only)
+   and the DM Sans italic.
+3. **OPACUserCSS** — replace the whole value with `OPACUserCSS_V5.paste.css`.
+4. **OPACUserJS — do not replace the whole box.** The live value is Parts 0–D
+   *followed by the Click & Collect Part E*
+   (`click-and-collect/02-opac-userjs-click-and-collect-buttons-and-dialog.js`).
+   Select from the top of the box down to the line just before
+   `/* ==== PART E`, and paste `OPACUserJS_V5.paste.js` over that selection.
+   Part E stays exactly where it is.
+5. Check the home page, one search, one record, the login page and one
+   kiosk, on a laptop and a phone. The next section says what to look for.
+
+**Rollback:** paste the three backed-up values back. Nothing else changed.
+
+### What changes for readers
+
+- **Same layout, calmer surface.** The three home widgets lose their copper
+  top rule and get the system's card shadow instead. Everything is
+  `surface-*`, `text-*`, `action*` and `border-*` tokens now, so colours are
+  the same brand values, applied by job.
+- **One type family.** DM Sans sets headings, titles and text, with tighter
+  tracking on headings. Noto Sans no longer sets headings; it only fills in
+  ḍ ṣ ḥ ṭ ẓ ʿ, which DM Sans lacks. Arabic and LSD in record data still use
+  Kanz-al-Marjaan, then Amiri. Tajawal is used only if the OPAC is ever
+  shown in Arabic, and never for titles (it lacks 23 LSD letters).
+- **Bigger targets.** Buttons, pager numbers, shelf arrows, view pills, the
+  sort select, menu items, tabs, breadcrumbs, facet links, footer links and
+  the account card's rows are all at least 44px. Pages are a little taller
+  as a result, most visibly in the facets column and the toolbar.
+- **One focus ring**: 3px, blue, 2px outside the element, everywhere.
+- **A different loader.** A thin copper bar runs along the top of the screen
+  as soon as a link is followed. Only if the next page takes more than
+  1.2 seconds does the rosette appear, drawing itself petal by petal, with a
+  line saying what is happening ("Searching the catalogue…"). It used to
+  spin and pulse after 0.4 seconds. The rosette is now the design system's
+  traced SVG, so it no longer depends on an image on the Jamea website.
+- **Login page**: the uppercase "LIBRARY CATALOGUE" line is gone.
+- **Right-to-left ready.** Layout uses logical properties, so if Koha's
+  Arabic translation is switched on, the page mirrors (shelf arrows flip,
+  cover sits on the right of a record). See "Not done" below.
+
+### What it costs
+
+| Paste copy | v4 gzipped | v5 gzipped |
+|---|---|---|
+| OPACUserCSS | 8.7 KB | 10.7 KB |
+| OPACUserJS (Parts 0–D) | 10.3 KB | 17.3 KB |
+
+About 9 KB more per page view. 6.1 KB of that is the rosette artwork, which
+sits in the script, not the stylesheet, on purpose: the script runs at the
+end of the page, so it adds nothing to the time before the page first
+appears. The coordinates were rounded to whole units (0.1px at the size
+it is drawn), which saved 1.6 KB.
+
+**Why not paste the design system's own files?** Its notes say to put
+`tokens.css` + `components/bundle.css` in OPACUserCSS. That would be 150 KB
+(42 KB gzipped) on every page, mostly styling `.aj-*` component markup that
+Koha never outputs. `tokens.css` also defines classes called `.title`,
+`.label`, `.nav`, `.h1` and `.body`, which Koha and Bootstrap use for their
+own markup. V5 takes only the token *values*.
+
+### Kept for compatibility
+
+`SCOUserCSS_V1` and Click & Collect Part E still read the old `--aj-*`
+variables (`--aj-blue`, `--aj-copper-deep`, …). V5 keeps those names as
+aliases of the new tokens, at the end of section 1. Remove each alias once
+nothing reads it.
+
+### Not done in v5, on purpose
+
+- **Dark mode.** The tokens have dark values, but Koha's own Bootstrap,
+  DataTables, modals and jQuery UI widgets are light only. A dark OPAC would
+  be patchy until each of those is styled and tested.
+- **Masthead and footer redesigns.** The design system's two-tier Masthead
+  and link-column Footer need new HTML customizations, not CSS. V5 restyles
+  Koha's existing header and footer instead.
+- **Arabic wording in the widgets.** The card, shelf and loader strings are
+  English. On an Arabic interface page the layout mirrors, but those strings
+  stay English and their punctuation reads backwards. Needs translations.
+- **Below 44px still:** the cover-switch dots under a cover (now 24px; there
+  is no room for three 44px dots under a 100px cover) and Koha's result
+  checkboxes.
+- **The bookplate lettering** (the generated cover) stays under 13px. It is
+  artwork standing in for a cover image, not running text.
+
+### How v5 was tested
+
+The harness in [`tests/opac-harness/`](../../tests/opac-harness/), against
+both the masters and the paste copies: the 60 functional checks plus 14 new
+design-system checks (tokens defined, legacy aliases present, no card top
+rule, radius, 44px arrows and rows, SVG chevron, 3px focus, progress bar
+first, rosette after the wait with a label, stop clears both, no eyebrow),
+and the 62 layout checks across eight widths. All pass. The loader checks
+were updated for the 1.2-second wait. Also looked at by eye in screenshots:
+the home page and login page against v4, the rosette mid-draw, and the home
+page with the document switched to right-to-left.
+
+Not tested: the live catalogue, real fonts from Google (the sandbox has no
+internet), Safari and Firefox, and a real Arabic Koha translation.
 
 For the three HTML customizations: **use "Edit with text editor", not the visual
 editor.** The visual editor rewrites class names and strips tables, which breaks

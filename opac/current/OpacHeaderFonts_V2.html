@@ -1,0 +1,44 @@
+<!-- Maktabat Aljamea (Sindh) — web fonts                    (v2, 10 Nov 2026)
+
+     Tools › HTML customizations › opacheader (edit the existing entry)
+       Display location : opacheader
+       Library          : All libraries
+     Paste this with "Edit with text editor", NOT the visual editor.
+
+     WHAT CHANGED IN v2 (goes with OPACUserCSS_V5)
+     ---------------------------------------------
+     The fonts now follow the Maktabat Aljamea design system:
+       DM Sans          every heading, title and line of text (display and
+                        ui roles). The italic is added for LSD words
+                        (zikr, waʿz, raza), which the system sets in italic.
+       Noto Sans        no longer a heading font. It only fills in the
+                        transliteration letters DM Sans lacks (ḍ ṣ ḥ ṭ ẓ ʿ),
+                        so it stays in the request.
+       Tajawal          new. The interface font on Arabic pages only.
+                        Never used for titles: it lacks 23 LSD letters.
+       Amiri            unchanged. Arabic and LSD in record data falls to
+                        Kanz-al-Marjaan (on Apple devices), then Amiri.
+
+     Google serves each family split by script (unicode-range), and a
+     browser downloads a font file only when the page uses its letters. So
+     Tajawal costs an English page a few hundred bytes of CSS and no font
+     download at all.
+
+     WHY THIS IS NOT IN THE STYLESHEET
+     ---------------------------------
+     Koha puts OPACUserCSS inside an inline <style> in the page head, and an
+     @import there is fetched in a chain: the HTML, then the whole stylesheet,
+     then the font CSS, then the fonts. As a <link> here, the browser's
+     preload scanner finds it while the page is still arriving.
+
+     IF YOU EVER REMOVE THIS ENTRY: nothing breaks. The catalogue falls back
+     to the fonts on the reader's machine, because OPACUserCSS names real
+     fallbacks after each web font.
+
+     NOTE: this location is not rendered on the self-checkout screen, so the
+     kiosk keeps its own @import at the top of SCOUserCSS.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&amp;family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Noto+Sans:wght@400;600;700&amp;family=Tajawal:wght@400;500;700&amp;display=swap">
