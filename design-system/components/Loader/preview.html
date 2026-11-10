@@ -1,0 +1,13 @@
+<!-- @dsCard group="Feedback" height=560 subtitle="Progress bar for every page change; the drawn rosette for long waits" -->
+<div class="aj" style="min-height:100vh;padding:var(--space-5) var(--space-6)">
+<div style="display:grid;gap:var(--space-5)">
+<div class="aj-loader aj-loader--inline is-active" role="status" aria-live="polite"><span class="aj-loader__mark" aria-hidden="true"><span class="aj-loader__ghost"></span><span class="aj-loader__gold"></span><span class="aj-loader__lines"></span></span><p class="aj-loader__label">Searching the catalogue…</p></div>
+<div style="border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-card)"><header class="aj-header" style="position:relative"><a class="aj-header__brand" href="#"><span class="aj-logo" role="img" aria-label="Aljamea-tus-Saifiyah"></span><span class="aj-header__name">Maktabat Aljamea (Sindh)</span></a></header>
+<div style="display:flex;gap:var(--space-2);flex-wrap:wrap;padding:var(--space-5)"><button class="aj-btn aj-btn--secondary" id="ld-quick">Quick page change</button><button class="aj-btn aj-btn--primary" id="ld-slow">Slow search</button></div></div>
+</div>
+<script>
+document.getElementById('ld-quick').addEventListener('click',function(){Aljamea.progress.start();setTimeout(Aljamea.loader.hide,700)});
+document.getElementById('ld-slow').addEventListener('click',function(){Aljamea.loader.begin('Searching the catalogue…');setTimeout(Aljamea.loader.hide,5200)});
+</script>
+</div>
+<script>Aljamea.init(document)</script>

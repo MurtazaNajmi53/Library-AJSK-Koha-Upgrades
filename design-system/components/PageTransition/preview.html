@@ -1,0 +1,19 @@
+<!-- @dsCard group="Foundations" height=470 subtitle="Results to record: the cover morphs, the content cross-fades" -->
+<div class="aj" style="min-height:100vh;padding:var(--space-5) var(--space-6)">
+<div id="pt-stage" style="min-height:360px">
+<div id="pt-results"><div class="aj-eyebrow">Search results</div><h2 style="margin-bottom:var(--space-3)">al-Qadi al-Numan</h2>
+<article class="aj-result" style="border-top:0"><a class="aj-cover-link" href="#" id="pt-open" aria-label="Sharh al-Akhbar"><div class="aj-cover" style="view-transition-name: cover-1001"><div class="aj-cover__title">Sharh al-Akhbar</div><div class="aj-cover__author">al-Qadi al-Numan</div></div></a>
+<div><h3 class="aj-result__title"><a href="#" id="pt-open2">Sharh al-Akhbar fi Fadaʾil al-Aʾimma al-Athar</a></h3><p class="aj-result__meta">al-Qadi al-Numan</p><p style="margin-top:var(--space-2)"><span class="aj-avail">Available</span></p></div></article></div>
+<div id="pt-record" hidden><button class="aj-btn aj-btn--ghost" id="pt-back"><span class="aj-flip" style="display:inline-flex;width:20px"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12 4l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Back to results</button>
+<div class="aj-record" style="margin-top:var(--space-3)"><div class="aj-cover aj-cover--lg" style="view-transition-name: cover-1001"><div class="aj-cover__title">Sharh al-Akhbar</div><div class="aj-cover__author">al-Qadi al-Numan</div></div>
+<div class="aj-record__info"><h1 class="aj-record__title">Sharh al-Akhbar fi Fadaʾil al-Aʾimma al-Athar</h1><p class="aj-record__sub">al-Qadi al-Numan</p>
+<div class="aj-record__actions"><button class="aj-btn aj-btn--primary">Place hold</button><button class="aj-btn aj-btn--secondary">Add to list</button></div></div></div></div>
+</div>
+<script>
+(function(){var r=document.getElementById('pt-results'),d=document.getElementById('pt-record');
+function show(rec){Aljamea.transition(function(){r.hidden=rec;d.hidden=!rec;})}
+['pt-open','pt-open2'].forEach(function(id){document.getElementById(id).addEventListener('click',function(e){e.preventDefault();show(true)})});
+document.getElementById('pt-back').addEventListener('click',function(){show(false)});})();
+</script>
+</div>
+<script>Aljamea.init(document)</script>

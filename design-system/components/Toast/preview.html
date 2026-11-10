@@ -1,0 +1,6 @@
+<!-- @dsCard group="Feedback" height=260 subtitle="Short confirmation that rises in and leaves on its own" -->
+<div class="aj" style="min-height:100vh;padding:var(--space-5) var(--space-6)">
+<button class="aj-btn aj-btn--secondary" id="tt">Add to cart</button><div class="aj-toasts aj-toasts--inline" role="status" aria-live="polite" style="margin-top:var(--space-4);max-width:360px"><div class="aj-toast"><span class="aj-toast__text">Sharh al-Akhbar added to your cart</span><a href="#">View cart</a></div></div>
+<script>document.getElementById('tt').addEventListener('click',function(){Aljamea.toast('Added to your cart',{action:'Undo'})})</script>
+</div>
+<script>Aljamea.init(document)</script>

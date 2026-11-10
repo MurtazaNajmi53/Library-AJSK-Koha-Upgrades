@@ -1,0 +1,206 @@
+[
+  {
+    "name": "Alert",
+    "group": "Feedback",
+    "height": 300,
+    "subtitle": "Inline messages: info and notice, with a suggestion list"
+  },
+  {
+    "name": "BookCover",
+    "group": "Catalogue",
+    "height": 290,
+    "subtitle": "Generated cover, image cover and the hover lift"
+  },
+  {
+    "name": "Breadcrumbs",
+    "group": "Navigation",
+    "height": 110,
+    "subtitle": "Where this page sits"
+  },
+  {
+    "name": "Button",
+    "group": "Actions",
+    "height": 230,
+    "subtitle": "Variants, sizes and states, with press feedback and loading"
+  },
+  {
+    "name": "Callout",
+    "group": "Content",
+    "height": 260,
+    "subtitle": "One point to remember, and the Arabic passage block"
+  },
+  {
+    "name": "Cover",
+    "group": "Cover",
+    "height": 288,
+    "subtitle": ""
+  },
+  {
+    "name": "DarkTheme",
+    "group": "Themes",
+    "height": 640,
+    "subtitle": "Dark theme: header, search, account panel, buttons"
+  },
+  {
+    "name": "DataTable",
+    "group": "Content",
+    "height": 330,
+    "subtitle": "Table with a sand head, row hover and numeric alignment"
+  },
+  {
+    "name": "EmailTemplate",
+    "group": "Pages",
+    "height": 1100,
+    "subtitle": "Email for conference mail and Koha notices (light theme shown)"
+  },
+  {
+    "name": "Field",
+    "group": "Forms",
+    "height": 340,
+    "subtitle": "Label, hint, error and the show-password check"
+  },
+  {
+    "name": "FilterDrawer",
+    "group": "Catalogue",
+    "height": 640,
+    "subtitle": "Filters pull-out: a modal drawer with grouped filters, counts and a live Show button"
+  },
+  {
+    "name": "Footer",
+    "group": "Pages",
+    "height": 560,
+    "subtitle": "Sand band: Arabic name, link columns, copper rule, legal row and Back to top"
+  },
+  {
+    "name": "LangToggle",
+    "group": "Navigation",
+    "height": 400,
+    "subtitle": "English and Arabic: the thumb slides, then the page wipes into the new reading direction"
+  },
+  {
+    "name": "Loader",
+    "group": "Feedback",
+    "height": 560,
+    "subtitle": "Progress bar for every page change; the drawn rosette for long waits"
+  },
+  {
+    "name": "LoginForm",
+    "group": "Pages",
+    "height": 600,
+    "subtitle": "Login card with help items"
+  },
+  {
+    "name": "Masthead",
+    "group": "Navigation",
+    "height": 560,
+    "subtitle": "Two-tier header: scroll inside the frame to see the logo write in"
+  },
+  {
+    "name": "Menu",
+    "group": "Navigation",
+    "height": 300,
+    "subtitle": "Dropdown that opens from its trigger, with keyboard support"
+  },
+  {
+    "name": "Motion",
+    "group": "Foundations",
+    "height": 420,
+    "subtitle": "Press, hover, menu, toast and loading in one place"
+  },
+  {
+    "name": "NewsList",
+    "group": "Home",
+    "height": 330,
+    "subtitle": "News items: title, body and date"
+  },
+  {
+    "name": "NumberedSteps",
+    "group": "Content",
+    "height": 260,
+    "subtitle": "A real sequence with generated numbers"
+  },
+  {
+    "name": "PageHeader",
+    "group": "Navigation",
+    "height": 330,
+    "subtitle": "Sticky navbar: logo, library name, links and account menu"
+  },
+  {
+    "name": "PageTransition",
+    "group": "Foundations",
+    "height": 470,
+    "subtitle": "Results to record: the cover morphs, the content cross-fades"
+  },
+  {
+    "name": "Pagination",
+    "group": "Navigation",
+    "height": 110,
+    "subtitle": "Pager with 44px targets and tabular numbers"
+  },
+  {
+    "name": "Panel",
+    "group": "Home",
+    "height": 320,
+    "subtitle": "Card with a copper top rule and a header row"
+  },
+  {
+    "name": "RecordDetail",
+    "group": "Catalogue",
+    "height": 470,
+    "subtitle": "Record page layout: cover, title, details, views and actions"
+  },
+  {
+    "name": "ResultsPage",
+    "group": "Catalogue",
+    "height": 1300,
+    "subtitle": "Search results: quick filter chips, Filters and Sort pull-outs, animated results"
+  },
+  {
+    "name": "RtlTheme",
+    "group": "Themes",
+    "height": 1240,
+    "subtitle": "Arabic and LSD pages, in light and dark"
+  },
+  {
+    "name": "SearchBar",
+    "group": "Forms",
+    "height": 170,
+    "subtitle": "The sand search band under the header"
+  },
+  {
+    "name": "SearchResult",
+    "group": "Catalogue",
+    "height": 440,
+    "subtitle": "Result card: select, cover, type, title, authors, availability and quick actions"
+  },
+  {
+    "name": "Shelf",
+    "group": "Catalogue",
+    "height": 340,
+    "subtitle": "New arrivals: a scroll-snapping row of covers"
+  },
+  {
+    "name": "Skeleton",
+    "group": "Feedback",
+    "height": 230,
+    "subtitle": "Placeholders that keep layout steady while content loads"
+  },
+  {
+    "name": "StatusList",
+    "group": "Home",
+    "height": 380,
+    "subtitle": "Member panel: term count and linked status rows"
+  },
+  {
+    "name": "Tabs",
+    "group": "Navigation",
+    "height": 260,
+    "subtitle": "Sliding indicator, arrow-key navigation, fading panels"
+  },
+  {
+    "name": "Toast",
+    "group": "Feedback",
+    "height": 260,
+    "subtitle": "Short confirmation that rises in and leaves on its own"
+  }
+]

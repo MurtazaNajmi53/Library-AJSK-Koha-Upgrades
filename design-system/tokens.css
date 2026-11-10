@@ -1,0 +1,387 @@
+/* Maktabat Aljamea — generated from tokens.json by scripts/build.mjs. Do not edit: change tokens.json and rebuild. */
+:root, [data-theme="light"] {
+  --cream-50: #FEF9F1; /* Brand cream. Source --aj-cream. */
+  --sand-100: #F3E9D8; /* Brand sand. Source --aj-sand. */
+  --sand-150: #F0E8D3; /* Hairline sand. Source --aj-hairline. */
+  --sand-200: #E6D6B8; /* Sand rule. Source --aj-sand-line. */
+  --white: #FFFFFF; /* Pure white. Source --aj-white. */
+  --stone-500: #9A8F78; /* Warm grey for control borders. Source --aj-field-line. */
+  --slate-600: #55607F; /* Muted slate. Source --aj-muted. */
+  --blue-700: #233787; /* Brand blue. Source --aj-blue. */
+  --logo-blue: #1C388C; /* Ink of the original logo SVG file. The UI does not use it: the logo is drawn in the logo token. Kept for print and partners who need the file as supplied. */
+  --navy-900: #18224E; /* Brand navy ink. Source --aj-ink. */
+  --copper-400: #C58D4E; /* Brand copper. Source --aj-copper. */
+  --copper-600: #9A6630; /* Deep copper. Source --aj-copper-deep. */
+  --copper-800: #7A4E1C; /* Dark copper. Source --aj-copper-dark. */
+  --gold-300: #D5B36F; /* Rosette gold, the ink of the rosette PNGs. */
+  --periwinkle-200: #B8C0DA; /* Pale periwinkle from the deck's night slides. */
+  --navy-950: #111836; /* Dark theme page ground. */
+  --navy-850: #1C2554; /* Dark theme card. */
+  --navy-800: #232D62; /* Dark theme band and raised surface. */
+  --navy-700: #36427C; /* Dark theme hairline. */
+  --navy-600: #4A5694; /* Dark theme strong rule. */
+  --slate-400: #8390C2; /* Dark theme control border. */
+  --periwinkle-300: #AEBCF4; /* Dark theme brand blue for headings and links. */
+  --cream-200: #F3EDE0; /* Dark theme text. */
+  --gold-400: #DCA968; /* Dark theme action gold. */
+  --gold-200: #EDC48E; /* Dark theme action hover gold. */
+  --surface-page: var(--cream-50); /* Page ground. Everything sits on it. */
+  --surface-card: var(--white); /* Cards, panels, fields, table bodies. */
+  --surface-raised: var(--white); /* Menus, popovers, toasts: anything floating above the page. Always pair with shadow-raised. */
+  --surface-band: var(--sand-100); /* Search band, table heads, hover fills, chips, skeletons. */
+  --surface-inverse: var(--navy-900); /* Dark slides, the loader scrim tint, the toast. Use text-on-inverse on it. */
+  --text: var(--navy-900); /* Body copy on every surface above (12.7:1 or better in both themes). */
+  --text-muted: var(--slate-600); /* Secondary text, captions, placeholders, record labels on every surface (5.2:1 or better). */
+  --text-heading: var(--blue-700); /* Headings h1 and h2, the library name, panel titles. */
+  --text-link: var(--blue-700); /* Links. Underline on hover; inside running text, always underlined. */
+  --text-link-hover: var(--navy-900); /* Link hover and pressed colour. */
+  --text-accent: var(--copper-800); /* Copper text that must read on surface-band too: availability, alerts, active status rows (6.8:1 or better). */
+  --text-on-inverse: var(--cream-50); /* Text on surface-inverse (14.5:1). */
+  --text-on-inverse-muted: var(--periwinkle-200); /* Secondary text on surface-inverse (8.4:1 light, 7.5:1 dark). */
+  --action: var(--copper-600); /* Primary button fill, nav links, eyebrows, icons. As text it reads on page and card, not on surface-band in light (4.0:1): use text-accent there. */
+  --action-hover: var(--copper-800); /* Primary button hover and pressed fill. Darker in light, lighter in dark. */
+  --on-action: var(--white); /* Text and icons on action and action-hover fills (4.9:1 / 7.2:1 light, 7.1:1 / 9.4:1 dark). */
+  --action-secondary: var(--blue-700); /* Secondary button outline and text; its hover fill. */
+  --on-action-secondary: var(--white); /* Text on an action-secondary fill (10.7:1 light, 9.6:1 dark). */
+  --ornament: var(--copper-400); /* Decoration only: card top rule, cover frame, bookcover ring, carousel dots, footer accent. 2.75:1 on cream, so never text and never the only cue for a state. */
+  --border-subtle: var(--sand-150); /* Dividers inside cards and lists, card edges. Decoration. */
+  --border-strong: var(--sand-200); /* Rules under bands, table cell borders, pill outlines. Decoration. */
+  --border-control: var(--stone-500); /* Input, select and checkbox borders (3.05:1 light on page; 4.6:1 dark on card). */
+  --focus-ring: var(--blue-700); /* The 3px focus outline on every interactive element (10:1 light, 9.6:1 dark). */
+  --logo: var(--text-heading); /* Fill of the Aljamea logo (the .aj-logo mask): heading blue in light (10:1 on the page), periwinkle in dark (9.6:1). Kept as its own token so the logo can be given a different colour later without touching headings. */
+  --brand-gold: var(--gold-300); /* Rosette artwork and accent text on surface-inverse only. */
+  --overlay: rgba(254, 249, 241, 0.82); /* Scrim behind the page loader and modal content. */
+  --scrim: rgba(24, 34, 78, 0.38); /* Dims the page behind drawers and dialogs (the filters drawer). */
+  --shadow-nav: 0 2px 14px rgba(24, 34, 78, 0.08); /* Under the sticky navbar. */
+  --shadow-card: 0 1px 2px rgba(24, 34, 78, 0.06); /* Resting card. Barely there in light; in dark a faint white ring gives the edge the fill step cannot. */
+  --shadow-card-hover: 0 6px 18px rgba(24, 34, 78, 0.12); /* Interactive card or cover on hover. */
+  --shadow-raised: 0 10px 28px rgba(24, 34, 78, 0.16); /* Menus, popovers, toasts. */
+  --shadow-cover: 0 1px 3px rgba(24, 34, 78, 0.14); /* Book cover thumbnails at rest. */
+}
+[data-theme="dark"] {
+  --surface-page: var(--navy-950);
+  --surface-card: var(--navy-850);
+  --surface-raised: var(--navy-800);
+  --surface-band: var(--navy-800);
+  --surface-inverse: var(--navy-850);
+  --text: var(--cream-200);
+  --text-muted: var(--periwinkle-200);
+  --text-heading: var(--periwinkle-300);
+  --text-link: var(--periwinkle-300);
+  --text-link-hover: var(--cream-200);
+  --text-accent: var(--gold-200);
+  --text-on-inverse: var(--cream-200);
+  --text-on-inverse-muted: var(--periwinkle-200);
+  --action: var(--gold-400);
+  --action-hover: var(--gold-200);
+  --on-action: var(--navy-900);
+  --action-secondary: var(--periwinkle-300);
+  --on-action-secondary: var(--navy-950);
+  --ornament: var(--copper-400);
+  --border-subtle: var(--navy-700);
+  --border-strong: var(--navy-600);
+  --border-control: var(--slate-400);
+  --focus-ring: var(--periwinkle-300);
+  --logo: var(--text-heading);
+  --brand-gold: var(--gold-300);
+  --overlay: rgba(17, 24, 54, 0.82);
+  --scrim: rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 1px 0 rgba(255, 255, 255, 0.06), 0 4px 18px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 8px 22px rgba(0, 0, 0, 0.5);
+  --shadow-raised: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 12px 32px rgba(0, 0, 0, 0.55);
+  --shadow-cover: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+:root {
+  --space-1: 4px; /* Hairline gaps, icon to label inside chips. */
+  --space-2: 8px; /* Gap between buttons, pills and toolbar items. */
+  --space-3: 12px; /* Navbar vertical padding, menu item padding. */
+  --space-4: 16px; /* Field side padding, gutter on phones. */
+  --space-5: 20px; /* Card padding. */
+  --space-6: 24px; /* Grid gap between home panels, section spacing inside a card. */
+  --space-8: 32px; /* Space between page sections. */
+  --space-10: 40px; /* Space above the footer on phones. */
+  --space-12: 48px; /* Gutter on wide screens, login columns gap. */
+  --space-16: 64px; /* Space above the footer on desktop. */
+  --gutter: 48px; /* Page side padding at full width. In CSS: clamp(16px, 3.5vw, 48px). */
+  --radius-sm: 4px; /* Book covers, images, skeleton lines. */
+  --radius-xs: 6px; /* Items inside menus (radius-md minus the 4px menu padding, so corners stay concentric). */
+  --radius-md: 10px; /* Fields, menus, cards, alerts, toasts. */
+  --radius-lg: 14px; /* Login card and the record action bar, the largest containers. */
+  --radius-pill: 999px; /* Buttons, pills, chips, pager items, sort select. */
+  --size-control: 46px; /* Default button and search field height. */
+  --size-control-sm: 40px; /* Toolbar buttons and selects. Hit area is padded to 44px. */
+  --size-control-lg: 52px; /* Login fields and the full-width login button. */
+  --size-target: 44px; /* Minimum hit area for anything tappable. */
+  --size-logo-lg: 72px; /* Logo height in the masthead's top tier. */
+  --size-logo: 60px; /* Logo height in the navbar (40px under 700px). */
+  --size-logo-sm: 40px; /* Logo height in the sticky masthead bar and under 700px wide. */
+  --size-cover-w: 100px; /* Generated cover width in results; height is 1.5x. */
+  --size-measure: 68ch; /* Maximum line length for running text. */
+  --duration-instant: 90ms; /* Press-down of a button or chip. */
+  --duration-fast: 150ms; /* Hover colour changes, menu close, toast exit. */
+  --duration-base: 220ms; /* Menu open, disclosure expand, tab indicator. */
+  --duration-slow: 320ms; /* Toast enter, page transition, staggered entrance. */
+  --duration-loader: 2400ms; /* One full cycle of the rosette loader: four petals draw, the disc fills, holds and clears. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* Anything entering or responding to a press: menus, toasts, entrances. */
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45); /* Anything leaving: menu close, toast exit, old page in a transition. */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* Elements moving on screen: tab indicator, shelf scroll. */
+  --ease-press: cubic-bezier(0.2, 0, 0, 1); /* Button press and release. */
+  --z-sticky: 100; /* Sticky navbar and record toolbar. */
+  --z-menu: 1000; /* Dropdown menus and popovers. */
+  --z-toast: 1500; /* Toasts. */
+  --z-loader: 2000; /* Page loader scrim. */
+  --opacity-disabled: 0.45; /* Disabled controls. Pair with cursor not-allowed and no press feedback. */
+  --opacity-skeleton: 0.6; /* Lowest point of the skeleton pulse. */
+  --font-ui: "DM Sans", system-ui, sans-serif;
+  --font-display: "DM Sans", system-ui, sans-serif;
+  --font-arabic-ui: "Tajawal", "DM Sans", system-ui, sans-serif;
+  --font-arabic-display: "Tajawal", "DM Sans", system-ui, sans-serif;
+  --font-arabic-passage: "Amiri", "Traditional Arabic", serif;
+  --font-arabic-results: "Kanz-al-Marjaan", "Amiri", serif;
+}
+.display {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.h1 {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.h2 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+.h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.masthead-name {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.nav {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+.body {
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.body-sm {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.label {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.button {
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.caption {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  line-height: 1;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+.cover-subtitle {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+.cover-tagline {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.rtl-h1 {
+  font-family: var(--font-arabic-display);
+  font-size: 2.25rem;
+  line-height: 1.45;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.rtl-h2 {
+  font-family: var(--font-arabic-display);
+  font-size: 1.625rem;
+  line-height: 1.5;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.rtl-h3 {
+  font-family: var(--font-arabic-display);
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.rtl-nav {
+  font-family: var(--font-arabic-display);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.rtl-passage {
+  font-family: var(--font-arabic-passage);
+  font-size: 1.75rem;
+  line-height: 2;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.rtl-body {
+  font-family: var(--font-arabic-ui);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.rtl-body-sm {
+  font-family: var(--font-arabic-ui);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.rtl-label {
+  font-family: var(--font-arabic-ui);
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.rtl-button {
+  font-family: var(--font-arabic-ui);
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.rtl-caption {
+  font-family: var(--font-arabic-ui);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.result-title-ar {
+  font-family: var(--font-arabic-results);
+  font-size: 1.5rem;
+  line-height: 1.7;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.result-author-ar {
+  font-family: var(--font-arabic-results);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("fonts/DMSans-VF.woff2") format("woff2");
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("fonts/DMSans-Italic-VF.woff2") format("woff2");
+  font-weight: 100 1000;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Tajawal";
+  src: url("fonts/Tajawal-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Tajawal";
+  src: url("fonts/Tajawal-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Tajawal";
+  src: url("fonts/Tajawal-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Amiri";
+  src: url("fonts/Amiri-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Amiri";
+  src: url("fonts/Amiri-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

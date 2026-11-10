@@ -1,0 +1,8 @@
+<!-- @dsCard group="Actions" height=230 subtitle="Variants, sizes and states, with press feedback and loading" -->
+<div class="aj" style="min-height:100vh;padding:var(--space-5) var(--space-6)">
+<div style="display:grid;gap:var(--space-4)">
+<div style="display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center"><button class="aj-btn aj-btn--primary">Place hold</button><button class="aj-btn aj-btn--secondary">Add to list</button><button class="aj-btn aj-btn--ghost">Save search</button><button class="aj-btn aj-btn--icon" aria-label="Next"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+<div style="display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center"><button class="aj-btn aj-btn--primary aj-btn--sm">Sort</button><button class="aj-btn aj-btn--primary aj-btn--lg">Log in</button><button class="aj-btn aj-btn--primary" disabled>Place hold</button><button class="aj-btn aj-btn--primary" id="busy">Renew all</button></div>
+</div><script>document.getElementById('busy').addEventListener('click',function(e){Aljamea.busy(e.currentTarget,new Promise(function(r){setTimeout(r,1600)}))})</script>
+</div>
+<script>Aljamea.init(document)</script>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maktabat Aljamea components</title>
+<!-- Local preview of every component. Serve this folder over HTTP (fetch does not work from file://):
+       python3 -m http.server 8000 --directory design-system
+     then open http://localhost:8000/gallery.html. Rebuild first if you changed tokens.json. -->
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components/bundle.css">
+<style>
+  body { margin: 0; background: var(--surface-page); color: var(--text); font: 400 1rem/1.6 var(--font-ui); }
+  header { position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center;
+           padding: var(--space-3) clamp(16px, 3.5vw, 48px); background: var(--surface-band); border-bottom: 1px solid var(--border-strong); }
+  header h1 { margin: 0; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; color: var(--text-heading); margin-inline-end: auto; }
+  label { display: inline-flex; gap: var(--space-2); align-items: center; font-weight: 600; font-size: 0.9375rem; }
+  select, input { font: inherit; min-height: 40px; padding: 0 var(--space-3); border: 1px solid var(--border-control);
+                  border-radius: var(--radius-pill); background: var(--surface-card); color: var(--text); }
+  main { padding: var(--space-6) clamp(16px, 3.5vw, 48px) var(--space-16); display: grid; gap: var(--space-8); }
+  section h2 { margin: 0 0 var(--space-1); font-size: 1.5rem; font-weight: 700; color: var(--text-heading); }
+  section p { margin: 0 0 var(--space-3); color: var(--text-muted); font-size: 0.9375rem; }
+  .group { margin: 0; font-size: 0.8125rem; font-weight: 700; color: var(--text-accent); }
+  iframe { display: block; width: 100%; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-page); }
+  a { color: var(--text-link); }
+  :focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Maktabat Aljamea components</h1>
+  <label>Theme <select id="theme"><option value="light">Light</option><option value="dark">Dark</option></select></label>
+  <label>Direction <select id="dir"><option value="ltr">LTR (English)</option><option value="rtl">RTL (Arabic)</option></select></label>
+  <label>Filter <input id="filter" type="search" placeholder="Component name"></label>
+</header>
+<main id="list"></main>
+<script>
+(async function () {
+  const list = document.getElementById("list");
+  const theme = document.getElementById("theme");
+  const dir = document.getElementById("dir");
+  const filter = document.getElementById("filter");
+  const components = await fetch("components/index.json").then((r) => r.json());
+  const sources = Object.fromEntries(await Promise.all(components.map(async (c) =>
+    [c.name, await fetch(`components/${c.name}/preview.html`).then((r) => r.text())])));
+
+  const doc = (c) => `<!doctype html><html data-theme="${theme.value}" dir="${dir.value}" lang="${dir.value === "rtl" ? "ar" : "en"}"><head><meta charset="utf-8">
+<base href="${new URL(`components/${c.name}/`, location.href)}">
+<link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="../bundle.css">
+<script src="../bundle.js"><\/script><style>body{margin:0}</style></head><body>${sources[c.name]}</body></html>`;
+
+  function render() {
+    document.documentElement.dataset.theme = theme.value;
+    const q = filter.value.trim().toLowerCase();
+    list.replaceChildren(...components
+      .filter((c) => !q || c.name.toLowerCase().includes(q))
+      .sort((a, b) => (a.name === "Cover" ? -1 : b.name === "Cover" ? 1 : a.group.localeCompare(b.group) || a.name.localeCompare(b.name)))
+      .map((c) => {
+        const s = document.createElement("section");
+        s.innerHTML = `<p class="group">${c.group}</p><h2>${c.name}</h2><p>${c.subtitle || ""} · <a href="components/${c.name}/README.md">Guidelines</a></p>`;
+        const f = document.createElement("iframe");
+        f.title = `${c.name} preview`;
+        f.style.height = `${c.height + 40}px`;
+        f.srcdoc = doc(c);
+        s.append(f);
+        return s;
+      }));
+  }
+  [theme, dir].forEach((el) => el.addEventListener("change", render));
+  filter.addEventListener("input", render);
+  render();
+})();
+</script>
+</body>
+</html>

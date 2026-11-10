@@ -1,0 +1,103 @@
+<!-- @dsCard group="Catalogue" height=1300 subtitle="Search results: quick filter chips, Filters and Sort pull-outs, animated results" -->
+<div class="aj" style="min-height:100vh;padding:var(--space-5) var(--space-6)">
+<section class="aj-results" id="rp">
+<div class="aj-results__head"><h1>Results for “al-Qadi al-Numan”</h1><p class="aj-results__count" aria-live="polite" data-rp-count></p></div>
+<div class="aj-results__bar">
+<button class="aj-btn aj-btn--primary aj-btn--sm" type="button" data-aj-drawer aria-controls="rf"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M6 10h8M8.5 15h3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Filters<span class="aj-btn__badge" data-rp-badge></span></button>
+<div class="aj-results__quick" role="group" aria-label="Quick filters"><button class="aj-chip-toggle" type="button" data-value="avail" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Available now</button><button class="aj-chip-toggle" type="button" data-value="lang:ar" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Arabic</button><button class="aj-chip-toggle" type="button" data-value="lang:lsd" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Lisan al-Dawat</button><button class="aj-chip-toggle" type="button" data-value="type:Manuscript" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Manuscripts</button></div>
+<div class="aj-menu-wrap aj-results__sort"><button class="aj-btn aj-btn--secondary aj-btn--sm" type="button" data-aj-menu aria-controls="rs" aria-expanded="false" aria-haspopup="menu">Sort: <span data-aj-menu-label>Relevance</span><svg class="aj-btn__caret" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<ul class="aj-menu" id="rs" role="menu" aria-label="Sort results"><li role="none"><button role="menuitemradio" aria-checked="true" data-value="relevance">Relevance</button></li><li role="none"><button role="menuitemradio" aria-checked="false" data-value="title">Title A to Z</button></li><li role="none"><button role="menuitemradio" aria-checked="false" data-value="newest">Newest first</button></li><li role="none"><button role="menuitemradio" aria-checked="false" data-value="oldest">Oldest first</button></li></ul></div>
+</div>
+<div class="aj-results__applied" data-rp-applied aria-label="Active filters"></div>
+<ol class="aj-results__list" data-rp-list></ol>
+<div class="aj-results__empty" data-rp-empty hidden><div class="aj-alert" role="status"><svg class="aj-alert__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 11v6M12 7.5v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><p class="aj-alert__title">No results match these filters</p><p class="aj-alert__body">Remove a filter to see more. <button class="aj-btn aj-btn--ghost aj-btn--sm" type="button" data-rp-clear>Clear all filters</button></p></div></div>
+<dialog class="aj-drawer aj" id="rf" aria-labelledby="rf-t"><div class="aj-drawer__head"><h2 id="rf-t">Refine results</h2><button class="aj-icon-btn" type="button" data-aj-close aria-label="Close filters"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div><div class="aj-drawer__body"><details class="aj-disclosure" open><summary>Availability</summary><div style="padding-bottom:var(--space-3)"><label class="aj-checkrow"><input type="checkbox" data-value="avail"><span>Available now</span><span class="aj-chip" data-count="avail"></span></label><label class="aj-checkrow"><input type="checkbox" data-value="online"><span>Online</span><span class="aj-chip" data-count="online"></span></label></div></details><details class="aj-disclosure" open><summary>Type</summary><div style="padding-bottom:var(--space-3)"><label class="aj-checkrow"><input type="checkbox" data-value="type:Book"><span>Books</span><span class="aj-chip" data-count="type:Book"></span></label><label class="aj-checkrow"><input type="checkbox" data-value="type:Manuscript"><span>Manuscripts</span><span class="aj-chip" data-count="type:Manuscript"></span></label><label class="aj-checkrow"><input type="checkbox" data-value="type:Guide"><span>Guides</span><span class="aj-chip" data-count="type:Guide"></span></label></div></details><details class="aj-disclosure" open><summary>Language</summary><div style="padding-bottom:var(--space-3)"><label class="aj-checkrow"><input type="checkbox" data-value="lang:ar"><span>Arabic</span><span class="aj-chip" data-count="lang:ar"></span></label><label class="aj-checkrow"><input type="checkbox" data-value="lang:lsd"><span>Lisan al-Dawat</span><span class="aj-chip" data-count="lang:lsd"></span></label><label class="aj-checkrow"><input type="checkbox" data-value="lang:en"><span>English</span><span class="aj-chip" data-count="lang:en"></span></label></div></details><details class="aj-disclosure"><summary>Publication year</summary><div class="aj-range"><label class="aj-sr-only" for="yf">From</label><input class="aj-field" id="yf" inputmode="numeric" placeholder="From"><span aria-hidden="true">to</span><label class="aj-sr-only" for="yt">To</label><input class="aj-field" id="yt" inputmode="numeric" placeholder="To"></div></details></div><div class="aj-drawer__foot"><button class="aj-btn aj-btn--ghost" type="button" data-rp-clear>Clear all</button><button class="aj-btn aj-btn--primary" type="button" data-aj-close data-rp-show>Show results</button></div></dialog>
+</section>
+<script>
+(function () {
+  var DATA = [
+ {"id":1,"title":"شرح الأخبار في فضائل الأئمة الأطهار","ar":true,"by":"القاضي النعمان","type":"Book","lang":["ar"],"year":1994,"avail":"available","online":false},
+ {"id":2,"title":"The Pillars of Islam: Daʿaʾim al-Islam of al-Qadi al-Nuʿman","ar":false,"by":"al-Qadi al-Numan; translated by Asaf A. A. Fyzee","type":"Book","lang":["en"],"year":2002,"avail":"available","online":false},
+ {"id":3,"title":"افتتاح الدعوة","ar":true,"by":"القاضي النعمان","type":"Book","lang":["ar"],"year":1970,"avail":"out","due":"18 November","online":false},
+ {"id":4,"title":"المجالس المؤيدية","ar":true,"by":"المؤيد في الدين الشيرازي","type":"Manuscript","lang":["ar"],"year":null,"avail":"available","online":false},
+ {"id":5,"title":"رسائل إخوان الصفا وخلان الوفاء","ar":true,"by":"إخوان الصفا","type":"Book","lang":["ar"],"year":1957,"avail":"available","online":true},
+ {"id":6,"title":"Translation Guide: LSD to English","ar":false,"by":"Maktabat Aljamea","type":"Guide","lang":["lsd","en"],"year":2026,"avail":"available","online":true},
+ {"id":7,"title":"كتاب الهمة في آداب أتباع الأئمة","ar":true,"by":"القاضي النعمان","type":"Book","lang":["ar"],"year":1948,"avail":"out","due":"2 December","online":false},
+ {"id":8,"title":"Decimal Classification System: Aljamea-tus-Saifiyah","ar":false,"by":"The Library of Aljamea-tus-Saifiyah","type":"Guide","lang":["en","ar"],"year":2026,"avail":"available","online":false}
+];
+  var root = document.getElementById('rp'), list = root.querySelector('[data-rp-list]');
+  var LABELS = { 'avail': 'Available now', 'online': 'Online', 'type:Book': 'Books', 'type:Manuscript': 'Manuscripts', 'type:Guide': 'Guides', 'lang:ar': 'Arabic', 'lang:lsd': 'Lisan al-Dawat', 'lang:en': 'English' };
+  var state = { on: new Set(), sort: 'relevance', from: null, to: null };
+  var SVGS = { save: '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 3h9v14l-4.5-3.2L5.5 17z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>', cite: '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 11.5c0-3 1.5-5 4-6M4 11.5h3.5V15H4zM11 11.5c0-3 1.5-5 4-6M11 11.5h3.5V15H11z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>', link: '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8.5 11.5l3-3M7 9.5l-2 2a2.5 2.5 0 003.5 3.5l2-2M13 10.5l2-2A2.5 2.5 0 0011.5 5l-2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>', x: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' };
+  function match(r) {
+    var groups = {};
+    state.on.forEach(function (k) { var g = k.split(':')[0]; (groups[g] = groups[g] || []).push(k); });
+    return Object.keys(groups).every(function (g) {
+      return groups[g].some(function (k) {
+        if (k === 'avail') return r.avail === 'available';
+        if (k === 'online') return r.online;
+        var v = k.split(':')[1];
+        return g === 'type' ? r.type === v : r.lang.indexOf(v) > -1;
+      });
+    }) && (state.from == null || (r.year && r.year >= state.from)) && (state.to == null || (r.year && r.year <= state.to));
+  }
+  function sorted(rows) {
+    var s = state.sort, c = rows.slice();
+    if (s === 'title') c.sort(function (a, b) { return a.title.localeCompare(b.title); });
+    if (s === 'newest') c.sort(function (a, b) { return (b.year || 0) - (a.year || 0); });
+    if (s === 'oldest') c.sort(function (a, b) { return (a.year || 9999) - (b.year || 9999); });
+    return c;
+  }
+  function card(r, i) {
+    var lang = r.ar ? ' lang="ar" dir="rtl"' : '';
+    var pill = r.avail === 'available' ? '<span class="aj-status-pill">Available</span>' : '<span class="aj-status-pill aj-status-pill--out">On loan, due ' + r.due + '</span>';
+    if (r.online) pill += '<span class="aj-status-pill aj-status-pill--online">Online</span>';
+    var tip = function (n, l) { return '<button class="aj-icon-btn" type="button" data-tip="' + l + '" aria-label="' + l + ': ' + r.title.replace(/"/g, '') + '"' + (n === 'save' ? ' aria-pressed="false"' : '') + '>' + SVGS[n] + '</button>'; };
+    return '<li class="aj-rcard" style="view-transition-name: rc-' + r.id + '">' +
+      '<label class="aj-rcard__select"><span class="aj-sr-only">Select ' + r.title + '</span><input type="checkbox"></label>' +
+      '<a class="aj-cover-link" href="#" tabindex="-1" aria-hidden="true"><div class="aj-cover"' + lang + '><div class="aj-cover__title">' + r.title + '</div><div class="aj-cover__author">' + r.by + '</div></div></a>' +
+      '<div><p class="aj-rcard__meta"><span class="aj-rcard__num">' + (i + 1) + '</span><span class="aj-rcard__type">' + r.type + '</span></p>' +
+      '<h2 class="aj-rcard__title"' + lang + '><a href="#">' + r.title + '</a></h2>' +
+      '<p class="aj-rcard__by"' + lang + '>' + r.by + '</p>' +
+      '<p class="aj-rcard__pub">' + (r.year ? r.year : 'Undated') + '</p>' +
+      '<div class="aj-rcard__status">' + pill + '</div></div>' +
+      '<div class="aj-rcard__actions">' + tip('save', 'Save') + tip('cite', 'Cite') + tip('link', 'Copy link') + '</div></li>';
+  }
+  function render(animate) {
+    var rows = sorted(DATA.filter(match));
+    var update = function () {
+      list.innerHTML = rows.map(card).join('');
+      root.querySelector('[data-rp-empty]').hidden = rows.length > 0;
+      root.querySelector('[data-rp-count]').textContent = rows.length === DATA.length ? DATA.length + ' results' : rows.length + ' of ' + DATA.length + ' results';
+      root.querySelector('[data-rp-badge]').textContent = state.on.size ? state.on.size : '';
+      root.querySelectorAll('.aj-chip-toggle').forEach(function (b) { b.setAttribute('aria-pressed', state.on.has(b.dataset.value) ? 'true' : 'false'); });
+      root.querySelectorAll('.aj-drawer input[type=checkbox]').forEach(function (c) { c.checked = state.on.has(c.dataset.value); });
+      root.querySelectorAll('[data-count]').forEach(function (el) {
+        var k = el.dataset.count, g = k.split(':')[0], saved = new Set(state.on);
+        state.on.forEach(function (x) { if (x.split(':')[0] === g) state.on.delete(x); });
+        state.on.add(k); el.textContent = DATA.filter(match).length; state.on = saved;
+      });
+      var ap = root.querySelector('[data-rp-applied]'); ap.innerHTML = '';
+      state.on.forEach(function (k) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'aj-tag';
+        b.setAttribute('aria-label', 'Remove filter: ' + LABELS[k]); b.innerHTML = LABELS[k] + SVGS.x;
+        b.addEventListener('click', function () { state.on.delete(k); render(true); }); ap.appendChild(b);
+      });
+      root.querySelector('[data-rp-show]').textContent = 'Show ' + rows.length + ' result' + (rows.length === 1 ? '' : 's');
+    };
+    animate ? Aljamea.transition(update) : update();
+  }
+  root.addEventListener('aj:toggle', function (e) { e.detail.pressed ? state.on.add(e.detail.value) : state.on.delete(e.detail.value); render(true); });
+  root.addEventListener('aj:select', function (e) { state.sort = e.detail.value; render(true); });
+  root.querySelectorAll('.aj-drawer input[type=checkbox]').forEach(function (c) {
+    c.addEventListener('change', function () { c.checked ? state.on.add(c.dataset.value) : state.on.delete(c.dataset.value); render(false); });
+  });
+  ['yf', 'yt'].forEach(function (id) { document.getElementById(id).addEventListener('input', function (e) { var v = parseInt(e.target.value, 10); state[id === 'yf' ? 'from' : 'to'] = isNaN(v) ? null : v; render(false); }); });
+  root.querySelectorAll('[data-rp-clear]').forEach(function (b) { b.addEventListener('click', function () { state.on.clear(); state.from = state.to = null; document.getElementById('yf').value = document.getElementById('yt').value = ''; render(true); }); });
+  root.querySelector('.aj-drawer').addEventListener('close', function () { render(true); });
+  list.addEventListener('click', function (e) { var s = e.target.closest('.aj-icon-btn[aria-pressed]'); if (s) { var on = s.getAttribute('aria-pressed') !== 'true'; s.setAttribute('aria-pressed', on); if (on) Aljamea.toast('Saved to your list', { action: 'Undo', onAction: function () { s.setAttribute('aria-pressed', 'false'); } }); } });
+  render(false);
+})();
+</script><div class="aj-toasts aj-toasts--inline" role="status" aria-live="polite" style="position:fixed;inset:auto var(--space-5) var(--space-5) auto;width:340px"></div>
+</div>
+<script>Aljamea.init(document)</script>

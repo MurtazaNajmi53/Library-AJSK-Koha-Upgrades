@@ -1,0 +1,29 @@
+<!-- @dsCard height=288 -->
+<style>
+.cv{position:relative;width:960px;height:288px;background:var(--surface-page);overflow:hidden;font-family:var(--font-display)}
+.cv svg{position:absolute;inset:0}
+.cv .ink{fill:var(--text)} .cv .blue{fill:var(--text-heading)} .cv .cd{fill:var(--action)} .cv .sand{fill:var(--border-strong)} .cv .cu{fill:var(--ornament)}
+.cv .b{rx:var(--radius-md)}
+.cv .petal{fill:none;stroke:var(--surface-page);stroke-width:2.5}
+.cv .dot{fill:var(--surface-page)}
+.cv .txt{position:absolute;left:32px;bottom:32px;width:440px}
+.cv h1{margin:0;font-size:84px;line-height:.92;font-weight:750;letter-spacing:-.04em;color:var(--text)}
+.cv p{margin:12px 0 0;font:400 14px/1.4 var(--font-ui);color:var(--text-muted)}
+</style>
+<div class="cv">
+<svg width="960" height="288" viewBox="0 0 960 288" aria-hidden="true">
+<!-- blocks: text 200x288 slab, text-heading 160x176, action 160x112, border-strong 120x120, ornament 120x170 (token fills)
+     arrangement: one tall ink slab with satellite blocks bleeding off top, bottom and right edge
+     pattern: literal motif, the four-petal rosette of the logo, built from four lenses and a ring cut out in cream: the library's own mark
+     steps/radii: block sides 112-288 in 8px multiples, corner var(--radius-md) 10px, ring r=104, petal stroke 2.5px -->
+<rect class="b ink" x="480" y="-10" width="200" height="308"/>
+<rect class="b blue" x="688" y="-10" width="160" height="186"/>
+<rect class="b cd" x="688" y="184" width="160" height="114"/>
+<rect class="b sand" x="856" y="-10" width="120" height="130"/>
+<rect class="b cu" x="856" y="128" width="120" height="170"/>
+<circle class="petal" cx="770" cy="144" r="104"/>
+<ellipse class="petal" cx="770" cy="92" rx="31" ry="52" transform="rotate(0 770 144)"/><ellipse class="petal" cx="770" cy="92" rx="31" ry="52" transform="rotate(90 770 144)"/><ellipse class="petal" cx="770" cy="92" rx="31" ry="52" transform="rotate(180 770 144)"/><ellipse class="petal" cx="770" cy="92" rx="31" ry="52" transform="rotate(270 770 144)"/>
+<circle class="dot" cx="770" cy="144" r="7"/>
+</svg>
+<div class="txt"><h1>Maktabat<br>Aljamea</h1><p>The library catalogue of Aljamea-tus-Saifiyah, Karachi.</p></div>
+</div>

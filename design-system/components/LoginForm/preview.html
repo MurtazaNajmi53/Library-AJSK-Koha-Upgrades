@@ -1,0 +1,11 @@
+<!-- @dsCard group="Pages" height=600 subtitle="Login card with help items" -->
+<div class="aj" style="min-height:100vh;padding:var(--space-5) var(--space-6)">
+<div class="aj-login"><form class="aj-login__card" novalidate onsubmit="event.preventDefault();Aljamea.busy(this.querySelector('[type=submit]'),new Promise(function(r){setTimeout(r,1500)}))">
+<h2>Log in to your account</h2>
+<div class="aj-form-field"><label class="aj-label" for="lu">Card number</label><input class="aj-field aj-field--lg" id="lu" autocomplete="username"></div>
+<div class="aj-form-field"><label class="aj-label" for="lp">Password</label><input class="aj-field aj-field--lg" id="lp" type="password" autocomplete="current-password"><label class="aj-check"><input type="checkbox" onchange="document.getElementById('lp').type=this.checked?'text':'password'"> Show password</label></div>
+<button class="aj-btn aj-btn--primary aj-btn--lg aj-btn--block" type="submit">Log in</button>
+<div class="aj-login__links"><a href="#">Forgot your password?</a></div></form>
+<div class="aj-help"><h2>Need help?</h2><div class="aj-help__item"><h3>No card yet</h3><p>Ask at the circulation desk with your student ID.</p></div><div class="aj-help__item"><h3>Can't log in</h3><p>Library staff can reset your password at the desk or by email.</p></div></div></div>
+</div>
+<script>Aljamea.init(document)</script>

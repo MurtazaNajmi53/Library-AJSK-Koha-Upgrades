@@ -1,0 +1,113 @@
+{
+  "v": 3,
+  "assetGroups": {
+    "Brand": {
+      "files": {
+        "aljamea-logo-cream.svg": {
+          "blob": "add72d2a336705ba03b09f0a351e6e6f",
+          "name": "aljamea-logo-cream.svg",
+          "size": 36741,
+          "type": "image/svg+xml"
+        },
+        "aljamea-logo.svg": {
+          "blob": "094155812bbd353abf32d8a642eb8eb9",
+          "name": "aljamea-logo.svg",
+          "size": 36741,
+          "type": "image/svg+xml"
+        },
+        "rosette-mark.png": {
+          "blob": "010066bac3ef2aaf8f0ea0f3719a4b5a",
+          "name": "rosette-mark.png",
+          "size": 33673,
+          "type": "image/png"
+        },
+        "rosette-motif.png": {
+          "blob": "f9baa7cf27c5f06302b29a2c27b6cb26",
+          "name": "rosette-motif.png",
+          "size": 77279,
+          "type": "image/png"
+        },
+        "wordmark-cream.png": {
+          "blob": "f1abfe5eab03057919b04a2299f429f0",
+          "name": "wordmark-cream.png",
+          "size": 16110,
+          "type": "image/png"
+        }
+      },
+      "name": "Brand",
+      "order": [
+        "aljamea-logo.svg",
+        "aljamea-logo-cream.svg",
+        "rosette-motif.png",
+        "rosette-mark.png",
+        "wordmark-cream.png"
+      ]
+    },
+    "Print": {
+      "files": {
+        "JDC_Cover.pdf": {
+          "blob": "ff5b98d85a7b0300325e5bbcec91e607",
+          "name": "JDC_Cover.pdf",
+          "size": 65021,
+          "type": "application/pdf"
+        }
+      },
+      "name": "Print",
+      "order": [
+        "JDC_Cover.pdf"
+      ]
+    },
+    "Source": {
+      "files": {},
+      "name": "Source",
+      "order": []
+    },
+    "Email": {
+      "name": "Email",
+      "order": [
+        "aljamea-logo-blue.png",
+        "aljamea-logo-cream.png"
+      ],
+      "files": {
+        "aljamea-logo-blue.png": {
+          "name": "aljamea-logo-blue.png",
+          "blob": "8dc53be9327eefef12a1e6e4e3695e7b",
+          "size": 23593,
+          "type": "image/png"
+        },
+        "aljamea-logo-cream.png": {
+          "name": "aljamea-logo-cream.png",
+          "blob": "ee60adeafc7479a47467a044f0c100e1",
+          "size": 23570,
+          "type": "image/png"
+        }
+      }
+    }
+  },
+  "blobs": {},
+  "createdOnFiles": {
+    "at": "2026-11-04T08:00:00Z",
+    "v": 1
+  },
+  "docs": {
+    "readme": "project/README.md",
+    "sections": []
+  },
+  "groups": [
+    "Brand",
+    "Print",
+    "Email",
+    "Source"
+  ],
+  "lastChange": {
+    "by": "Murtaza Najmi",
+    "at": "2026-11-04T15:48:30Z",
+    "via": "Claude (Cowork)",
+    "note": "Footer: faint outline rosette watermark, after the JDC cover"
+  },
+  "layout": "files",
+  "libraries": [],
+  "namespace": "Aljamea",
+  "sections": {},
+  "title": "Maktabat Aljamea"
+}

@@ -1,0 +1,18 @@
+<!-- @dsCard group="Foundations" height=420 subtitle="Press, hover, menu, toast and loading in one place" -->
+<div class="aj" style="min-height:100vh;padding:var(--space-5) var(--space-6)">
+<div style="display:grid;gap:var(--space-6)">
+<div><h3>Press and hover</h3><p class="aj-hint" style="margin-bottom:var(--space-3)">Press a button: it scales to 0.96 in 90ms and springs back. Hover changes colour in 150ms.</p>
+<div style="display:flex;gap:var(--space-2);flex-wrap:wrap"><button class="aj-btn aj-btn--primary">Place hold</button><button class="aj-btn aj-btn--secondary">Add to list</button><button class="aj-btn aj-btn--ghost">Save search</button></div></div>
+<div><h3>Response to an action</h3><p class="aj-hint" style="margin-bottom:var(--space-3)">Menus open in 220ms and close in 150ms. Toasts rise in 320ms. Loading keeps the button's width.</p>
+<div style="display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:flex-start">
+<div class="aj-menu-wrap"><button class="aj-btn aj-btn--secondary" data-aj-menu aria-controls="m-demo" aria-expanded="false">Sort by</button><ul class="aj-menu" id="m-demo" style="inset-inline-end:auto;inset-inline-start:0"><li><a href="#">Relevance</a></li><li><a href="#">Title A to Z</a></li><li><a href="#">Newest first</a></li></ul></div>
+<button class="aj-btn aj-btn--secondary" id="t-demo">Add to cart</button>
+<button class="aj-btn aj-btn--primary" id="b-demo">Renew all</button></div>
+<div class="aj-toasts aj-toasts--inline" role="status" aria-live="polite" style="margin-top:var(--space-4);max-width:360px"></div></div>
+</div>
+<script>
+document.getElementById('t-demo').addEventListener('click',function(){Aljamea.toast('Added to your cart',{action:'Undo'})});
+document.getElementById('b-demo').addEventListener('click',function(e){Aljamea.busy(e.currentTarget,new Promise(function(r){setTimeout(r,1600)})).then(function(){Aljamea.toast('3 items renewed')})});
+</script>
+</div>
+<script>Aljamea.init(document)</script>

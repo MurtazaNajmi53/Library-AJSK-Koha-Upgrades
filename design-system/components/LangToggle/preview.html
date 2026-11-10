@@ -1,0 +1,17 @@
+<!-- @dsCard group="Navigation" height=400 subtitle="English and Arabic: the thumb slides, then the page wipes into the new reading direction" -->
+<div class="aj" style="min-height:100vh;padding:var(--space-5) var(--space-6)">
+<div id="lt-demo" lang="en" dir="ltr" style="min-height:330px;background:var(--surface-page)">
+<div class="aj-masthead-top" style="border-radius:var(--radius-md) var(--radius-md) 0 0"><span class="aj-logo" role="img" aria-label="Aljamea-tus-Saifiyah"></span>
+<div class="aj-lang" id="lt-toggle" role="group" aria-label="Language"><span class="aj-lang__thumb" aria-hidden="true"></span><a href="#" lang="en" hreflang="en" aria-current="true">English</a><a href="#" lang="ar" hreflang="ar" aria-current="false">العربية</a></div></div>
+<div style="padding:var(--space-6) var(--aj-gutter)"><h1 data-en="Library catalogue" data-ar="فهرس المكتبة">Library catalogue</h1>
+<p class="aj-measure" style="margin:var(--space-3) 0 var(--space-5)" data-en="Search books, manuscripts and journals in Arabic, Lisan al-Dawat, Persian and English." data-ar="ابحث في الكتب والمخطوطات والدوريات بالعربية ولسان الدعوة والفارسية والإنجليزية.">Search books, manuscripts and journals in Arabic, Lisan al-Dawat, Persian and English.</p>
+<a class="aj-btn aj-btn--primary" href="#" data-en="Search the catalogue" data-ar="ابحث في الفهرس">Search the catalogue</a></div></div>
+<script>
+Aljamea.lang(document.getElementById('lt-toggle'), { onChange: function (code) {
+  var root = document.getElementById('lt-demo'), ar = code === 'ar';
+  root.lang = ar ? 'ar' : 'en'; root.dir = ar ? 'rtl' : 'ltr';
+  root.querySelectorAll('[data-en]').forEach(function (el) { el.textContent = el.getAttribute(ar ? 'data-ar' : 'data-en'); });
+}});
+</script>
+</div>
+<script>Aljamea.init(document)</script>

@@ -1,0 +1,1 @@
+`OPACUserCSS_V4.paste.css` is the stylesheet pasted into Koha's OPACUserCSS setting. Its `:root` block (`--aj-*`) is the origin of every colour, radius and spacing value in `tokens.json`. It is generated from an unpasted source: do not edit this copy by hand. Component rules for the header, search band, book covers, home panels, login page and footer are all in it.

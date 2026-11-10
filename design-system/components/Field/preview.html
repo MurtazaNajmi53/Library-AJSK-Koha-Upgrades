@@ -1,0 +1,9 @@
+<!-- @dsCard group="Forms" height=340 subtitle="Label, hint, error and the show-password check" -->
+<div class="aj" style="min-height:100vh;padding:var(--space-5) var(--space-6)">
+<form style="display:grid;gap:var(--space-5);max-width:420px" novalidate>
+<div class="aj-form-field"><label class="aj-label" for="f1">Card number</label><input class="aj-field" id="f1" autocomplete="username" aria-describedby="f1h"><p class="aj-hint" id="f1h">The number on the back of your library card.</p></div>
+<div class="aj-form-field"><label class="aj-label" for="f2">Password</label><input class="aj-field" id="f2" type="password" aria-invalid="true" aria-describedby="f2e" value="secret"><p class="aj-error" id="f2e">That password doesn't match this card. Check it, or reset it.</p>
+<label class="aj-check"><input type="checkbox" id="f2s"> Show password</label></div>
+</form><script>document.getElementById('f2s').addEventListener('change',function(e){document.getElementById('f2').type=e.target.checked?'text':'password'})</script>
+</div>
+<script>Aljamea.init(document)</script>
