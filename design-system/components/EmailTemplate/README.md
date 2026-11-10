@@ -1,7 +1,7 @@
 The email template for official conference mail and for the notices Koha sends (holds, overdues, renewals). The files are under `assets/Email`.
 
 ## Anatomy
-- **Card:** 600px wide on a sand page, a 3px `ornament` top rule (like the Panel), `radius-md` corners where the mail app supports them.
+- **Card:** 600px wide on a sand page, one 1px `border-subtle` border and no top rule (like every card), `radius-md` corners where the mail app supports them.
 - **Header band:** the Aljamea logo (PNG, blue in light mode, cream in dark mode) and the kind of message in muted DM Sans: "Conference" or "Library notice".
 - **Title:** a short eyebrow (`action` colour) and the heading in DM Sans 700 with slight negative tracking (none in Arabic).
 - **Body:** paragraphs, a details table (label and value rows), an optional notice box for something the reader must act on, and one pill button.

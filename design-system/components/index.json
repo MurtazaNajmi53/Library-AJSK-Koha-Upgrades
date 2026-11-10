@@ -30,6 +30,12 @@
     "subtitle": "One point to remember, and the Arabic passage block"
   },
   {
+    "name": "Card",
+    "group": "Home",
+    "height": 420,
+    "subtitle": "Clickable cards and the feature card with its rosette watermark; Tab to see focus"
+  },
+  {
     "name": "Cover",
     "group": "Cover",
     "height": 288,
@@ -52,6 +58,12 @@
     "group": "Pages",
     "height": 1100,
     "subtitle": "Email for conference mail and Koha notices (light theme shown)"
+  },
+  {
+    "name": "EventList",
+    "group": "Home",
+    "height": 230,
+    "subtitle": "Events dated in the rosette ring, Gregorian and Hijri"
   },
   {
     "name": "Field",
@@ -141,7 +153,19 @@
     "name": "Panel",
     "group": "Home",
     "height": 320,
-    "subtitle": "Card with a copper top rule and a header row"
+    "subtitle": "Card with a header row and a more link"
+  },
+  {
+    "name": "Promo",
+    "group": "Home",
+    "height": 290,
+    "subtitle": "One service at a time: picture, sand panel and a named cue"
+  },
+  {
+    "name": "QuickLinks",
+    "group": "Home",
+    "height": 200,
+    "subtitle": "The places readers go most, with one line each"
   },
   {
     "name": "RecordDetail",

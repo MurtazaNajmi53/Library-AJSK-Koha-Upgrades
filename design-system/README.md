@@ -18,7 +18,7 @@ Colour has two tiers. **Palette** tokens are raw brand values with plain names (
 
 | Job | Token |
 |---|---|
-| Grounds | `surface-page`, `surface-card`, `surface-raised` (menus, toasts), `surface-band` (search band, table heads, hover), `surface-inverse` |
+| Grounds | `surface-page`, `surface-card`, `surface-raised` (menus, toasts), `surface-band` (search band, table heads, hover), `surface-inverse`, `surface-feature` (the one feature card in a section) |
 | Text | `text`, `text-muted`, `text-heading`, `text-link`, `text-link-hover`, `text-accent`, `text-on-inverse` |
 | Actions | `action`, `action-hover`, `on-action`, `action-secondary`, `on-action-secondary` |
 | Lines and marks | `border-subtle`, `border-strong`, `border-control`, `focus-ring`, `ornament`, `logo` |
@@ -61,17 +61,18 @@ Other families: spacing on a 4px scale (`space-1` 4px to `space-16` 64px, plus `
 - **Type:** one Latin family, **DM Sans**, used in two roles. `display` carries the voice: headings, the masthead name, section links, menu items, tabs, footer headings and record titles, at weight 600 to 700 with negative tracking (-0.005em on navigation to -0.03em on the largest figures). `ui` does the work: body text, buttons, labels, forms, meta. DM Sans is variable with an optical-size axis, so headings get its tighter display cut automatically (`font-optical-sizing: auto`). Arabic follows: **Tajawal** for headings, navigation and text alike (`arabic-display`, `arabic-ui`). **Amiri** (`arabic-passage`) is kept for Quran, hadith and iqtibasaat passages, and **Kanz-al-Marjaan** (`arabic-results`) only for Arabic and LSD titles and authors in search results. Printed covers use DM Sans too, at weight 750 with tight tracking. The scale is in tokens.json; the smallest text is 13px (`caption`), 14px for Arabic. Running text stops at 68ch. Headings balance their lines; paragraphs avoid orphans. Changing numbers use tabular figures.
 - **Fonts:** all faces ship as woff2 files under `fonts/` (SIL Open Font License 1.1), except Kanz-al-Marjaan, which is installed on Apple devices and falls back to Amiri elsewhere. DM Sans ships as two variable files (upright and italic, Latin and Latin Extended). It has ā ī ū but no dotted transliteration letters (ḍ ṣ ḥ ṭ ẓ) and no ʿayn sign (ʿ), so those fall back to a system font: write transliterated names without them in headings, or accept the mixed glyph. Amiri covers every LSD letter checked (ڇ ڻ ٺ ڏ ڍ ڙ ڳ ڱ ھ ے ٹ ڈ ڑ گ چ پ ٿ ڦ ڄ ڃ ٻ ڀ ۓ ۀ). Tajawal lacks 23 of them, so never set LSD in Tajawal: LSD belongs in search results (Kanz-al-Marjaan, then Amiri) or in a passage (Amiri). Tajawal has no 600 weight: Arabic labels and menus use 500, headings and buttons 700.
 - **Shape:** buttons, pills and pager items are pills; fields, menus and cards `radius-md`; login card and action bar `radius-lg`; covers `radius-sm`. Nested corners stay concentric: a menu's 4px padding plus its items' `radius-xs` equals the menu's `radius-md`.
-- **Depth:** cards are nearly flat (`shadow-card`) with a 3px `ornament` top rule. Shadows grow only for things that float (`shadow-raised`) or respond to hover (`shadow-card-hover`). In dark, shadows add a faint white ring so edges stay visible.
+- **Depth:** cards are nearly flat (`shadow-card`) with one even 1px `border-subtle` border and no top rule. A clickable card's emphasis is its focus ring (see Motion). Shadows grow only for things that float (`shadow-raised`) or respond to hover (`shadow-card-hover`). In dark, shadows add a faint white ring so edges stay visible.
 - **Header and footer:** every page opens with the two-tier Masthead (large Aljamea logo and utility links above a sticky library bar; when the bar pins, the small logo writes itself in right to left) and closes with the sand Footer (Arabic library name, link columns, copper rule, legal row and Back to top).
 - **Layout:** side padding is `clamp(16px, 3.5vw, gutter)`. The home grid shows new arrivals, account and news three across from 992px, two from 768px, one below. Results and records are not boxed; rules separate them.
-- **Imagery:** the rosette is the only ornament: on covers, the loader and empty states. Records without an image get the generated BookCover, never a stock photo. Cover images get a 10% black outline (10% white in dark).
+- **Imagery:** the rosette is the only ornament: on covers, the loader and empty states; in hairline outline as the footer watermark and the feature card's watermark (one per page); and as the ring that holds an event's day. Records without an image get the generated BookCover, never a stock photo. Cover images get a 10% black outline (10% white in dark).
 
 ## Motion
 
 Motion shows what changed after the reader acts. It is never decoration.
 
 - **Press:** buttons, pager items and cover links scale to 0.96 in `duration-instant`.
-- **Hover:** colour and shadow in `duration-fast`, only on devices that hover. Cover links lift 3px. Nav links underline from the reading-start edge.
+- **Hover:** colour and shadow in `duration-fast`, only on devices that hover. Cover links and cards lift 3px. Nav links underline from the reading-start edge.
+- **Focus:** a clickable card's 3px `focus-ring` closes in on it: it fades in from 103% scale to its place 2px outside the card, corners concentric with the card's, over `duration-base`, and leaves over `duration-fast`. Under reduced motion it only fades, instantly.
 - **Open and close:** menus scale and fade in over `duration-base` and leave in `duration-fast`; disclosures animate their height; tab indicators slide; panels fade in.
 - **Feedback:** toasts rise in `duration-slow` and leave on their own after 5s; errors rise into place; loading buttons keep their width.
 - **Pages:** View Transitions cross-fade pages with a small lift while the header and search band stay still; a cover morphs from results to record. The home grid rises in once per visit.
@@ -96,5 +97,5 @@ The OPAC uses Koha's Font Awesome glyphs in `action`. New icons are simple 2px-s
 
 ## Components
 
-Foundations: Motion, PageTransition. Actions: Button. Forms: Field, SearchBar. Navigation: Masthead (the main header), PageHeader (compact header), LangToggle, Menu, Breadcrumbs, Tabs, Pagination. Catalogue: ResultsPage, FilterDrawer, SearchResult, BookCover, RecordDetail, Shelf. Home: Panel, StatusList, NewsList. Feedback: Alert, Toast, Loader, Skeleton. Content: NumberedSteps, Callout, DataTable. Pages: LoginForm, Footer, EmailTemplate (conference mail and Koha notices). Themes: DarkTheme, RtlTheme.
+Foundations: Motion, PageTransition. Actions: Button. Forms: Field, SearchBar. Navigation: Masthead (the main header), PageHeader (compact header), LangToggle, Menu, Breadcrumbs, Tabs, Pagination. Catalogue: ResultsPage, FilterDrawer, SearchResult, BookCover, RecordDetail, Shelf. Home: Panel, Card, EventList, QuickLinks, Promo, StatusList, NewsList. Feedback: Alert, Toast, Loader, Skeleton. Content: NumberedSteps, Callout, DataTable. Pages: LoginForm, Footer, EmailTemplate (conference mail and Koha notices). Themes: DarkTheme, RtlTheme.
 

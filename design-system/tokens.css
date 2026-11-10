@@ -30,6 +30,7 @@
   --surface-raised: var(--white); /* Menus, popovers, toasts: anything floating above the page. Always pair with shadow-raised. */
   --surface-band: var(--sand-100); /* Search band, table heads, hover fills, chips, skeletons. */
   --surface-inverse: var(--navy-900); /* Dark slides, the loader scrim tint, the toast. Use text-on-inverse on it. */
+  --surface-feature: var(--navy-900); /* Ground of the one feature card that leads a section. Lighter than surface-card in dark so it still stands out. Use text-on-inverse and text-on-inverse-muted on it (8.1:1 and 5.2:1 in dark). */
   --text: var(--navy-900); /* Body copy on every surface above (12.7:1 or better in both themes). */
   --text-muted: var(--slate-600); /* Secondary text, captions, placeholders, record labels on every surface (5.2:1 or better). */
   --text-heading: var(--blue-700); /* Headings h1 and h2, the library name, panel titles. */
@@ -43,7 +44,7 @@
   --on-action: var(--white); /* Text and icons on action and action-hover fills (4.9:1 / 7.2:1 light, 7.1:1 / 9.4:1 dark). */
   --action-secondary: var(--blue-700); /* Secondary button outline and text; its hover fill. */
   --on-action-secondary: var(--white); /* Text on an action-secondary fill (10.7:1 light, 9.6:1 dark). */
-  --ornament: var(--copper-400); /* Decoration only: card top rule, cover frame, bookcover ring, carousel dots, footer accent. 2.75:1 on cream, so never text and never the only cue for a state. */
+  --ornament: var(--copper-400); /* Decoration only: cover frame, bookcover ring, carousel dots, footer accent, the rosette watermark and the event date ring. 2.75:1 on cream, so never text and never the only cue for a state. */
   --border-subtle: var(--sand-150); /* Dividers inside cards and lists, card edges. Decoration. */
   --border-strong: var(--sand-200); /* Rules under bands, table cell borders, pill outlines. Decoration. */
   --border-control: var(--stone-500); /* Input, select and checkbox borders (3.05:1 light on page; 4.6:1 dark on card). */
@@ -64,6 +65,7 @@
   --surface-raised: var(--navy-800);
   --surface-band: var(--navy-800);
   --surface-inverse: var(--navy-850);
+  --surface-feature: var(--navy-700);
   --text: var(--cream-200);
   --text-muted: var(--periwinkle-200);
   --text-heading: var(--periwinkle-300);
