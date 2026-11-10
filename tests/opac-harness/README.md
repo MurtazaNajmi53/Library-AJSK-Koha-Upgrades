@@ -12,20 +12,22 @@ You need Python 3 and Node.js.
 npm install playwright && npx playwright install chromium
 ```
 
+The tests use Playwright's own Chromium. Set `CHROME_PATH` to use another browser binary.
+
 Start the five servers `test.js` expects, each in its own terminal (or with `&`):
 
 ```bash
-python3 serve.py 8801 v4                # current build (use v4paste to test the paste copies)
+python3 serve.py 8801 v5                # current build (use v5paste to test the paste copies)
 python3 serve.py 8802 v3                # previous build, to prove regressions are fixed
-python3 serve.py 8804 v4 brokenccl      # stand-in Zebra refuses the "not notforloan=3" term
-python3 serve.py 8806 v4 empty          # a patron with nothing on loan
+python3 serve.py 8804 v5 brokenccl      # stand-in Zebra refuses the "not notforloan=3" term
+python3 serve.py 8806 v5 empty          # a patron with nothing on loan
 python3 serve.py 8807 v12               # the original v1.2, for the rosette comparison
 ```
 
 Then run the checks:
 
 ```bash
-node test.js                            # 60 functional checks
+node test.js                            # 74 checks: 60 functional, 14 design system
 node layout-test.js http://127.0.0.1:8801   # 62 layout checks across seven widths
 ```
 
