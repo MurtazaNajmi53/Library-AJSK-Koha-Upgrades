@@ -69,7 +69,7 @@ These come from the brand book. Check every change against them.
 
 **Motion.** Motion shows what changed after the reader acts. It is never decoration. Enter with `ease-out`, leave with `ease-in`, and leave faster than you arrive. Animate `transform` and `opacity`, and name each transitioned property (no `transition: all`). Under `prefers-reduced-motion`, movement drops to zero and fades shorten to `duration-instant`, but state still changes visibly.
 
-**Imagery.** The rosette is the only ornament. Records without an image get the generated BookCover, never a stock photo. Never approximate the logo: use `.aj-logo` on screen (it masks the real artwork in the `logo` token) and the files in `assets/` everywhere else.
+**Imagery.** The rosette is the only ornament: covers, the loader, empty states, the footer and feature-card watermarks (one watermark per page) and the event date ring. Cards have no top rule. Records without an image get the generated BookCover, never a stock photo. Never approximate the logo: use `.aj-logo` on screen (it masks the real artwork in the `logo` token) and the files in `assets/` everywhere else.
 
 ## Applying it to Koha
 
