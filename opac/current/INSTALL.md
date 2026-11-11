@@ -1,25 +1,113 @@
 # Maktabat Aljamea (Sindh) — OPAC front-end
 
-Koha 25.11.02 · Zebra · 10 November 2026 · **CSS v5 · JS v5 · fonts v2**
+Koha 25.11.02 · Zebra · 11 November 2026 · **CSS v6 · JS v6 · footer v2 · fonts v2**
 
 Everything in this folder is current. Older versions are in [`../legacy/`](../legacy/)
-(v4 is in [`../legacy/v4/`](../legacy/v4/)).
+(v5 is in [`../legacy/v5/`](../legacy/v5/), with the v1 footer).
 
 ---
 
 ## What goes where
 
-Seven things to paste, in this order. Nothing here needs server access.
+Eight things to paste, in this order. Nothing here needs server access.
 
 | # | Paste this file | Into |
 |---|---|---|
 | 1 | `OpacHeaderFonts_V2.html` | Tools › HTML customizations › **opacheader** |
 | 2 | `OpacLoginInstructions_V1.html` | Tools › HTML customizations › **OpacLoginInstructions** |
 | 3 | `OpacMainUserBlock_V3.html` | Tools › HTML customizations › **OpacMainUserBlock** |
-| 4 | `OPACUserCSS_V5.paste.css` | System preferences › **OPACUserCSS** |
-| 5 | `OPACUserJS_V5.paste.js` | System preferences › **OPACUserJS**, Parts 0–D only (see below) |
-| 6 | `SCOUserCSS_V1.paste.css` | System preferences › **SCOUserCSS** |
-| 7 | `SCOUserJS_V1.paste.js` | System preferences › **SCOUserJS** |
+| 4 | `OPACUserCSS_V6.paste.css` | System preferences › **OPACUserCSS** |
+| 5 | `opaccredits-footer_V2.html` | Tools › HTML customizations › **opaccredits** |
+| 6 | `OPACUserJS_V6.paste.js` | System preferences › **OPACUserJS**, everything before Part E (see below) |
+| 7 | `SCOUserCSS_V1.paste.css` | System preferences › **SCOUserCSS** |
+| 8 | `SCOUserJS_V1.paste.js` | System preferences › **SCOUserJS** |
+
+---
+
+## v6 — header, footer, results and account pages
+
+**Three things change: OPACUserCSS, OPACUserJS and the opaccredits entry.**
+Nothing else moves.
+
+### Installing it
+
+1. **Back up first.** Copy the current OPACUserCSS, OPACUserJS and the
+   opaccredits entry into a dated note, and record the change in the project
+   log with those old values. That is the rollback.
+2. **OPACUserCSS** — replace the whole value with `OPACUserCSS_V6.paste.css`.
+3. **opaccredits** — straight after step 2, open the existing entry with
+   "Edit with text editor" and replace its contents with
+   `opaccredits-footer_V2.html`. The v6 stylesheet no longer styles the v1
+   footer markup, so the footer looks plain until this is done.
+4. **OPACUserJS — do not replace the whole box.** Select from the top down to
+   the line just before `/* ==== PART E` and paste `OPACUserJS_V6.paste.js`
+   over it. The paste copy ends with the new Part F; Part E stays after it.
+5. Check the home page (scroll down and back up; open the account menu), a
+   search (Filters, the three quick filters, one filter applied), Your
+   summary, Personal details, Checkout history, the login page and one kiosk,
+   on a laptop and a phone.
+
+**Rollback:** paste the three backed-up values back.
+
+### What changes for readers
+
+- **Header.** The bar stays at the top. Scrolling down minimises the large
+  logo, and the small one writes itself in from right to left while the
+  library name slides over. Scrolling back reverses it, faster. Under
+  reduced motion the logo only fades.
+- **Account menu on the home page** now opens over the search band. It used to
+  fall behind it: the header and the band each carry a
+  `view-transition-name`, which made each its own stacking layer, and the
+  band came later in the page.
+- **Footer.** The design system's sand footer: logo, the Arabic name مكتبة الجامعة
+  (on Arabic pages only; English pages stay in English), address and
+  email, three link columns (Catalogue, Your account, Aljamea), the copper
+  rule, and Back to top. The links line up, because every column starts with
+  a heading and every link is one 44px row. The rosette watermark is drawn
+  from the loader's outline at 18%.
+- **Search results** use the full width of the page, in one card panel;
+  each result's actions (Click & Collect, Save to lists, Add to cart) sit
+  at the far edge, as on UCL's Primo, so rows no longer stop half-way. Koha's "Refine your
+  search" column moves into a **Filters** drawer that slides in from the
+  reading-start edge (with a count of filters applied, Clear all, and Show N
+  results). Above the results, large 52px buttons give one-press access to
+  **Available now**, **Item type** and **Collection**; the last two open a
+  short menu of values. Which three show is the `QUICK` list at the top of
+  Part F. Page numbers appear only below the results; the top set took a
+  whole row (several on a phone) and is hidden.
+- **Account pages.** The menu is a card, tabs use the underline indicator,
+  tables are cards with band heads and no stripes, form sections are cards
+  with start-aligned labels, alerts are bands. The breadcrumb reads "Your
+  account" and Your summary says "Hello, Murtaza." with "Not Murtaza? Log
+  out", instead of the full name and ITS number.
+- **Login help cards** lose the copper inline-start rule.
+
+### What it costs
+
+The paste CSS goes from 55 KB to 75 KB (13.8 KB gzipped); the JS from
+54 KB to 67 KB (20 KB gzipped). The footer adds no artwork: the logo is the
+same hotlinked file as the header, and the rosette comes from the script.
+
+### How v6 was tested
+
+Against the live catalogue in Chrome, with the v6 CSS, JS and footer swapped
+into the page in the browser only (no Koha setting was changed):
+
+- **Laptop (1440px):** home (account menu open over the band, scroll stick
+  and unstick), results with no filter and with Item type: Book, the Filters
+  drawer and quick filter menus, Your summary, Checkout history, Personal
+  details, the footer.
+- **Phone (390px, in a frame):** home, results, Filters drawer, footer. No
+  sideways scroll. Two fixes came out of it: the header now stays one 60px
+  row (the account icon used to drop to a second row, making the sticky bar
+  about 100px), and Koha's results toolbar no longer sticks below 768px
+  (it wraps to about 460px on a phone and hid most of the screen).
+- **RTL (dir="rtl" lang="ar" set on the page):** header, logo write-in,
+  home widgets, results, the footer with مكتبة الجامعة. One fix: the open
+  drawer stayed off-screen on RTL pages.
+
+Not checked: the real Arabic translation (only simulated above), the login
+page, the kiosk, and the harness (`tests/opac-harness`) suites.
 
 ---
 

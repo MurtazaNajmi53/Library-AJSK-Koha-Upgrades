@@ -19,7 +19,7 @@ Nothing here modifies Koha's own code. Everything is delivered through system pr
 ## Working rules
 
 - **Design.** Every user-facing change follows the design system: semantic tokens only, the 4.5:1 contrast and 44px target floor in light and dark, LTR and RTL, sentence case, no emoji, and motion that respects `prefers-reduced-motion`. From V5 the OPAC CSS uses the semantic tokens. The old `--aj-*` names survive only as aliases at the end of its section 1, because `SCOUserCSS_V1` and Click & Collect Part E still read them. Don't use them in new rules; map with the migration table in `design-system/README.md`.
-- **Masters, then paste copies.** Edit the documented master (`OPACUserCSS_V5.css`, `OPACUserJS_V5.js`, …), then regenerate the `.paste.` copy. Never hand-edit a paste copy. Koha inlines these prefs on every page, so keep them lean.
+- **Masters, then paste copies.** Edit the documented master (`OPACUserCSS_V6.css`, `OPACUserJS_V6.js`, …), then regenerate the `.paste.` copy. Never hand-edit a paste copy. Koha inlines these prefs on every page, so keep them lean.
 - **Version, don't overwrite.** A new release of an OPAC file gets a new version suffix, and the previous one moves to `opac/legacy/`. Record what changed at the top of the master file.
 - **Record live changes.** Any change made in Koha's admin goes into the relevant project log, with the old value, so it can be rolled back.
 - **No secrets.** Never commit passwords, API keys, patron data or exports with personal information.
