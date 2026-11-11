@@ -1,0 +1,74 @@
+<!-- Maktabat Aljamea (Sindh) — site footer                   (v2, 11 Nov 2026)
+
+     Tools › HTML customizations › opaccredits (edit the existing entry)
+       Display location : opaccredits
+       Library          : All libraries
+     Paste this with "Edit with text editor", NOT the visual editor: the
+     visual editor rewrites the classes and drops the <nav> landmarks.
+
+     The design system's Footer: a sand band with the Aljamea logo, the
+     Arabic library name, three link columns, the copper rule, and a legal
+     row with Back to top. Styled by section 12 of OPACUserCSS_V6.css;
+     the rosette watermark comes from OPACUserJS_V6 (Part A), so it costs
+     nothing in this block.
+
+     Replaces opaccredits-footer.html (v1, now opac/legacy/v5/
+     opaccredits-footer_V1.html). Paste this AFTER OPACUserCSS_V6: the v5
+     stylesheet does not know these classes.
+
+     The Arabic name مكتبة الجامعة shows only when the interface language is
+     Arabic (html lang="ar"); the stylesheet hides it on English pages.
+
+     Every link goes to a page that exists. Add more only when the library
+     has the page (accessibility, privacy, opening hours).
+-->
+<footer class="aj-footer" aria-label="Library information">
+  <div class="aj-footer__grid">
+    <div class="aj-footer__brand">
+      <span class="aj-footer__logo" role="img" aria-label="Aljamea-tus-Saifiyah"></span>
+      <p class="aj-footer__ar" lang="ar" dir="rtl">مكتبة الجامعة</p>
+      <p class="aj-footer__name">Maktabat Aljamea (Sindh)</p>
+      <p class="aj-footer__tagline">The library of Aljamea-tus-Saifiyah, Karachi</p>
+      <address class="aj-footer__address">
+        Aljamea-tus-Saifiyah, St-8 Block-C,<br>
+        North Nazimabad, Karachi 74700, Pakistan<br>
+        <a href="mailto:library_support.karachi@jameasaifiyah.edu">library_support.karachi@jameasaifiyah.edu</a>
+      </address>
+    </div>
+
+    <nav class="aj-footer__col" aria-labelledby="aj-footer-catalogue">
+      <h2 id="aj-footer-catalogue">Catalogue</h2>
+      <ul>
+        <li><a href="/cgi-bin/koha/opac-search.pl">Advanced search</a></li>
+        <li><a href="/cgi-bin/koha/opac-authorities-home.pl">Authority search</a></li>
+        <li><a href="/cgi-bin/koha/opac-topissues.pl">Most popular</a></li>
+      </ul>
+    </nav>
+
+    <nav class="aj-footer__col" aria-labelledby="aj-footer-account">
+      <h2 id="aj-footer-account">Your account</h2>
+      <ul>
+        <li><a href="/cgi-bin/koha/opac-user.pl">Your summary</a></li>
+        <li><a href="/cgi-bin/koha/opac-readingrecord.pl">Checkout history</a></li>
+        <li><a href="/cgi-bin/koha/opac-shelves.pl?op=list">Your lists</a></li>
+      </ul>
+    </nav>
+
+    <nav class="aj-footer__col" aria-labelledby="aj-footer-help">
+      <h2 id="aj-footer-help">Aljamea</h2>
+      <ul>
+        <li><a href="https://jameasaifiyah.edu/library/">About the library</a></li>
+        <li><a href="https://jameasaifiyah.edu/">jameasaifiyah.edu</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <hr class="aj-footer__rule">
+
+  <div class="aj-footer__legal">
+    <p class="aj-footer__copy">© Aljamea-tus-Saifiyah</p>
+    <a class="aj-footer__top" href="#wrapper">Back to top
+      <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><path d="M10 15V5M5 10l5-5 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</footer>

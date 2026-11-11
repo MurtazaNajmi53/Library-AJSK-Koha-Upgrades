@@ -563,8 +563,9 @@ async function widgetTiming(browser, base, label) {
         chevronSvg: !!document.querySelector('.aj-shelf__btn svg.aj-flip'),
         statusRow: box('.aj-ml__link'),
         progressBuilt: !!document.querySelector('.aj-progress .aj-progress__bar'),
-        rosetteArt: (document.getElementById('aj-loader') || { style: { getPropertyValue: () => '' } })
-                      .style.getPropertyValue('--aj-ros-line').indexOf('data:image/svg+xml') !== -1,
+        // v6 sets the artwork on <html> (the footer uses it too); v5 set it on the loader
+        rosetteArt: [document.documentElement, document.getElementById('aj-loader')]
+                      .some(e => e && e.style.getPropertyValue('--aj-ros-line').indexOf('data:image/svg+xml') !== -1),
       };
     });
 
