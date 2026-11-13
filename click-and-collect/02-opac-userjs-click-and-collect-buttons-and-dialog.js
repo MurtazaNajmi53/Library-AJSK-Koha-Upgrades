@@ -1,5 +1,5 @@
 
-/* ==== PART E: CLICK & COLLECT (v2.2, 2026-10-29) ====
+/* ==== PART E: CLICK & COLLECT (v2.3, 2026-11-13) ====
    Replaces v1 "PICKUP ORDERS". To roll back: delete from this line to "END PART E".
    - Dynamic Click & Collect / Reserve buttons (search results, record page, lists, cart)
    - Own order dialog: patron picks a delivery date only; copy is chosen automatically
@@ -8,6 +8,11 @@
    - v2.2: button styling fixed; copies already ordered/waiting for another reader
      are detected (page status + a live check of Koha's hold form on click) and
      offered as "Reserve" instead of Click & Collect
+   - v2.3: buttons arrive sooner. Each title's copies are looked up 8 at a
+     time and its button shows as soon as they are known, without waiting
+     for the reader's orders (about 2s); those switch to "Ordered" when the
+     orders arrive, and a click checks them first. Until a button shows,
+     OPACUserCSS v7 holds its place with a placeholder.
    Koha's own hold screen stays reachable for staff/testing with &manual=1 */
 try {
 (function () {
@@ -23,7 +28,8 @@ try {
     readOnlyNotForLoan: -2,
     daysAhead: 7,
     collectDays: 3,
-    frameTimeoutMs: 60000
+    frameTimeoutMs: 60000,
+    parallel: 8                        /* titles whose copies are looked up at once */
   };
 
   var AR = /^ar/i.test(document.documentElement.lang || "");
@@ -479,18 +485,32 @@ try {
   function fillSlot(slot, mine) {
     var bib = String(slot.data("bib"));
     if (mine.indexOf(bib) >= 0) { slot.html(btnHtml("mine", bib)); return; }
-    availability(bib, slot).then(function (a) { slot.data("a", a); slot.html(btnHtml(a.state, bib, a)); });
+    availability(bib, slot).then(function (a) {
+      slot.data("a", a);
+      if (!slot.find(".disabled.ajCC").length) slot.html(btnHtml(a.state, bib, a));   /* "Ordered" wins */
+    });
   }
+  /* v2.3: each title's button shows as soon as its copies are known,
+     up to CFG.parallel titles at a time. The reader's own orders (from
+     opac-user.pl, about 2 seconds) load alongside; when they arrive,
+     titles already ordered switch to "Ordered". v2.2 waited for the
+     orders before starting, then went 4 titles at a time. */
   function refreshButtons(force) {
     if (force) availCache = {};
+    var queue = $(".ajCCSlot").toArray(), busy = 0;
+    (function pump() {
+      while (busy < CFG.parallel && queue.length) {
+        var slot = $(queue.shift());
+        busy++;
+        itemLists(String(slot.data("bib"))).always(function () { busy--; pump(); });
+        fillSlot(slot, []);
+      }
+    })();
     myOrders(force).then(function (mine) {
-      var slots = $(".ajCCSlot").toArray();
-      (function next() {
-        var batch = slots.splice(0, 4);
-        if (!batch.length) return;
-        batch.forEach(function (x) { fillSlot($(x), mine); });
-        $.when.apply($, batch.map(function (x) { return itemLists(String($(x).data("bib"))); })).always(next);
-      })();
+      $(".ajCCSlot").each(function () {
+        var s = $(this);
+        if (mine.indexOf(String(s.data("bib"))) >= 0) s.html(btnHtml("mine", String(s.data("bib"))));
+      });
     });
   }
 
@@ -498,6 +518,18 @@ try {
   function openFor(bib, slot, title, btn) {
     var old = btn ? btn.html() : null;
     if (btn) btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm" aria-hidden="true"></span><span>' + esc(T.checking) + '</span>');
+    /* v2.3: the button may show before the reader's orders have loaded, so
+       check them first: a title already ordered is never ordered twice */
+    myOrders(false).then(function (mine) {
+      if (mine.indexOf(String(bib)) >= 0) {
+        if (slot && slot.length) slot.html(btnHtml("mine", bib));
+        else if (btn) btn.prop("disabled", false).html(old);
+        return;
+      }
+      openChecked(bib, slot, title, btn, old);
+    });
+  }
+  function openChecked(bib, slot, title, btn, old) {
     resolveLines([{ bib: bib, title: title, slot: slot }]).then(function (lines) {
       var a = lines[0].a;
       if (slot && slot.length) { slot.data("a", a); slot.html(btnHtml(a.state, bib, a)); }

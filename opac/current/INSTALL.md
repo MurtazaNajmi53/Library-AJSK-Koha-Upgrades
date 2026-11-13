@@ -1,9 +1,9 @@
 # Maktabat Aljamea (Sindh) — OPAC front-end
 
-Koha 25.11.02 · Zebra · 11 November 2026 · **CSS v6 · JS v6 · footer v2 · fonts v2**
+Koha 25.11.02 · Zebra · 13 November 2026 · **CSS v7 · JS v7 · Part E v2.3 · footer v2 · fonts v2**
 
 Everything in this folder is current. Older versions are in [`../legacy/`](../legacy/)
-(v5 is in [`../legacy/v5/`](../legacy/v5/), with the v1 footer).
+(v6 is in [`../legacy/v6/`](../legacy/v6/); v5, with the v1 footer, in [`../legacy/v5/`](../legacy/v5/)).
 
 ---
 
@@ -16,11 +16,93 @@ Eight things to paste, in this order. Nothing here needs server access.
 | 1 | `OpacHeaderFonts_V2.html` | Tools › HTML customizations › **opacheader** |
 | 2 | `OpacLoginInstructions_V1.html` | Tools › HTML customizations › **OpacLoginInstructions** |
 | 3 | `OpacMainUserBlock_V3.html` | Tools › HTML customizations › **OpacMainUserBlock** |
-| 4 | `OPACUserCSS_V6.paste.css` | System preferences › **OPACUserCSS** |
+| 4 | `OPACUserCSS_V7.paste.css` | System preferences › **OPACUserCSS** |
 | 5 | `opaccredits-footer_V2.html` | Tools › HTML customizations › **opaccredits** |
-| 6 | `OPACUserJS_V6.paste.js` | System preferences › **OPACUserJS**, everything before Part E (see below) |
+| 6 | `OPACUserJS_V7.paste.js`, then Part E v2.3 | System preferences › **OPACUserJS**, the whole value (see v7 below) |
 | 7 | `SCOUserCSS_V1.paste.css` | System preferences › **SCOUserCSS** |
 | 8 | `SCOUserJS_V1.paste.js` | System preferences › **SCOUserJS** |
+
+---
+
+## v7 — one sticky bar, and the v6 follow-ups
+
+**Two things change: OPACUserCSS and OPACUserJS** (Parts 0–D and F, and
+Part E, which moves to v2.3). Nothing in the HTML customizations moves.
+
+### Installing it
+
+1. **Back up first.** Copy the current OPACUserCSS and OPACUserJS into a
+   dated note, and record the change in the project log with those old
+   values. That is the rollback.
+2. **OPACUserCSS** — replace the whole value with `OPACUserCSS_V7.paste.css`.
+3. **OPACUserJS** — replace the whole value with `OPACUserJS_V7.paste.js`,
+   followed straight after by the whole of
+   `../../click-and-collect/02-opac-userjs-click-and-collect-buttons-and-dialog.js`
+   (Part E v2.3, from `/* ==== PART E` to `END PART E`). Part E changed
+   in this release, so the old block is not kept this time.
+4. Check, on a laptop and a phone: a search (scroll down: the header goes,
+   the search bar stays with Filters, the quick filters and Sort; open
+   Sort and pick "Title (A-Z)" and "40 per page"); the Click & Collect
+   buttons (they arrive about two seconds sooner, and a title you have
+   already ordered shows "Ordered"); a record page (the search bar
+   sticks); the home page (scroll down slowly and back up: the logo
+   changes once each way); the login page; Holds history; Advanced
+   search; Authority search; Most popular.
+
+**Rollback:** paste the two backed-up values back.
+
+### What changes for readers
+
+- **Results and record pages: one sticky bar.** The header scrolls away
+  and the sand search band stays at the top. On the results page it also
+  holds Filters, Available now, Item type, Collection and a Sort
+  pull-out, in one line on a laptop. The pull-out has the sort orders and,
+  under them, Results per page; each choice reloads the search on page
+  one, as Koha's own form did. Below 1200px the buttons take a second line
+  that scrolls sideways; on a phone the bar is about 128px, without the
+  "Library catalog" scope (Advanced search has it). "Select all" and the
+  add-to links now scroll with the page.
+- **No flash of the old results layout.** The full-width list is there
+  from the first paint.
+- **Click & Collect buttons arrive sooner.** Measured on a 20-title results
+  page with nothing cached: the first button at 0.7s (v2.2: 2.8s), all of
+  them by 2.7s (v2.2: 5.6s). Until a button arrives, a pill holds its place.
+- **Header:** scrolling back up slowly no longer makes the logo flicker.
+- **Loader:** signing in says "Signing you in…", not "Searching the
+  catalogue…".
+- **Login page:** the help panel lines up with the login form: same top,
+  same height.
+- **Holds history** looks like the other account pages: card table, styled
+  "Order by" row, smaller titles.
+- **Advanced search, Authority search and Most popular** use the design
+  system's fields, 44px checkbox rows and buttons, and cards.
+
+### Worth doing in Koha's admin (not part of this release)
+
+- **Holds history: hide the Library column.** There is one library, so the
+  column repeats "Aljamea-tus-Saifiyah Library Karachi" over four lines in
+  every row. Administration › Table settings › OPAC › holdshistory, untick
+  Library. Record it in the project log.
+
+### How v7 was tested
+
+On the live catalogue in Chrome, with the v7 CSS, JS and Part E swapped
+into each page (`tests/opac-harness/live-swap.js`; nothing changed in
+Koha): the results page at 1440px and in a 390px frame, LTR and RTL; the
+Sort pull-out; the sticky bar on scroll; a record page; the home and
+login pages (header scroll test, help panel alignment at 1440px and
+390px); Holds history; Advanced search; Authority search; Most popular.
+Click & Collect timings were taken the same way, with the reader's orders
+not cached. No order was placed.
+
+Not tested: the harness suites (`test.js`, `layout-test.js`) stall on a
+page load in this environment, with v6 as well as v7, so they could not
+give a result; Safari and Firefox (`@media (scripting)` and
+`field-sizing` are newer features, and the CSS falls back without them:
+the results layout then waits for Part F as in v6); dark mode is not used
+by the OPAC. The record page's Holdings tab looked empty in the preview,
+but it does the same when the unchanged page is rewritten that way, so it
+is an artefact of the preview, not of v7.
 
 ---
 
