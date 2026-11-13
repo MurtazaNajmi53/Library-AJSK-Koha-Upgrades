@@ -46,13 +46,21 @@ without changing anything in Koha:
 
    ```js
    eval(await (await fetch("http://127.0.0.1:8765/tests/opac-harness/live-swap.js")).text());
-   await ajLiveSwap({ version: "V8", partE: true });
+   await ajLiveSwap({ partE: true });   // version defaults to the current release
    ```
 
    It re-fetches the page and rewrites it with the masters from
    `opac/current` (and Part E from `click-and-collect/`). `rtl: true`
    previews right to left; `probe: true` times the Click & Collect
    buttons into `window.__ccFirst` and `window.__ccAll`.
+
+To click through a preview, make a bookmark with this as its address,
+and press it once on each page after it has loaded (a "Preview V8.2"
+badge shows at the bottom left once the page is swapped):
+
+```
+javascript:(async()=>{eval(await(await fetch('http://127.0.0.1:8765/tests/opac-harness/live-swap.js',{cache:'no-store'})).text());setTimeout(()=>ajLiveSwap({partE:true}),50)})()
+```
 
 Swap once per page load: a second swap in the same tab redeclares Koha's
 own `let` variables and its scripts stop. Known artefacts, not bugs: the

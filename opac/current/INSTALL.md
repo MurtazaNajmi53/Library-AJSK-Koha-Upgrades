@@ -1,11 +1,11 @@
 # Maktabat Aljamea (Sindh) — OPAC front-end
 
-Koha 25.11.02 · Zebra · 13 November 2026 · **OPAC release v8.1**
+Koha 25.11.02 · Zebra · 13 November 2026 · **OPAC release v8.2**
 
-Every installable file here carries the release number, `_V8.1`, so what
+Every installable file here carries the release number, `_V8.2`, so what
 is installed where is easy to follow. A change to any of them is a new
 release, and every file moves to the new number together. Older releases
-are in [`../legacy/`](../legacy/) (v8 in [`../legacy/v8/`](../legacy/v8/), v7 and home
+are in [`../legacy/`](../legacy/) (v8.1 in [`../legacy/v8.1/`](../legacy/v8.1/), v8 in [`../legacy/v8/`](../legacy/v8/), v7 and home
 block v3 in [`../legacy/v7/`](../legacy/v7/), and so on). The self-checkout kiosk has its
 own folder and version: [`../../sco/`](../../sco/README.md).
 
@@ -13,24 +13,113 @@ own folder and version: [`../../sco/`](../../sco/README.md).
 
 ## What goes where
 
-Everything below is OPAC release v8.1. Nothing here needs server access.
+Everything below is OPAC release v8.2. Nothing here needs server access.
 
 | # | Paste this file | Into |
 |---|---|---|
-| 1 | `OpacHeaderFonts_V8.1.html` | Tools › HTML customizations › **opacheader** |
-| 2 | `OpacLoginInstructions_V8.1.html` | Tools › HTML customizations › **OpacLoginInstructions** |
-| 3 | `OpacMainUserBlock_V8.1.html` | Tools › HTML customizations › **OpacMainUserBlock** |
-| 4 | `opaccredits-footer_V8.1.html` | Tools › HTML customizations › **opaccredits** |
-| 5 | `OPACUserCSS_V8.1.paste.css` | System preferences › **OPACUserCSS** |
-| 6 | `OPACUserJS_V8.1.paste.js` | System preferences › **OPACUserJS**, the whole value. Click & Collect is inside it |
-| 7 | `reports/new-arrivals_V8.1.sql` | Saved as report **37** (public, cache 300 s). Re-save only if it changes |
-| 8 | `../click-and-collect/03-staff-userjs-print-pull-list-pdf-button_V8.1.js` | Staff: System preferences › **IntranetUserJS** (unchanged) |
-| 9 | `../click-and-collect/04-report-34-orders-to-pull_V8.1.sql` | Report 34 (unchanged) |
-| 10 | `../click-and-collect/05-email-notices-and-shelf-slip-templates_V8.1.md` | Tools › Notices & slips (unchanged) |
+| 1 | `OpacHeaderFonts_V8.2.html` | Tools › HTML customizations › **opacheader** |
+| 2 | `OpacLoginInstructions_V8.2.html` | Tools › HTML customizations › **OpacLoginInstructions** |
+| 3 | `OpacMainUserBlock_V8.2.html` | Tools › HTML customizations › **OpacMainUserBlock** |
+| 4 | `opaccredits-footer_V8.2.html` | Tools › HTML customizations › **opaccredits** |
+| 5 | `OPACUserCSS_V8.2.paste.css` | System preferences › **OPACUserCSS** |
+| 6 | `OPACUserJS_V8.2.paste.js` | System preferences › **OPACUserJS**, the whole value. Click & Collect is inside it |
+| 7 | `reports/new-arrivals_V8.2.sql` | Saved as report **37** (public, cache 300 s). Re-save only if it changes |
+| 8 | `../click-and-collect/03-staff-userjs-print-pull-list-pdf-button_V8.2.js` | Staff: System preferences › **IntranetUserJS** (unchanged) |
+| 9 | `../click-and-collect/04-report-34-orders-to-pull_V8.2.sql` | Report 34 (unchanged) |
+| 10 | `../click-and-collect/05-email-notices-and-shelf-slip-templates_V8.2.md` | Tools › Notices & slips (unchanged) |
 
-Files 1, 2, 4, 8, 9 and 10 are unchanged in content since their last
-release; only their names carry the new number. If they are already
-installed, there is nothing to paste for them.
+In v8.2 only **5 (OPACUserCSS)** and **6 (OPACUserJS)** change. Files
+1–4 and 7–10 are unchanged in content; only their names carry the new
+number. If v8.1 is installed, there is nothing to paste for them.
+
+---
+
+## v8.2 — simpler results, record page and cart; a new Click & Collect dialog
+
+Students see what they need on each screen; Print, Cite, Save record,
+More searches, the MARC and ISBD views, Send, Download and the rest are
+one press away under **More options**. Audits behind every change:
+[`audits/`](audits/) (Gate 0, the site-wide simplicity audit, Gate 1,
+phones and tablets).
+
+**Two things change in Koha:** OPACUserCSS and OPACUserJS. v8.1 is
+live (checked 13 Nov 2026), so nothing else needs pasting.
+
+### Installing it
+
+1. **Back up first.** Copy the current OPACUserCSS and OPACUserJS into a
+   dated note and the project log. That is the rollback (the v8.1 copies
+   are also in [`../legacy/v8.1/`](../legacy/v8.1/)).
+2. **OPACUserCSS** — replace the whole value with `OPACUserCSS_V8.2.paste.css`.
+3. **OPACUserJS** — replace the **whole** value with `OPACUserJS_V8.2.paste.js`.
+4. Optional admin changes (record each, with its old value, in the
+   project log):
+   - Table settings › OPAC › **holdshistory**: keep Title, Author, Hold
+     date and Status (the Library column repeats one library).
+   - System preferences › **OPACStarRatings**: "no". v8.2 already hides
+     ratings at 0, so this only tidies Koha's own markup.
+   Copy number and the library name in the record's holdings are hidden
+   in CSS: no table settings change is needed for those.
+5. Check, on a laptop and a phone: a search, a record, the cart, the New
+   arrivals popup, Click & Collect up to the dates (Cancel), Checkout
+   history, Lists, Most popular.
+
+### What changes for readers
+
+- **Results:** each title shows its author and year, "On the shelf" or
+  "On loan", then Click & Collect, Add to cart and a ⋯ menu (Save to
+  lists). Edition, material type, language, publication details, the
+  result number and empty star ratings are gone from the list (they are
+  on the record). Buttons answer a press at once; "Remove from cart"
+  looks different from "Add to cart". Tablets give titles the full width.
+- **Select titles** in the results bar shows the checkboxes and a
+  toolbar: "3 selected", Select all, Clear all, Add to cart, Add to list,
+  Click & Collect selected, Done.
+- **Record page:** a "Get this title" strip under the title says where
+  the book is ("On the shelf, Mezzanine Floor Stack, call number 268")
+  and holds Click & Collect, Add to cart and More options. The record
+  and its holdings now use the full width; on a phone a small cover sits
+  beside the title. Labels read "by", "Published", "Subjects". The summary
+  and genre are shown up front; "More about this title" opens smoothly
+  into two groups (This edition, Catalogue details), and on a laptop the
+  cover stays beside the text as it grows.
+- **Read in the library only:** titles that can only be read in the
+  library say so (book icon) on results, the record, holdings and the
+  cart, instead of "Not available now". Click & Collect still works. "More about this title" holds the
+  other details. Holdings: one card, status first as a pill with an
+  icon, "Where to find it" (the shelf), call number; cards on phones.
+- **Click & Collect dialog:** opens at once (about 0.1 s; checks run in
+  the background) with the title as readers say it;
+  the dates are large cards; Confirm order and Cancel are pills; it is a
+  bottom sheet on phones; the done screen shows when and where to
+  collect, with one "Done". It no longer closes the cart or the New
+  arrivals popup underneath.
+- **Cart pull-out:** Click & Collect all, then More options (Send by
+  email, Print, Download as) and Empty cart.
+- **New arrivals popup:** the close button lines up with the arrows;
+  "New this month" is gone; the shelf shown is the real one.
+- **Header:** Advanced search is a button beside the search field;
+  Most popular is in the account menu; one back-to-top button.
+- **Home:** no empty "Library information" card; My library lists only
+  what is non-zero.
+- **Account pages:** four menu items and "Account settings"; export
+  buttons in a menu; an empty Lists page offers "Create a list".
+- **Most popular:** one row of choices that apply at once; clean titles.
+
+### What it costs
+
+OPACUserCSS paste copy 123 KB → 164 KB (27 KB gzipped); OPACUserJS 172 KB
+→ 212 KB (55 KB gzipped). Koha prints both inline on every page.
+
+### How v8.2 was tested
+
+On the live catalogue without changing Koha: the masters swapped in with
+`tests/opac-harness/live-swap.js` (which now finds the comment-stripped
+OPACUserJS), at 1300–1366px, in 900px and 390px frames, and right to
+left. No order was placed: the dialog's done screen was drawn with test
+data. See [`audits/v8.2-gate1.md`](audits/v8.2-gate1.md) and
+[`audits/v8.2-phone-tablet.md`](audits/v8.2-phone-tablet.md) for what was
+and wasn't covered.
 
 ---
 
