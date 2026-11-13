@@ -36,6 +36,7 @@ Rollback item lists live inside Koha as reports 35 and 36 (see §5).
 | 10 | IntranetUserJS "Print pull list (PDF)" | LIVE, verified |
 | 11 | Circulation panel: title "Click & Collect", single "Orders to pull" button | LIVE, verified |
 | 12 | Rollback reports 35 and 36 | LIVE |
+| 13 | OPACUserJS Part E **v2.3** (13 Nov 2026, goes with OPAC v7): buttons show as soon as each title's copies are known, 8 titles at a time, without waiting for the reader's orders; titles already ordered switch to "Ordered" when the orders arrive, and a click checks them first. Measured on a 20-title results page: first button 0.7 s (v2.2: 2.8 s), all by 2.7 s (v2.2: 5.6 s) | READY, not yet pasted. Tested in a live preview, no order placed. v2.2 is kept in `legacy/` |
 
 **End-to-end test (29 Oct, 3:50 pm, Murtaza's account, Zawaya read-only book, record 365):** dialog → Confirm → "Order received · Ready today at 6:30 PM · Zawaya attendant's desk · Read in the library only" in 11 s; hold created on the right copy with today's date and the note "Ordered: Thu, 29 Oct 2026, 3:50 pm (Click & Collect)"; confirmation email generated with desk and read-only text; order on the pull list under "Zawaya desk". Test holds 9 and 10 cancelled afterwards.
 
@@ -121,6 +122,7 @@ Patron clicks **Reserve**. When the book is returned (desk or SIP), check-in tra
 | Item types REF, ZAW, MH, MQ, MGZE, MP, AR, CHRT, MI, MJ, PSTR, QASAID | "Not for loan" ticked | unticked |
 | Circ rule AJSK All/All, OPAC item level holds | N (Don't allow) | F (Force) |
 | OPACUserJS | Parts A–D (37,897 chars) + v1 Part E | Parts A–D unchanged + Part E v2 |
+| OPACUserJS Part E (with OPAC v7, when pasted) | v2.2, `legacy/02-opac-userjs-click-and-collect-buttons-and-dialog_v2.2.js` | v2.3, `02-opac-userjs-click-and-collect-buttons-and-dialog.js` |
 | IntranetUserJS | empty | Click & Collect staff block |
 | IntranetCirculationHomeHTML | empty | "Click & Collect" panel: Orders to pull, Check in, Holds awaiting pickup |
 | Report 34 | (new 29 Oct) | v2 SQL in `04-report-34-orders-to-pull-sql.sql`, cache 1 s |
@@ -137,7 +139,7 @@ Old notice text is in `01-backup-of-koha-settings-before-changes-2026-10-29.md`.
 ## 5. Rolling back
 
 Do these in this order.
-1. **OPAC:** in OPACUserJS delete from `/* ==== PART E` to `END PART E ... */`. Koha's normal hold screen returns.
+1. **OPAC:** in OPACUserJS delete from `/* ==== PART E` to `END PART E ... */`. Koha's normal hold screen returns. (To go back only from v2.3 to v2.2, replace that block with `legacy/02-opac-userjs-click-and-collect-buttons-and-dialog_v2.2.js`.)
 2. **Staff JS:** in IntranetUserJS delete the `CLICK & COLLECT: STAFF` block.
 3. **Item types first:** Administration → Item types → tick "Not for loan" again on REF, ZAW, MH, MQ, MGZE, MP, AR, CHRT, MI, MJ, PSTR, QASAID. (Do this before step 4, or the items set back to 0 become borrowable.)
 4. **Items:** run **report 36** → batch-modify those 2,496 to Not for loan = 0. Run **report 35** → batch-modify those 1,292 to 0. Then every remaining -2 item (`SELECT itemnumber FROM items WHERE notforloan = -2`) → 1. -2 did not exist before 29 Oct, so this is exact.

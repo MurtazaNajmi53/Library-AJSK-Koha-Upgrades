@@ -17,10 +17,10 @@ The tests use Playwright's own Chromium. Set `CHROME_PATH` to use another browse
 Start the five servers `test.js` expects, each in its own terminal (or with `&`):
 
 ```bash
-python3 serve.py 8801 v6                # current build (use v6paste to test the paste copies)
+python3 serve.py 8801 v7                # current build (use v7paste to test the paste copies; v6 is the previous build)
 python3 serve.py 8802 v3                # previous build, to prove regressions are fixed
-python3 serve.py 8804 v6 brokenccl      # stand-in Zebra refuses the "not notforloan=3" term
-python3 serve.py 8806 v6 empty          # a patron with nothing on loan
+python3 serve.py 8804 v7 brokenccl      # stand-in Zebra refuses the "not notforloan=3" term
+python3 serve.py 8806 v7 empty          # a patron with nothing on loan
 python3 serve.py 8807 v12               # the original v1.2, for the rosette comparison
 ```
 
@@ -30,6 +30,33 @@ Then run the checks:
 node test.js                            # 74 checks: 60 functional, 14 design system
 node layout-test.js http://127.0.0.1:8801   # 62 layout checks across seven widths
 ```
+
+## Previewing on the live OPAC
+
+The fixtures have no results, record, account or advanced-search pages
+with real data, so those are checked on the live catalogue instead,
+without changing anything in Koha:
+
+1. Serve the repository on `127.0.0.1:8765` with CORS headers and
+   `Access-Control-Allow-Private-Network: true` (run it outside any
+   sandbox that blocks local ports).
+2. Sign in on the OPAC in Chrome, open the page to check, and in the
+   console run:
+
+   ```js
+   eval(await (await fetch("http://127.0.0.1:8765/tests/opac-harness/live-swap.js")).text());
+   await ajLiveSwap({ partE: true });
+   ```
+
+   It re-fetches the page and rewrites it with the masters from
+   `opac/current` (and Part E from `click-and-collect/`). `rtl: true`
+   previews right to left; `probe: true` times the Click & Collect
+   buttons into `window.__ccFirst` and `window.__ccAll`.
+
+Swap once per page load: a second swap in the same tab redeclares Koha's
+own `let` variables and its scripts stop. Known artefacts, not bugs: the
+record page's Holdings tab stays closed, and in a srcdoc frame the Cart
+link shows.
 
 ## What it does not cover
 
