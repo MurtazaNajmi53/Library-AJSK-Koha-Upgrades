@@ -14,6 +14,9 @@ VARIANT = sys.argv[2] if len(sys.argv) > 2 else "v3"
 BROKEN_CCL = len(sys.argv) > 3 and sys.argv[3] == "brokenccl"
 # A patron with nothing on loan: Koha renders the tab label but no table.
 EMPTY_ACCOUNT = len(sys.argv) > 3 and sys.argv[3] == "empty"
+# v8: give Part G a report number, so the New arrivals list comes from the
+# stand-in public report (fixtures/new-arrivals.json) instead of Zebra.
+REPORT = len(sys.argv) > 3 and sys.argv[3] == "report"
 
 # Server-side latency, seconds. Tuned to the shape Murtaza described:
 # widgets taking 5-6 seconds on the current build.
@@ -29,7 +32,7 @@ HITS = []
 # The harness originally read "out/" (current builds) and "src/" (v2) folders.
 # In this repository those files live under opac/, so look them up there.
 REPO = os.path.abspath(os.path.join(ROOT, "..", ".."))
-SEARCH = [os.path.join(REPO, "opac", d) for d in ("current", "legacy/v6", "legacy/v5", "legacy/v4", "legacy/v3", "legacy/v2")]
+SEARCH = [os.path.join(REPO, "opac", d) for d in ("current", "legacy/v7", "legacy/v6", "legacy/v5", "legacy/v4", "legacy/v3", "legacy/v2")]
 
 
 def read(name):
@@ -43,7 +46,11 @@ def read(name):
 
 def build(tpl):
     html = read("fixtures/" + tpl)
-    if VARIANT == "v7paste":
+    if VARIANT == "v8paste":
+        css, js = read("out/OPACUserCSS_V8.paste.css"), read("out/OPACUserJS_V8.paste.js")
+    elif VARIANT == "v8":
+        css, js = read("out/OPACUserCSS_V8.css"), read("out/OPACUserJS_V8.js")
+    elif VARIANT == "v7paste":
         css, js = read("out/OPACUserCSS_V7.paste.css"), read("out/OPACUserJS_V7.paste.js")
     elif VARIANT == "v7":
         css, js = read("out/OPACUserCSS_V7.css"), read("out/OPACUserJS_V7.js")
@@ -65,6 +72,8 @@ def build(tpl):
         css, js = read("out/OPACUserCSS_V3.css"), read("out/OPACUserJS_V3.js")
     else:
         css, js = read("src/OPACUserCSS_New_V2.1.css"), read("src/FINAL_OPACUserJS_v1.2.js")
+    if REPORT:
+        js = __import__("re").sub(r"newArrivalsReportId: \w+", "newArrivalsReportId: 99", js)
     html = html.replace("__CSS__", css).replace("__JS__", js)
     if "__SCOCSS__" in html:
         html = (html.replace("__OPACCSS__", css)
@@ -81,7 +90,11 @@ def inline_js(html):
     its own source text inside that inlined copy."""
     if "__INLINE_JS__" not in html:
         return html
-    if VARIANT == "v7paste":
+    if VARIANT == "v8paste":
+        js = read("out/OPACUserJS_V8.paste.js")
+    elif VARIANT == "v8":
+        js = read("out/OPACUserJS_V8.js")
+    elif VARIANT == "v7paste":
         js = read("out/OPACUserJS_V7.paste.js")
     elif VARIANT == "v7":
         js = read("out/OPACUserJS_V7.js")
@@ -143,6 +156,10 @@ class H(http.server.BaseHTTPRequestHandler):
                 if name == "opac-user" and EMPTY_ACCOUNT:
                     fn = "opac-user-empty.html"
                 return self.send(inline_js(read("fixtures/" + fn)))
+
+        if path == "/cgi-bin/koha/svc/report":
+            time.sleep(0.25)   # a public report, cached by Koha for 5 minutes
+            return self.send(read("fixtures/new-arrivals.json"), "application/json")
 
         if path in ROUTES:
             return self.send(build(ROUTES[path]))

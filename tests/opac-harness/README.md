@@ -17,7 +17,8 @@ The tests use Playwright's own Chromium. Set `CHROME_PATH` to use another browse
 Start the five servers `test.js` expects, each in its own terminal (or with `&`):
 
 ```bash
-python3 serve.py 8801 v7                # current build (use v7paste to test the paste copies; v6 is the previous build)
+python3 serve.py 8801 v8                # current build (use v8paste to test the paste copies; v7 is the previous build)
+python3 serve.py 8811 v8 report         # v8 with the New arrivals list from fixtures/new-arrivals.json (a stand-in public report)
 python3 serve.py 8802 v3                # previous build, to prove regressions are fixed
 python3 serve.py 8804 v7 brokenccl      # stand-in Zebra refuses the "not notforloan=3" term
 python3 serve.py 8806 v7 empty          # a patron with nothing on loan
@@ -45,7 +46,7 @@ without changing anything in Koha:
 
    ```js
    eval(await (await fetch("http://127.0.0.1:8765/tests/opac-harness/live-swap.js")).text());
-   await ajLiveSwap({ partE: true });
+   await ajLiveSwap({ version: "V8", partE: true });
    ```
 
    It re-fetches the page and rewrites it with the masters from

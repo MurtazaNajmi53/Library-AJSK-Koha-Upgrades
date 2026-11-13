@@ -1,26 +1,105 @@
 # Maktabat Aljamea (Sindh) — OPAC front-end
 
-Koha 25.11.02 · Zebra · 13 November 2026 · **CSS v7 · JS v7 · Part E v2.3 · footer v2 · fonts v2**
+Koha 25.11.02 · Zebra · 13 November 2026 · **CSS v8 · JS v8 · Part E v2.4 · home block v4 · footer v2 · fonts v2**
 
 Everything in this folder is current. Older versions are in [`../legacy/`](../legacy/)
-(v6 is in [`../legacy/v6/`](../legacy/v6/); v5, with the v1 footer, in [`../legacy/v5/`](../legacy/v5/)).
+(v7 and home block v3 are in [`../legacy/v7/`](../legacy/v7/); v6 in [`../legacy/v6/`](../legacy/v6/); v5, with the v1 footer, in [`../legacy/v5/`](../legacy/v5/)).
 
 ---
 
 ## What goes where
 
-Eight things to paste, in this order. Nothing here needs server access.
+One saved report and eight things to paste, in this order. Nothing here needs server access.
 
 | # | Paste this file | Into |
 |---|---|---|
 | 1 | `OpacHeaderFonts_V2.html` | Tools › HTML customizations › **opacheader** |
 | 2 | `OpacLoginInstructions_V1.html` | Tools › HTML customizations › **OpacLoginInstructions** |
-| 3 | `OpacMainUserBlock_V3.html` | Tools › HTML customizations › **OpacMainUserBlock** |
-| 4 | `OPACUserCSS_V7.paste.css` | System preferences › **OPACUserCSS** |
+| 0 | `reports/new-arrivals.sql` | Reports › New report › New SQL report, **public** (see v8 below) |
+| 3 | `OpacMainUserBlock_V4.html` | Tools › HTML customizations › **OpacMainUserBlock** |
+| 4 | `OPACUserCSS_V8.paste.css` | System preferences › **OPACUserCSS** |
 | 5 | `opaccredits-footer_V2.html` | Tools › HTML customizations › **opaccredits** |
-| 6 | `OPACUserJS_V7.paste.js`, then Part E v2.3 | System preferences › **OPACUserJS**, the whole value (see v7 below) |
+| 6 | `OPACUserJS_V8.paste.js`, then Part E v2.4 | System preferences › **OPACUserJS**, the whole value (see v8 below) |
 | 7 | `SCOUserCSS_V1.paste.css` | System preferences › **SCOUserCSS** |
 | 8 | `SCOUserJS_V1.paste.js` | System preferences › **SCOUserJS** |
+
+---
+
+## v8 — New arrivals popup
+
+**Four things change:** a new saved report, OpacMainUserBlock (V3 → V4),
+OPACUserCSS, and OPACUserJS (Parts 0–D, F and the new G, then Part E,
+which moves to v2.4).
+
+### Installing it
+
+1. **Back up first.** Copy the current OPACUserCSS, OPACUserJS and the
+   OpacMainUserBlock entry into a dated note, and record the change in
+   the project log with those old values. That is the rollback.
+2. **The report.** Reports › New report › New SQL report. Name it "OPAC new arrivals
+   (popup)", paste the whole of `reports/new-arrivals.sql` (it is only the query; the notes are in `reports/README.md`), tick
+   **Public**, set **Cache expiry** to 300, and save. Run it once: it
+   should list 24 titles, newest first, in well under a second. Note its
+   number (the "ID" column in Saved reports). The OPAC returns its rows
+   as plain lists, in column order, so keep the column order as it is.
+3. **The report number.** It is saved as report **37**, and
+   `newArrivalsReportId: 37` is already set in `OPACUserJS_V8.js` Part 0
+   (and the paste copy). If the report is ever saved again under a new
+   number, change it there and run `node build.js`. Without it the popup still
+   works, from the old 8-second Zebra search, and opens by itself less
+   often because the list is late.
+4. **OpacMainUserBlock** — edit the existing entry and replace its text
+   with `OpacMainUserBlock_V4.html` (with "Edit with text editor").
+5. **OPACUserCSS** — replace the whole value with `OPACUserCSS_V8.paste.css`.
+6. **OPACUserJS** — replace the whole value with `OPACUserJS_V8.paste.js`,
+   followed straight after by the whole of
+   `../../click-and-collect/02-opac-userjs-click-and-collect-buttons-and-dialog.js`
+   (Part E v2.4). Part E must stay last.
+7. Check, on a laptop and a phone: log out and in again (the popup opens
+   once; Esc, Close or the dimmed margin closes it; it does not open on
+   the next page); "New arrivals" in the account menu and on the home
+   page's My library card; pressing a book in the filmstrip, the arrows,
+   the arrow keys and a swipe; Click & Collect from the stage (the popup
+   steps aside for the order dialog and comes back with "Ordered").
+
+**Rollback:** paste the three backed-up values back. The report can stay;
+nothing else reads it.
+
+### What changes for readers
+
+- **The new books come to them.** After login, if there are titles they
+  haven't been shown, a full-screen popup opens with the newest title
+  spotlighted on a navy stage: a large cover, where it is shelved, when it
+  arrived, and a Click & Collect button (or Reserve, when every copy is
+  out). Every other new title is in a filmstrip below; pressing one, the
+  side arrows, the arrow keys or a swipe brings it onto the stage.
+- **It never nags.** It opens by itself once per tab, only when something
+  is new to that reader, and never on the kiosk, Koha's hold screen,
+  print pages or over another dialog. If the list is slow it skips that
+  time.
+- **The home page has room.** The shelf column is gone. My library and
+  Library information sit side by side, with an empty statistics slot
+  below, hidden until it has content.
+
+### What the browser remembers
+
+| Where | Key | What | Why |
+|---|---|---|---|
+| localStorage | `ajNewArrivals:v1` | The list (an hour; 6 hours for the Zebra fallback) | Library-wide, nothing personal |
+| localStorage | `ajNewSeen` | Per reader, the titles already shown, under a SHA-256 hash of the borrowernumber | "Already seen" has to outlast the tab. No reading or loan data; ten readers at most |
+| sessionStorage | `ajNewShown` | That the popup has opened by itself in this tab | So it doesn't open again |
+
+v7's `ajNewBooks:v3` is deleted on first load.
+
+### Two things to know
+
+- **The stage watermark uses the OPAC's own rosette outline**
+  (`--aj-ros-line`, which the footer and loader already carry), not the
+  design system's 12 KB hairline trace (`--aj-ros-hair`). Adding that to a
+  preference Koha inlines on every page wasn't worth it for one popup.
+- **The "In-Stock" rule is the report's too.** Records with any copy at
+  notforloan 3 are left out in the SQL (`HAVING SUM(i.notforloan = 3) = 0`).
+  If that code ever changes, change it in both places.
 
 ---
 

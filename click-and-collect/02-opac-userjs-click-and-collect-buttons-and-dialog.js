@@ -1,5 +1,5 @@
 
-/* ==== PART E: CLICK & COLLECT (v2.3, 2026-11-13) ====
+/* ==== PART E: CLICK & COLLECT (v2.4, 2026-11-13) ====
    Replaces v1 "PICKUP ORDERS". To roll back: delete from this line to "END PART E".
    - Dynamic Click & Collect / Reserve buttons (search results, record page, lists, cart)
    - Own order dialog: patron picks a delivery date only; copy is chosen automatically
@@ -13,6 +13,11 @@
      for the reader's orders (about 2s); those switch to "Ordered" when the
      orders arrive, and a click checks them first. Until a button shows,
      OPACUserCSS v7 holds its place with a placeholder.
+   - v2.4: window.ajCC.fill(root, force) fills the slots inside root only.
+     OPACUserJS v8 Part G (the New arrivals popup) draws its slots after
+     the page has loaded and calls it; force=true re-reads the reader's
+     orders and the copies, so a title just ordered shows "Ordered".
+     Nothing else changed.
    Koha's own hold screen stays reachable for staff/testing with &manual=1 */
 try {
 (function () {
@@ -495,9 +500,10 @@ try {
      opac-user.pl, about 2 seconds) load alongside; when they arrive,
      titles already ordered switch to "Ordered". v2.2 waited for the
      orders before starting, then went 4 titles at a time. */
-  function refreshButtons(force) {
+  function refreshButtons(force, root) {
     if (force) availCache = {};
-    var queue = $(".ajCCSlot").toArray(), busy = 0;
+    var all = root ? $(root).find(".ajCCSlot") : $(".ajCCSlot");
+    var queue = all.toArray(), busy = 0;
     (function pump() {
       while (busy < CFG.parallel && queue.length) {
         var slot = $(queue.shift());
@@ -507,7 +513,7 @@ try {
       }
     })();
     myOrders(force).then(function (mine) {
-      $(".ajCCSlot").each(function () {
+      all.each(function () {
         var s = $(this);
         if (mine.indexOf(String(s.data("bib"))) >= 0) s.html(btnHtml("mine", String(s.data("bib"))));
       });
@@ -614,7 +620,8 @@ try {
     }
   });
 
-  window.ajCC = { asap: asap, dateOptions: dateOptions, classifyItem: classifyItem, decide: decide, CFG: CFG };
+  window.ajCC = { asap: asap, dateOptions: dateOptions, classifyItem: classifyItem, decide: decide, CFG: CFG,
+    fill: function (root, force) { if (root) refreshButtons(!!force, root); } };
 })();
 } catch (err) { if (window.console) console.warn("OPACUserJS part E (Click & Collect):", err); }
 /* ==== END PART E: CLICK & COLLECT ==== */
