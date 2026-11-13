@@ -42,6 +42,10 @@
   --action: var(--copper-600); /* Primary button fill, nav links, eyebrows, icons. As text it reads on page and card, not on surface-band in light (4.0:1): use text-accent there. */
   --action-hover: var(--copper-800); /* Primary button hover and pressed fill. Darker in light, lighter in dark. */
   --on-action: var(--white); /* Text and icons on action and action-hover fills (4.9:1 / 7.2:1 light, 7.1:1 / 9.4:1 dark). */
+  --action-on-feature: var(--gold-400); /* Button fill and outline on surface-feature, where copper action is too dark (7.2:1 on navy-900 light, 5.8:1 on navy-700 dark). Used by the New arrivals stage. */
+  --action-on-feature-hover: var(--gold-200); /* Hover and pressed fill for action-on-feature. */
+  --on-action-feature: var(--navy-900); /* Text and icons on an action-on-feature fill (7.2:1 / 9.4:1 light, 9.4:1 / 12:1 dark). */
+  --text-accent-on-feature: var(--gold-200); /* Accent text and outline-button labels on surface-feature (9.4:1 on navy-900, 5.8:1 on navy-700). */
   --action-secondary: var(--blue-700); /* Secondary button outline and text; its hover fill. */
   --on-action-secondary: var(--white); /* Text on an action-secondary fill (10.7:1 light, 9.6:1 dark). */
   --ornament: var(--copper-400); /* Decoration only: cover frame, bookcover ring, carousel dots, footer accent, the rosette watermark and the event date ring. 2.75:1 on cream, so never text and never the only cue for a state. */
@@ -53,6 +57,7 @@
   --brand-gold: var(--gold-300); /* Rosette artwork and accent text on surface-inverse only. */
   --overlay: rgba(254, 249, 241, 0.82); /* Scrim behind the page loader and modal content. */
   --scrim: rgba(24, 34, 78, 0.38); /* Dims the page behind drawers and dialogs (the filters drawer). */
+  --scrim-strong: rgba(17, 24, 54, 0.66); /* Dims the page behind a full-screen dialog that takes the reader's whole attention (New arrivals). The dimmed margin is also the click-away target. */
   --shadow-nav: 0 2px 14px rgba(24, 34, 78, 0.08); /* Under the sticky navbar. */
   --shadow-card: 0 1px 2px rgba(24, 34, 78, 0.06); /* Resting card. Barely there in light; in dark a faint white ring gives the edge the fill step cannot. */
   --shadow-card-hover: 0 6px 18px rgba(24, 34, 78, 0.12); /* Interactive card or cover on hover. */
@@ -77,6 +82,8 @@
   --action: var(--gold-400);
   --action-hover: var(--gold-200);
   --on-action: var(--navy-900);
+  --action-on-feature: var(--gold-200);
+  --action-on-feature-hover: var(--cream-200);
   --action-secondary: var(--periwinkle-300);
   --on-action-secondary: var(--navy-950);
   --ornament: var(--copper-400);
@@ -88,6 +95,7 @@
   --brand-gold: var(--gold-300);
   --overlay: rgba(17, 24, 54, 0.82);
   --scrim: rgba(0, 0, 0, 0.6);
+  --scrim-strong: rgba(0, 0, 0, 0.72);
   --shadow-nav: 0 1px 0 rgba(255, 255, 255, 0.06), 0 4px 18px rgba(0, 0, 0, 0.45);
   --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-card-hover: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 8px 22px rgba(0, 0, 0, 0.5);

@@ -1,0 +1,122 @@
+[
+ {
+  "biblionumber": 1000,
+  "title": "A history of the Fatimid caliphate /",
+  "author": "Poonawala, Ismail K.",
+  "isbn": "9780000000001",
+  "added": "2026-11-11",
+  "on_shelf": 2,
+  "on_loan": 0,
+  "read_only": 0,
+  "held": 0,
+  "desk": "main"
+ },
+ {
+  "biblionumber": 1001,
+  "title": "Principles of Islamic jurisprudence /",
+  "author": "Kamali, Mohammad Hashim",
+  "isbn": "9780946621828",
+  "added": "2026-11-11",
+  "on_shelf": 1,
+  "on_loan": 1,
+  "read_only": 0,
+  "held": 0,
+  "desk": "main"
+ },
+ {
+  "biblionumber": 1002,
+  "title": "The Arabic language /",
+  "author": "Versteegh, Kees",
+  "isbn": "9780748614363",
+  "added": "2026-11-10",
+  "on_shelf": 0,
+  "on_loan": 2,
+  "read_only": 0,
+  "held": 0,
+  "desk": "main"
+ },
+ {
+  "biblionumber": 1003,
+  "title": "Gardens of the Cairo citadel",
+  "author": "Abouseif, Doris",
+  "isbn": "",
+  "added": "2026-11-10",
+  "on_shelf": 1,
+  "on_loan": 0,
+  "read_only": 0,
+  "held": 1,
+  "desk": "z"
+ },
+ {
+  "biblionumber": 1004,
+  "title": "Manuscripts of the Yemen and the libraries of the da'wat /",
+  "author": "Daftary, Farhad",
+  "isbn": "",
+  "added": "2026-11-09",
+  "on_shelf": 1,
+  "on_loan": 0,
+  "read_only": 1,
+  "held": 0,
+  "desk": "main"
+ },
+ {
+  "biblionumber": 1005,
+  "title": "Ibn Battuta : the adventures of a Muslim traveler of the 14th century /",
+  "author": "Dunn, Ross E.",
+  "isbn": "9780520243859",
+  "added": "2026-11-09",
+  "on_shelf": 3,
+  "on_loan": 0,
+  "read_only": 0,
+  "held": 0,
+  "desk": "main"
+ },
+ {
+  "biblionumber": 1006,
+  "title": "The book of healing and the sciences of the soul",
+  "author": "Ibn Sina",
+  "isbn": "",
+  "added": "2026-11-08",
+  "on_shelf": 0,
+  "on_loan": 1,
+  "read_only": 0,
+  "held": 0,
+  "desk": "z"
+ },
+ {
+  "biblionumber": 1007,
+  "title": "Cairo : the city victorious /",
+  "author": "Rodenbeck, Max",
+  "isbn": "9780679767275",
+  "added": "2026-11-08",
+  "on_shelf": 1,
+  "on_loan": 0,
+  "read_only": 0,
+  "held": 0,
+  "desk": "main"
+ },
+ {
+  "biblionumber": 1008,
+  "title": "Al-Muqaddimah",
+  "author": "Ibn Khaldun",
+  "isbn": "",
+  "added": "2026-11-07",
+  "on_shelf": 2,
+  "on_loan": 1,
+  "read_only": 0,
+  "held": 0,
+  "desk": "main"
+ },
+ {
+  "biblionumber": 1009,
+  "title": "A short title",
+  "author": "Author",
+  "isbn": "",
+  "added": "2026-11-07",
+  "on_shelf": 1,
+  "on_loan": 0,
+  "read_only": 0,
+  "held": 0,
+  "desk": "main"
+ }
+]
