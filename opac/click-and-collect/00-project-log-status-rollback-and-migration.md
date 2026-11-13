@@ -129,7 +129,6 @@ Patron clicks **Reserve**. When the book is returned (desk or SIP), check-in tra
 | OPACUserJS | Parts A–D (37,897 chars) + v1 Part E | Parts A–D unchanged + Part E v2 |
 | OPACUserJS (OPAC v8.2, when pasted) | `../legacy/v8.1/OPACUserJS_V8.1.paste.js` | `../current/OPACUserJS_V8.2.paste.js` (Part E dialog redesign) |
 | OPACUserCSS (OPAC v8.2, when pasted) | `../legacy/v8.1/OPACUserCSS_V8.1.paste.css` | `../current/OPACUserCSS_V8.2.paste.css` |
-| Table settings › OPAC › holdshistory (optional, v8.2) | record the current ticks here before changing | keep Title, Author, Hold date, Status |
 | Pref OPACStarRatings (optional, v8.2) | record the current value here before changing | no |
 | OPACUserJS Part E (with OPAC v7, when pasted) | v2.2, `legacy/02-opac-userjs-click-and-collect-buttons-and-dialog_v2.2.js` | Part E of `../current/OPACUserJS_V8.1.js` (v2.4 code) |
 | IntranetUserJS | empty | Click & Collect staff block |

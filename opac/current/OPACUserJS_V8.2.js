@@ -2932,7 +2932,10 @@ try { (function () {
     if (t) { hideEmptyColumns(t, false); }
   }
 
-  /* A3 */
+  /* A3: Holds history. Koha 25.11 builds this table without its Table
+     settings hook, so its columns can't be hidden in the staff
+     interface: the ones a student doesn't need go here (after Koha's
+     table script has started; see late() below). */
   safely(function () {
     var t = document.querySelector("#opac-holdshistory table, table#table_holdshistory");
     if (!t) { return; }
@@ -2940,6 +2943,33 @@ try { (function () {
       if (td.textContent.trim() === "Null") { td.textContent = ""; }
     });
   });
+  // Titles in account tables lose Koha's trailing " /", " :" (ISBD)
+  safely(function () {
+    document.querySelectorAll("#table_holdshistory tbody td a, #readingrec tbody td a").forEach(function (a) {
+      var walker = document.createTreeWalker(a, NodeFilter.SHOW_TEXT), n, last = null;
+      while ((n = walker.nextNode())) { if (n.textContent.trim()) { last = n; } }
+      if (last) { last.textContent = last.textContent.replace(/\s*[\/:;,=]+\s*$/, ""); }
+    });
+  });
+  var HOLDS_HIDE = /^(barcode|library|expiration date|waiting date|cancellation date)$/i;
+  function trimHoldsHistory() {
+    var t = document.getElementById("table_holdshistory");
+    if (!t) { return; }
+    var $ = window.jQuery;
+    var dt = $ && $.fn.dataTable && $.fn.dataTable.isDataTable(t) ? $(t).DataTable() : null;
+    var hidden = 0;
+    Array.prototype.forEach.call(t.querySelectorAll("thead th"), function (th, i) {
+      var name = (th.querySelector(".dt-column-title") || th).textContent.trim();
+      if (!HOLDS_HIDE.test(name)) { return; }
+      if (dt) { try { dt.column(th).visible(false, false); hidden++; } catch (e) { /* leave it */ } }
+      else {
+        var s = el("style");
+        s.textContent = "#table_holdshistory tr > :nth-child(" + (i + 1) + "){display:none}";
+        document.head.appendChild(s);
+      }
+    });
+    if (dt && hidden) { try { dt.columns.adjust().draw(false); } catch (e) { /* fine */ } }
+  }
 
   /* A4: Lists */
   safely(function () {
@@ -3034,7 +3064,7 @@ try { (function () {
     else { window.addEventListener("load", function () { setTimeout(popular, 0); }); }
   });
 
-  function late() { safely(tidyExports); safely(tidyReadingRecord); }
+  function late() { safely(tidyExports); safely(tidyReadingRecord); safely(trimHoldsHistory); }
   if (document.readyState === "complete") { setTimeout(late, 0); }
   else { window.addEventListener("load", function () { setTimeout(late, 0); }); }
 })(); } catch (err) { if (window.console) console.warn("OPACUserJS part K:", err); }

@@ -2583,6 +2583,50 @@ try {
       });
     });
     safely(function() {
+      document.querySelectorAll("#table_holdshistory tbody td a, #readingrec tbody td a").forEach(function(a) {
+        var walker = document.createTreeWalker(a, NodeFilter.SHOW_TEXT), n, last = null;
+        while (n = walker.nextNode()) {
+          if (n.textContent.trim()) {
+            last = n;
+          }
+        }
+        if (last) {
+          last.textContent = last.textContent.replace(/\s*[\/:;,=]+\s*$/, "");
+        }
+      });
+    });
+    var HOLDS_HIDE = /^(barcode|library|expiration date|waiting date|cancellation date)$/i;
+    function trimHoldsHistory() {
+      var t = document.getElementById("table_holdshistory");
+      if (!t) {
+        return;
+      }
+      var $ = window.jQuery;
+      var dt = $ && $.fn.dataTable && $.fn.dataTable.isDataTable(t) ? $(t).DataTable() : null;
+      var hidden = 0;
+      Array.prototype.forEach.call(t.querySelectorAll("thead th"), function(th, i) {
+        var name = (th.querySelector(".dt-column-title") || th).textContent.trim();
+        if (!HOLDS_HIDE.test(name)) {
+          return;
+        }
+        if (dt) {
+          try {
+            dt.column(th).visible(false, false);
+            hidden++;
+          } catch (e) {}
+        } else {
+          var s = el("style");
+          s.textContent = "#table_holdshistory tr > :nth-child(" + (i + 1) + "){display:none}";
+          document.head.appendChild(s);
+        }
+      });
+      if (dt && hidden) {
+        try {
+          dt.columns.adjust().draw(false);
+        } catch (e) {}
+      }
+    }
+    safely(function() {
       if (!/opac-shelves\.pl$/.test(location.pathname) && id !== "opac-shelves") {
         return;
       }
@@ -2704,6 +2748,7 @@ try {
     function late() {
       safely(tidyExports);
       safely(tidyReadingRecord);
+      safely(trimHoldsHistory);
     }
     if (document.readyState === "complete") {
       setTimeout(late, 0);

@@ -52,12 +52,13 @@ live (checked 13 Nov 2026), so nothing else needs pasting.
    are also in [`../legacy/v8.1/`](../legacy/v8.1/)).
 2. **OPACUserCSS** — replace the whole value with `OPACUserCSS_V8.2.paste.css`.
 3. **OPACUserJS** — replace the **whole** value with `OPACUserJS_V8.2.paste.js`.
-4. Optional admin changes (record each, with its old value, in the
-   project log):
-   - Table settings › OPAC › **holdshistory**: keep Title, Author, Hold
-     date and Status (the Library column repeats one library).
-   - System preferences › **OPACStarRatings**: "no". v8.2 already hides
-     ratings at 0, so this only tidies Koha's own markup.
+4. Optional admin change (record its old value in the project log):
+   System preferences › **OPACStarRatings**: "no". v8.2 already hides
+   ratings at 0, so this only tidies Koha's own markup.
+   Holds history needs nothing in the admin: Koha 25.11 builds that
+   table without its Table settings hook (there is no "holdshistory"
+   entry), so v8.2 hides Barcode, Library, Expiration, Waiting and
+   Cancellation date itself (OPACUserJS Part K).
    Copy number and the library name in the record's holdings are hidden
    in CSS: no table settings change is needed for those.
 5. Check, on a laptop and a phone: a search, a record, the cart, the New
@@ -323,8 +324,9 @@ Part E, which moves to v2.3). Nothing in the HTML customizations moves.
 
 - **Holds history: hide the Library column.** There is one library, so the
   column repeats "Aljamea-tus-Saifiyah Library Karachi" over four lines in
-  every row. Administration › Table settings › OPAC › holdshistory, untick
-  Library. Record it in the project log.
+  every row. ~~Administration › Table settings › OPAC › holdshistory, untick
+  Library.~~ Not possible: Koha 25.11 has no Table settings entry for this
+  table. Done in OPACUserJS from v8.2 instead (Part K).
 
 ### How v7 was tested
 
