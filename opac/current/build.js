@@ -1,6 +1,7 @@
 /* Makes the "paste into Koha" copies from the documented masters.
    Strips comments only — nothing is renamed, reordered or rewritten.
-   Run with:  node build.js
+   Run with:  node build.js   (from anywhere: it works from its own folder)
+   Builds the OPAC files here and the self-checkout files in sco/current.
 */
 const fs = require('fs');
 const terser = require('terser');
@@ -43,10 +44,12 @@ function banner(from, kind) {
 
 (async () => {
   const jobs = [
-    ['OPACUserCSS_V8.css', 'OPACUserCSS_V8.paste.css', 'css'],
-    ['SCOUserCSS_V1.css', 'SCOUserCSS_V1.paste.css', 'css'],
-    ['OPACUserJS_V8.js', 'OPACUserJS_V8.paste.js', 'js'],
-    ['SCOUserJS_V1.js', 'SCOUserJS_V1.paste.js', 'js'],
+    // The OPAC (this folder). One release number for every file here.
+    ['OPACUserCSS_V8.1.css', 'OPACUserCSS_V8.1.paste.css', 'css'],
+    ['OPACUserJS_V8.1.js', 'OPACUserJS_V8.1.paste.js', 'js'],
+    // The self-checkout kiosk (../../sco/current), versioned on its own
+    ['../../sco/current/SCOUserCSS_V1.css', '../../sco/current/SCOUserCSS_V1.paste.css', 'css'],
+    ['../../sco/current/SCOUserJS_V1.js', '../../sco/current/SCOUserJS_V1.paste.js', 'js'],
   ];
 
   for (const [from, to, kind] of jobs) {

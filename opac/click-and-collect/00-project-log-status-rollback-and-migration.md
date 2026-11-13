@@ -5,16 +5,18 @@ Koha 25.11.02 · library AJSK (Aljamea-tus-Saifiyah Library Karachi) · staff `l
 Click & Collect orders are ordinary Koha **item-level holds**. Custom JavaScript on the OPAC replaces Koha's hold screen with a short dialog. Nothing in Koha's code is modified, so upgrades are safe.
 
 
-## Files in this folder (`click-and-collect/`)
+## Files in this folder (`opac/click-and-collect/`)
+
+From OPAC release v8.1 this folder lives inside `opac/`, and every file in it that is installed in Koha carries the OPAC release number (`_V8.1`). The OPAC part, "Part E", is no longer a file of its own: it is the last part of `opac/current/OPACUserJS_V8.1.js`, so OPACUserJS is one paste.
 
 | File | What it is |
 | --- | --- |
 | `00-project-log-status-rollback-and-migration.md` | This log: status, design, every change with old values, rollback, migration |
 | `01-backup-of-koha-settings-before-changes-2026-10-29.md` | Settings, circulation rules and notice text as they were before any change |
-| `02-opac-userjs-click-and-collect-buttons-and-dialog.js` | The OPACUserJS "Part E" block live on the OPAC (Click & Collect buttons, dialog, ordering) |
-| `03-staff-userjs-print-pull-list-pdf-button.js` | The IntranetUserJS block that adds "Print pull list (PDF)" to report 34 |
-| `04-report-34-orders-to-pull-sql.sql` | SQL of report 34 "Click & Collect: orders to pull" |
-| `05-email-notices-and-shelf-slip-templates.md` | Text of the order-received email, ready email and shelf slip |
+| `../current/OPACUserJS_V8.1.js`, Part E | The Click & Collect buttons, dialog and ordering on the OPAC (was `02-opac-userjs-click-and-collect-buttons-and-dialog.js`, v2.4; that file is now in `legacy/`) |
+| `03-staff-userjs-print-pull-list-pdf-button_V8.1.js` | The IntranetUserJS block that adds "Print pull list (PDF)" to report 34 (unchanged) |
+| `04-report-34-orders-to-pull_V8.1.sql` | SQL of report 34 "Click & Collect: orders to pull" (unchanged) |
+| `05-email-notices-and-shelf-slip-templates_V8.1.md` | Text of the order-received email, ready email and shelf slip (unchanged) |
 
 Rollback item lists live inside Koha as reports 35 and 36 (see §5).
 
@@ -37,6 +39,8 @@ Rollback item lists live inside Koha as reports 35 and 36 (see §5).
 | 11 | Circulation panel: title "Click & Collect", single "Orders to pull" button | LIVE, verified |
 | 12 | Rollback reports 35 and 36 | LIVE |
 | 13 | OPACUserJS Part E **v2.3** (13 Nov 2026, goes with OPAC v7): buttons show as soon as each title's copies are known, 8 titles at a time, without waiting for the reader's orders; titles already ordered switch to "Ordered" when the orders arrive, and a click checks them first. Measured on a 20-title results page: first button 0.7 s (v2.2: 2.8 s), all by 2.7 s (v2.2: 5.6 s) | READY, not yet pasted. Tested in a live preview, no order placed. v2.2 is kept in `legacy/` |
+| 14 | Part E **v2.4** (with OPAC v8): `window.ajCC.fill(root, force)` for the New arrivals popup | READY, not yet pasted. Kept in `legacy/` |
+| 15 | **OPAC v8.1:** Part E moves into `OPACUserJS_V8.1.js` (no code change beyond v2.4). OPACUserJS is pasted as one file | READY, not yet pasted |
 
 **End-to-end test (29 Oct, 3:50 pm, Murtaza's account, Zawaya read-only book, record 365):** dialog → Confirm → "Order received · Ready today at 6:30 PM · Zawaya attendant's desk · Read in the library only" in 11 s; hold created on the right copy with today's date and the note "Ordered: Thu, 29 Oct 2026, 3:50 pm (Click & Collect)"; confirmation email generated with desk and read-only text; order on the pull list under "Zawaya desk". Test holds 9 and 10 cancelled afterwards.
 
@@ -122,7 +126,7 @@ Patron clicks **Reserve**. When the book is returned (desk or SIP), check-in tra
 | Item types REF, ZAW, MH, MQ, MGZE, MP, AR, CHRT, MI, MJ, PSTR, QASAID | "Not for loan" ticked | unticked |
 | Circ rule AJSK All/All, OPAC item level holds | N (Don't allow) | F (Force) |
 | OPACUserJS | Parts A–D (37,897 chars) + v1 Part E | Parts A–D unchanged + Part E v2 |
-| OPACUserJS Part E (with OPAC v7, when pasted) | v2.2, `legacy/02-opac-userjs-click-and-collect-buttons-and-dialog_v2.2.js` | v2.3, `02-opac-userjs-click-and-collect-buttons-and-dialog.js` |
+| OPACUserJS Part E (with OPAC v7, when pasted) | v2.2, `legacy/02-opac-userjs-click-and-collect-buttons-and-dialog_v2.2.js` | Part E of `../current/OPACUserJS_V8.1.js` (v2.4 code) |
 | IntranetUserJS | empty | Click & Collect staff block |
 | IntranetCirculationHomeHTML | empty | "Click & Collect" panel: Orders to pull, Check in, Holds awaiting pickup |
 | Report 34 | (new 29 Oct) | v2 SQL in `04-report-34-orders-to-pull-sql.sql`, cache 1 s |
