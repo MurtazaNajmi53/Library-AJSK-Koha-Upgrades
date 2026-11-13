@@ -1,27 +1,101 @@
 # Maktabat Aljamea (Sindh) — OPAC front-end
 
-Koha 25.11.02 · Zebra · 13 November 2026 · **CSS v8 · JS v8 · Part E v2.4 · home block v4 · footer v2 · fonts v2**
+Koha 25.11.02 · Zebra · 13 November 2026 · **OPAC release v8.1**
 
-Everything in this folder is current. Older versions are in [`../legacy/`](../legacy/)
-(v7 and home block v3 are in [`../legacy/v7/`](../legacy/v7/); v6 in [`../legacy/v6/`](../legacy/v6/); v5, with the v1 footer, in [`../legacy/v5/`](../legacy/v5/)).
+Every installable file here carries the release number, `_V8.1`, so what
+is installed where is easy to follow. A change to any of them is a new
+release, and every file moves to the new number together. Older releases
+are in [`../legacy/`](../legacy/) (v8 in [`../legacy/v8/`](../legacy/v8/), v7 and home
+block v3 in [`../legacy/v7/`](../legacy/v7/), and so on). The self-checkout kiosk has its
+own folder and version: [`../../sco/`](../../sco/README.md).
 
 ---
 
 ## What goes where
 
-One saved report and eight things to paste, in this order. Nothing here needs server access.
+Everything below is OPAC release v8.1. Nothing here needs server access.
 
 | # | Paste this file | Into |
 |---|---|---|
-| 1 | `OpacHeaderFonts_V2.html` | Tools › HTML customizations › **opacheader** |
-| 2 | `OpacLoginInstructions_V1.html` | Tools › HTML customizations › **OpacLoginInstructions** |
-| 0 | `reports/new-arrivals.sql` | Reports › New report › New SQL report, **public** (see v8 below) |
-| 3 | `OpacMainUserBlock_V4.html` | Tools › HTML customizations › **OpacMainUserBlock** |
-| 4 | `OPACUserCSS_V8.paste.css` | System preferences › **OPACUserCSS** |
-| 5 | `opaccredits-footer_V2.html` | Tools › HTML customizations › **opaccredits** |
-| 6 | `OPACUserJS_V8.paste.js`, then Part E v2.4 | System preferences › **OPACUserJS**, the whole value (see v8 below) |
-| 7 | `SCOUserCSS_V1.paste.css` | System preferences › **SCOUserCSS** |
-| 8 | `SCOUserJS_V1.paste.js` | System preferences › **SCOUserJS** |
+| 1 | `OpacHeaderFonts_V8.1.html` | Tools › HTML customizations › **opacheader** |
+| 2 | `OpacLoginInstructions_V8.1.html` | Tools › HTML customizations › **OpacLoginInstructions** |
+| 3 | `OpacMainUserBlock_V8.1.html` | Tools › HTML customizations › **OpacMainUserBlock** |
+| 4 | `opaccredits-footer_V8.1.html` | Tools › HTML customizations › **opaccredits** |
+| 5 | `OPACUserCSS_V8.1.paste.css` | System preferences › **OPACUserCSS** |
+| 6 | `OPACUserJS_V8.1.paste.js` | System preferences › **OPACUserJS**, the whole value. Click & Collect is inside it |
+| 7 | `reports/new-arrivals_V8.1.sql` | Saved as report **37** (public, cache 300 s). Re-save only if it changes |
+| 8 | `../click-and-collect/03-staff-userjs-print-pull-list-pdf-button_V8.1.js` | Staff: System preferences › **IntranetUserJS** (unchanged) |
+| 9 | `../click-and-collect/04-report-34-orders-to-pull_V8.1.sql` | Report 34 (unchanged) |
+| 10 | `../click-and-collect/05-email-notices-and-shelf-slip-templates_V8.1.md` | Tools › Notices & slips (unchanged) |
+
+Files 1, 2, 4, 8, 9 and 10 are unchanged in content since their last
+release; only their names carry the new number. If they are already
+installed, there is nothing to paste for them.
+
+---
+
+## v8.1 — fixes to v8, the cart, advanced search, one OPACUserJS
+
+**Three things change in Koha:** OpacMainUserBlock, OPACUserCSS and
+OPACUserJS. If v8 was never installed, install v8.1 instead: it includes
+everything in v8 (report 37 is already saved).
+
+### Installing it
+
+1. **Back up first.** Copy the current OpacMainUserBlock entry,
+   OPACUserCSS and OPACUserJS into a dated note and the project log.
+   That is the rollback.
+2. **OpacMainUserBlock** — replace the entry's text with
+   `OpacMainUserBlock_V8.1.html` ("Edit with text editor").
+3. **OPACUserCSS** — replace the whole value with `OPACUserCSS_V8.1.paste.css`.
+4. **OPACUserJS** — replace the **whole** value with
+   `OPACUserJS_V8.1.paste.js`. Don't keep or add a separate Click &
+   Collect block: it is inside this file now.
+5. Check, on a laptop and a phone:
+   - the header's **New arrivals** button (a count badge while there are
+     unseen titles) and the band at the top of the home page;
+   - the popup: covers load, each book has one **Add to cart** button,
+     the stage has Click & Collect and Add to cart;
+   - on results: **Add to cart** becomes **Remove from cart** and back;
+   - the header's **Cart** link opens the pull-out (Remove, Click &
+     Collect all, Send, Download, Print, Empty cart);
+   - **Advanced search** in the header opens the pull-out; a search with
+     two lines and a filter returns the right titles.
+
+**Rollback:** paste the three backed-up values back.
+
+### What changes for readers
+
+- **New arrivals, easier to find:** a button in the header with the
+  number of titles they haven't seen, and a band at the top of the home
+  page with a fan of the newest covers.
+- **The popup:** every cover with an ISBN loads; books have more room;
+  each book has one button, Add to cart.
+- **The cart:** one button that adds and removes, everywhere. The Cart
+  link opens a pull-out from the side instead of a small pop-up window.
+  From there, Click & Collect all, Send, Download and Print. Koha's own
+  cart page is restyled for anyone who opens it directly.
+- **Advanced search:** a pull-out from the side: lines of field, match
+  and term joined by And, Or or Not; item type, language, years,
+  available now and sort; and a Barcode tab. The old page is a link away.
+
+- **Phones:** the header fits on one row again (it ran off the side of
+  a 390px screen in v8). Account and Cart show as icons, and on the
+  smallest phones the logo's wordmark stands in for the library name.
+
+### What the browser remembers (new in v8.1)
+
+| Where | Key | What |
+|---|---|---|
+| localStorage | `ajAdvOptions:v1` | The item types and languages from Koha's advanced search page, for a day. Library-wide, nothing personal |
+
+### Layout changes in the repository
+
+- Click & Collect moved into `opac/click-and-collect/`. Its OPAC code
+  (Part E) is now inside `OPACUserJS_V8.1.js`; the old separate file is
+  in `opac/click-and-collect/legacy/`.
+- The self-checkout kiosk moved to `sco/current/` (still SCOUserCSS_V1
+  and SCOUserJS_V1, unchanged). `node opac/current/build.js` builds both.
 
 ---
 

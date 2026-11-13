@@ -1,5 +1,5 @@
 
-/* ==== CLICK & COLLECT: STAFF (added 2026-10-29) ====
+/* ==== CLICK & COLLECT: STAFF (added 2026-10-29; OPAC release v8.1, unchanged) ====
    Adds "Print pull list (PDF)" to report 34 (Pickup orders to pull).
    To roll back: delete from this line to "END CLICK & COLLECT: STAFF". */
 try {

@@ -6,20 +6,22 @@
    2. On any OPAC page, in the browser console:
         eval(await (await fetch("http://127.0.0.1:8765/tests/opac-harness/live-swap.js")).text());
         await ajLiveSwap({ partE: true });
-   It re-fetches the page, swaps in the masters from opac/current (and,
-   with partE, Part E from click-and-collect/), and rewrites the document.
-   Options: version ("V8"), partE (bool), rtl (bool), probe (bool: times
+   It re-fetches the page, swaps in the masters from opac/current, and
+   rewrites the document. From v8.1 OPACUserJS carries Click & Collect
+   (Part E) itself, so the whole live script is replaced; for older
+   versions partE:true adds the old separate Part E file.
+   Options: version ("V8.1"), partE (bool), rtl (bool), probe (bool: times
    the Click & Collect buttons into window.__ccFirst / __ccAll, in ms). */
 window.ajLiveSwap = async function (opt) {
   opt = opt || {};
   var B = "http://127.0.0.1:8765/";
-  var v = opt.version || "V8";
+  var v = opt.version || "V8.1";
   var get = function (u) { return fetch(u, { cache: "no-store" }).then(function (r) { return r.text(); }); };
   var parts = await Promise.all([
     get(location.href),
     get(B + "opac/current/OPACUserCSS_" + v + ".css"),
     get(B + "opac/current/OPACUserJS_" + v + ".js"),
-    get(B + "click-and-collect/02-opac-userjs-click-and-collect-buttons-and-dialog.js")
+    get(B + "opac/click-and-collect/legacy/02-opac-userjs-click-and-collect-buttons-and-dialog_v2.4.js")
   ]);
   var doc = new DOMParser().parseFromString(parts[0], "text/html");
   var style = Array.from(doc.querySelectorAll("style")).find(function (s) { return /generated from OPACUserCSS_V/.test(s.textContent); });
@@ -28,7 +30,9 @@ window.ajLiveSwap = async function (opt) {
   var script = Array.from(doc.querySelectorAll("script")).find(function (s) { return /PART E/.test(s.textContent); });
   if (!script) { throw new Error("OPACUserJS <script> not found"); }
   var t = script.textContent;
-  script.textContent = parts[2] + "\n" + (opt.partE ? parts[3] : t.slice(t.indexOf("/* ==== PART E")));
+  var hasE = parts[2].indexOf("/* ==== PART E") !== -1;
+  script.textContent = hasE ? parts[2]
+    : parts[2] + "\n" + (opt.partE ? parts[3] : t.slice(t.indexOf("/* ==== PART E")));
   if (opt.rtl) { doc.documentElement.setAttribute("dir", "rtl"); doc.documentElement.setAttribute("lang", "ar"); }
   if (opt.probe) {
     var p = doc.createElement("script");
