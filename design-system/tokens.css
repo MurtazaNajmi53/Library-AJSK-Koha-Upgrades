@@ -61,6 +61,7 @@
   --shadow-nav: 0 2px 14px rgba(24, 34, 78, 0.08); /* Under the sticky navbar. */
   --shadow-card: 0 1px 2px rgba(24, 34, 78, 0.06); /* Resting card. Barely there in light; in dark a faint white ring gives the edge the fill step cannot. */
   --shadow-card-hover: 0 6px 18px rgba(24, 34, 78, 0.12); /* Interactive card or cover on hover. */
+  --shadow-stage-cover: 0 24px 48px rgba(0, 0, 0, 0.45), 0 3px 8px rgba(0, 0, 0, 0.3); /* A book cover spotlighted on surface-feature (the New arrivals stage): deep enough to lift it off navy. */
   --shadow-raised: 0 10px 28px rgba(24, 34, 78, 0.16); /* Menus, popovers, toasts. */
   --shadow-cover: 0 1px 3px rgba(24, 34, 78, 0.14); /* Book cover thumbnails at rest. */
 }
@@ -99,6 +100,7 @@
   --shadow-nav: 0 1px 0 rgba(255, 255, 255, 0.06), 0 4px 18px rgba(0, 0, 0, 0.45);
   --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-card-hover: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 8px 22px rgba(0, 0, 0, 0.5);
+  --shadow-stage-cover: 0 24px 48px rgba(0, 0, 0, 0.6), 0 3px 8px rgba(0, 0, 0, 0.4);
   --shadow-raised: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 12px 32px rgba(0, 0, 0, 0.55);
   --shadow-cover: 0 1px 3px rgba(0, 0, 0, 0.5);
 }

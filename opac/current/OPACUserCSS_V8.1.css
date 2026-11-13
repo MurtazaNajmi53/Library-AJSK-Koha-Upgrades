@@ -22,6 +22,14 @@
    * Cart page (13c, new): Koha's opac-basket.pl on the design system.
    * Pull-outs (19, new): the cart and advanced search open from the
      reading end, using the Filters drawer (.aj-drawer--end).
+   * Audit fixes: the end drawers open on right-to-left pages and appear
+     in place under reduced motion (19); on phones the header fits again,
+     because Koha's "#header-region .navbar #logo { flex-shrink: 0 }" had
+     kept the logo from shrinking (132px too wide at 390px in v8), and
+     account and Cart show as icons with their words kept for screen
+     readers; under 480px the drawn library name gives way to the logo's
+     wordmark (16); nothing in the new parts is under 14px on Arabic
+     pages; the stage cover shadow is a token (shadow-stage-cover).
 
    WHAT CHANGED IN v8
    ------------------
@@ -212,6 +220,7 @@
   --shadow-card-hover: 0 6px 18px rgba(24, 34, 78, 0.12);
   --shadow-raised: 0 10px 28px rgba(24, 34, 78, 0.16);
   --shadow-cover: 0 1px 3px rgba(24, 34, 78, 0.14);
+  --shadow-stage-cover: 0 24px 48px rgba(0, 0, 0, 0.45), 0 3px 8px rgba(0, 0, 0, 0.3);
 
   /* Space, radius, size */
   --space-1: 4px;
@@ -4623,13 +4632,28 @@ body:is(#advsearch, #opac-topissues) main input[type="checkbox"] {
     padding: var(--space-2) var(--aj-gutter);
   }
 
-  #logo {
+  /* v8.1: Koha's "#header-region .navbar #logo { flex-shrink: 0 }" outranked
+     a plain #logo, so the logo never shrank and the menu ran off the screen
+     (132px too wide at 390px in v8). */
+  #logo,
+  #header-region .navbar #logo {
     flex: 1 1 auto;
     min-width: 0;
   }
 
   #header-region #members {
     flex: none;
+  }
+
+  /* Account and Cart become icons; their words stay for screen readers */
+  #members .userlabel,
+  #members .cartlabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   #logo .navbar-brand::after {
@@ -5002,8 +5026,7 @@ html.aj-arrivals-open {
   box-shadow:
     inset 0 0 0 8px var(--surface-band),
     inset 0 0 0 9px var(--ornament),
-    0 24px 48px rgba(0, 0, 0, 0.45),
-    0 3px 8px rgba(0, 0, 0, 0.3);
+    var(--shadow-stage-cover);
 }
 .aj-arr__cover .bookcover::before {
   top: var(--space-8);
@@ -5018,7 +5041,7 @@ html.aj-arrivals-open {
   font-size: 0.875rem;
 }
 .aj-arr__cover .bookcover.has-cover {
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45), 0 3px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-stage-cover);
 }
 
 /* Real covers fill the plate exactly; the plate underneath then goes.
@@ -5341,6 +5364,9 @@ html.aj-arrivals-open {
 .aj-arr__ca {
   white-space: nowrap;
   text-overflow: ellipsis;
+  /* 14px: an author can be in Arabic, whose floor is 14px */
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
 .aj-arr__ca {
   font-family: var(--aj-font-record);
@@ -5545,7 +5571,7 @@ html.aj-arrivals-open {
   margin: 0;
   margin-inline-start: -22px;
   border: 2px solid var(--surface-card);
-  box-shadow: 0 2px 6px rgba(24, 34, 78, 0.22);
+  box-shadow: var(--shadow-card-hover);
 }
 /* The plate's own lettering is too small to read at this size */
 .aj-arr-band__fan .bookcover::before,
@@ -6206,4 +6232,21 @@ html[dir="rtl"] .aj-drawer--end[open] {
   .aj-cart__tool { transition-duration: var(--duration-instant); }
   .aj-cart__remove:active,
   .aj-cart__tool:active { scale: none; }
+}
+
+/* Arabic pages: nothing in the new components under 14px, Tajawal's floor */
+html[lang|="ar"] :is(.aj-arr__pick .aj-arr__status, .aj-arr__tag, .aj-arr__incart,
+  .aj-arr__cart, .aj-arr__hint, .aj-arr-launch__badge, .aj-cart__status,
+  .aj-field > label) {
+  font-size: 0.875rem;
+}
+
+/* Small phones (v8.1): the logo, New arrivals, account, Log out and Cart
+   fill the row, so the drawn library name gives way. The logo's own
+   wordmark stays, and the name is still the link's text for screen
+   readers. */
+@media (max-width: 480px) {
+  #logo .navbar-brand::after {
+    content: none;
+  }
 }

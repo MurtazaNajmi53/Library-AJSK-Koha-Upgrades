@@ -79,6 +79,10 @@ everything in v8 (report 37 is already saved).
   and term joined by And, Or or Not; item type, language, years,
   available now and sort; and a Barcode tab. The old page is a link away.
 
+- **Phones:** the header fits on one row again (it ran off the side of
+  a 390px screen in v8). Account and Cart show as icons, and on the
+  smallest phones the logo's wordmark stands in for the library name.
+
 ### What the browser remembers (new in v8.1)
 
 | Where | Key | What |

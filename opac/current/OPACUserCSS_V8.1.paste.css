@@ -61,6 +61,7 @@
   --shadow-card-hover: 0 6px 18px rgba(24, 34, 78, 0.12);
   --shadow-raised: 0 10px 28px rgba(24, 34, 78, 0.16);
   --shadow-cover: 0 1px 3px rgba(24, 34, 78, 0.14);
+  --shadow-stage-cover: 0 24px 48px rgba(0, 0, 0, 0.45), 0 3px 8px rgba(0, 0, 0, 0.3);
 
   --space-1: 4px;
   --space-2: 8px;
@@ -3965,13 +3966,24 @@ body:is(#advsearch, #opac-topissues) main input[type="checkbox"] {
     padding: var(--space-2) var(--aj-gutter);
   }
 
-  #logo {
+  #logo,
+  #header-region .navbar #logo {
     flex: 1 1 auto;
     min-width: 0;
   }
 
   #header-region #members {
     flex: none;
+  }
+
+  #members .userlabel,
+  #members .cartlabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   #logo .navbar-brand::after {
@@ -4295,8 +4307,7 @@ html.aj-arrivals-open {
   box-shadow:
     inset 0 0 0 8px var(--surface-band),
     inset 0 0 0 9px var(--ornament),
-    0 24px 48px rgba(0, 0, 0, 0.45),
-    0 3px 8px rgba(0, 0, 0, 0.3);
+    var(--shadow-stage-cover);
 }
 .aj-arr__cover .bookcover::before {
   top: var(--space-8);
@@ -4311,7 +4322,7 @@ html.aj-arrivals-open {
   font-size: 0.875rem;
 }
 .aj-arr__cover .bookcover.has-cover {
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45), 0 3px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-stage-cover);
 }
 
 .bookcover > img.aj-arr__img {
@@ -4623,6 +4634,9 @@ html.aj-arrivals-open {
 .aj-arr__ca {
   white-space: nowrap;
   text-overflow: ellipsis;
+
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
 .aj-arr__ca {
   font-family: var(--aj-font-record);
@@ -4821,7 +4835,7 @@ html.aj-arrivals-open {
   margin: 0;
   margin-inline-start: -22px;
   border: 2px solid var(--surface-card);
-  box-shadow: 0 2px 6px rgba(24, 34, 78, 0.22);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .aj-arr-band__fan .bookcover::before,
@@ -5458,4 +5472,16 @@ html[dir="rtl"] .aj-drawer--end[open] {
   .aj-cart__tool { transition-duration: var(--duration-instant); }
   .aj-cart__remove:active,
   .aj-cart__tool:active { scale: none; }
+}
+
+html[lang|="ar"] :is(.aj-arr__pick .aj-arr__status, .aj-arr__tag, .aj-arr__incart,
+  .aj-arr__cart, .aj-arr__hint, .aj-arr-launch__badge, .aj-cart__status,
+  .aj-field > label) {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 480px) {
+  #logo .navbar-brand::after {
+    content: none;
+  }
 }
