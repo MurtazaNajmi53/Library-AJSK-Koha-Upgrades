@@ -1,4 +1,4 @@
-# Click & Collect notices (OPAC release v8.1; content unchanged since v2, 29 Oct 2026)
+# Click & Collect notices (OPAC release v8.2; content unchanged since v2, 29 Oct 2026)
 
 Paste into Tools → Notices & slips. Email versions only. TT variables: `hold` (the hold), `hold.item`, `borrower`, `biblio`.
 

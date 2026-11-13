@@ -10,12 +10,12 @@
    rewrites the document. From v8.1 OPACUserJS carries Click & Collect
    (Part E) itself, so the whole live script is replaced; for older
    versions partE:true adds the old separate Part E file.
-   Options: version ("V8.1"), partE (bool), rtl (bool), probe (bool: times
+   Options: version ("V8.2"), partE (bool), rtl (bool), probe (bool: times
    the Click & Collect buttons into window.__ccFirst / __ccAll, in ms). */
 window.ajLiveSwap = async function (opt) {
   opt = opt || {};
   var B = "http://127.0.0.1:8765/";
-  var v = opt.version || "V8.1";
+  var v = opt.version || "V8.2";
   var get = function (u) { return fetch(u, { cache: "no-store" }).then(function (r) { return r.text(); }); };
   var parts = await Promise.all([
     get(location.href),
@@ -27,7 +27,7 @@ window.ajLiveSwap = async function (opt) {
   var style = Array.from(doc.querySelectorAll("style")).find(function (s) { return /generated from OPACUserCSS_V/.test(s.textContent); });
   if (!style) { throw new Error("OPACUserCSS <style> not found"); }
   style.textContent = parts[1];
-  var script = Array.from(doc.querySelectorAll("script")).find(function (s) { return /PART E/.test(s.textContent); });
+  var script = Array.from(doc.querySelectorAll("script")).find(function (s) { return /PART E|window\.ajOpac *=/.test(s.textContent); });
   if (!script) { throw new Error("OPACUserJS <script> not found"); }
   var t = script.textContent;
   var hasE = parts[2].indexOf("/* ==== PART E") !== -1;
@@ -43,6 +43,24 @@ window.ajLiveSwap = async function (opt) {
       "if(f===s.length&&!__ccAll)__ccAll=Math.round(performance.now()-__t0);})" +
       ".observe(document.documentElement,{subtree:true,childList:true});";
     doc.head.prepend(p);
+  }
+  // Koha's own "no-js" → "js" switch doesn't run again after a rewrite,
+  // which left Cart hidden and "Log out" showing: set it here
+  doc.documentElement.className = doc.documentElement.className.replace(/\bno-js\b/, "js");
+  // Koha's script shows .js-show and hides .js-hide; after a rewrite it
+  // stops on "already declared" errors before getting there
+  var fix = doc.createElement("script");
+  fix.textContent = "document.querySelectorAll('.js-show').forEach(function(e){e.style.display='block'});" +
+    "document.querySelectorAll('.js-hide').forEach(function(e){e.style.display='none'});";
+  doc.body.appendChild(fix);
+  // A small badge, so it is clear the page is the preview (badge: false hides it)
+  if (opt.badge !== false && !opt.returnHtml) {
+    var badge = doc.createElement("div");
+    badge.textContent = "Preview " + v;
+    badge.setAttribute("aria-hidden", "true");
+    badge.setAttribute("style", "position:fixed;left:8px;bottom:8px;z-index:2147483647;background:#18224E;color:#fff;" +
+      "font:600 12px/1 system-ui,sans-serif;padding:6px 10px;border-radius:999px;opacity:.85;pointer-events:none");
+    doc.body.appendChild(badge);
   }
   var html = "<!DOCTYPE html>" + doc.documentElement.outerHTML;
   if (opt.returnHtml) { return html; }
