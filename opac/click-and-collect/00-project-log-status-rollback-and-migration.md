@@ -123,12 +123,15 @@ Patron clicks **Reserve**. When the book is returned (desk or SIP), check-in tra
 | Circ rules AJSK, item-type rows | holds total/daily 1–3 or Unlimited | = checkouts allowed (Library & All/All untouched) |
 | Circ rules AJSK, per-category totals (holds) | Patron 2, CG 1-2 1, CG 3-4 1, Collegiate I 1, Collegiate II 2, Teacher 2, Asateza Kiram 3 | Patron 5, CG 1-2 5, CG 3-4 5, Collegiate I 10, Collegiate II 10, Teacher 5, Asateza Kiram 10 |
 | Authorised value NOT_LOAN | -1, 0, 1, 2, 3, 4 | + **-2** "Collect & read in library" |
+| NOT_LOAN -2, OPAC description (14 Nov 2026, OPAC v8.3) | "Read in library only (Click & Collect)" | "Read in library only (Click and Collect)". Koha's results display showed no title, author or availability for any record with two or more -2 copies while the description held "&" (`opac/current/audits/v8.3-audit.md`, issue 3). Changing it brought all of them back. Don't put "&" back. Our scripts match only "read in library", so nothing else depends on the wording |
 | Items | see §2 | 17,879 items → -2; 100 items 0 → 1 |
 | Item types REF, ZAW, MH, MQ, MGZE, MP, AR, CHRT, MI, MJ, PSTR, QASAID | "Not for loan" ticked | unticked |
 | Circ rule AJSK All/All, OPAC item level holds | N (Don't allow) | F (Force) |
 | OPACUserJS | Parts A–D (37,897 chars) + v1 Part E | Parts A–D unchanged + Part E v2 |
-| OPACUserJS (OPAC v8.2, when pasted) | `../legacy/v8.1/OPACUserJS_V8.1.paste.js` | `../current/OPACUserJS_V8.2.paste.js` (Part E dialog redesign) |
-| OPACUserCSS (OPAC v8.2, when pasted) | `../legacy/v8.1/OPACUserCSS_V8.1.paste.css` | `../current/OPACUserCSS_V8.2.paste.css` |
+| OPACUserJS (OPAC v8.2, live by 14 Nov 2026) | `../legacy/v8.1/OPACUserJS_V8.1.paste.js` | `../legacy/v8.2/OPACUserJS_V8.2.paste.js` (Part E dialog redesign) |
+| OPACUserCSS (OPAC v8.2, live by 14 Nov 2026) | `../legacy/v8.1/OPACUserCSS_V8.1.paste.css` | `../legacy/v8.2/OPACUserCSS_V8.2.paste.css` |
+| OPACUserJS (OPAC v8.3, when pasted) | `../legacy/v8.2/OPACUserJS_V8.2.paste.js` | `../current/OPACUserJS_V8.3.paste.js` (Part E unchanged; cart label in Part I) |
+| OPACUserCSS (OPAC v8.3, when pasted) | `../legacy/v8.2/OPACUserCSS_V8.2.paste.css` | `../current/OPACUserCSS_V8.3.paste.css` |
 | Pref OPACStarRatings (optional, v8.2) | record the current value here before changing | no |
 | OPACUserJS Part E (with OPAC v7, when pasted) | v2.2, `legacy/02-opac-userjs-click-and-collect-buttons-and-dialog_v2.2.js` | Part E of `../current/OPACUserJS_V8.1.js` (v2.4 code) |
 | IntranetUserJS | empty | Click & Collect staff block |
