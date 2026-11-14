@@ -45,8 +45,8 @@ function banner(from, kind) {
 (async () => {
   const jobs = [
     // The OPAC (this folder). One release number for every file here.
-    ['OPACUserCSS_V8.2.css', 'OPACUserCSS_V8.2.paste.css', 'css'],
-    ['OPACUserJS_V8.2.js', 'OPACUserJS_V8.2.paste.js', 'js'],
+    ['OPACUserCSS_V8.3.css', 'OPACUserCSS_V8.3.paste.css', 'css'],
+    ['OPACUserJS_V8.3.js', 'OPACUserJS_V8.3.paste.js', 'js'],
     // The self-checkout kiosk (../../sco/current), versioned on its own
     ['../../sco/current/SCOUserCSS_V1.css', '../../sco/current/SCOUserCSS_V1.paste.css', 'css'],
     ['../../sco/current/SCOUserJS_V1.js', '../../sco/current/SCOUserJS_V1.paste.js', 'js'],

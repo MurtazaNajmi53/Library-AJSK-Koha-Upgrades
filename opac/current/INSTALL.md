@@ -1,11 +1,11 @@
 # Maktabat Aljamea (Sindh) — OPAC front-end
 
-Koha 25.11.02 · Zebra · 13 November 2026 · **OPAC release v8.2**
+Koha 25.11.02 · Zebra · 14 November 2026 · **OPAC release v8.3**
 
-Every installable file here carries the release number, `_V8.2`, so what
+Every installable file here carries the release number, `_V8.3`, so what
 is installed where is easy to follow. A change to any of them is a new
 release, and every file moves to the new number together. Older releases
-are in [`../legacy/`](../legacy/) (v8.1 in [`../legacy/v8.1/`](../legacy/v8.1/), v8 in [`../legacy/v8/`](../legacy/v8/), v7 and home
+are in [`../legacy/`](../legacy/) (v8.2 in [`../legacy/v8.2/`](../legacy/v8.2/), v8.1 in [`../legacy/v8.1/`](../legacy/v8.1/), v8 in [`../legacy/v8/`](../legacy/v8/), v7 and home
 block v3 in [`../legacy/v7/`](../legacy/v7/), and so on). The self-checkout kiosk has its
 own folder and version: [`../../sco/`](../../sco/README.md).
 
@@ -13,26 +13,95 @@ own folder and version: [`../../sco/`](../../sco/README.md).
 
 ## What goes where
 
-Everything below is OPAC release v8.2. Nothing here needs server access.
+Everything below is OPAC release v8.3. Nothing here needs server access.
 
 | # | Paste this file | Into |
 |---|---|---|
-| 1 | `OpacHeaderFonts_V8.2.html` | Tools › HTML customizations › **opacheader** |
-| 2 | `OpacLoginInstructions_V8.2.html` | Tools › HTML customizations › **OpacLoginInstructions** |
-| 3 | `OpacMainUserBlock_V8.2.html` | Tools › HTML customizations › **OpacMainUserBlock** |
-| 4 | `opaccredits-footer_V8.2.html` | Tools › HTML customizations › **opaccredits** |
-| 5 | `OPACUserCSS_V8.2.paste.css` | System preferences › **OPACUserCSS** |
-| 6 | `OPACUserJS_V8.2.paste.js` | System preferences › **OPACUserJS**, the whole value. Click & Collect is inside it |
-| 7 | `reports/new-arrivals_V8.2.sql` | Saved as report **37** (public, cache 300 s). Re-save only if it changes |
-| 8 | `../click-and-collect/03-staff-userjs-print-pull-list-pdf-button_V8.2.js` | Staff: System preferences › **IntranetUserJS** (unchanged) |
-| 9 | `../click-and-collect/04-report-34-orders-to-pull_V8.2.sql` | Report 34 (unchanged) |
-| 10 | `../click-and-collect/05-email-notices-and-shelf-slip-templates_V8.2.md` | Tools › Notices & slips (unchanged) |
+| 1 | `OpacHeaderFonts_V8.3.html` | Tools › HTML customizations › **opacheader** |
+| 2 | `OpacLoginInstructions_V8.3.html` | Tools › HTML customizations › **OpacLoginInstructions** |
+| 3 | `OpacMainUserBlock_V8.3.html` | Tools › HTML customizations › **OpacMainUserBlock** |
+| 4 | `opaccredits-footer_V8.3.html` | Tools › HTML customizations › **opaccredits** |
+| 5 | `OPACUserCSS_V8.3.paste.css` | System preferences › **OPACUserCSS** |
+| 6 | `OPACUserJS_V8.3.paste.js` | System preferences › **OPACUserJS**, the whole value. Click & Collect is inside it |
+| 7 | `reports/new-arrivals_V8.3.sql` | Saved as report **37** (public, cache 300 s). Re-save only if it changes |
+| 8 | `../click-and-collect/03-staff-userjs-print-pull-list-pdf-button_V8.3.js` | Staff: System preferences › **IntranetUserJS** (unchanged) |
+| 9 | `../click-and-collect/04-report-34-orders-to-pull_V8.3.sql` | Report 34 (unchanged) |
+| 10 | `../click-and-collect/05-email-notices-and-shelf-slip-templates_V8.3.md` | Tools › Notices & slips (unchanged) |
 
-In v8.2 only **5 (OPACUserCSS)** and **6 (OPACUserJS)** change. Files
-1–4 and 7–10 are unchanged in content; only their names carry the new
-number. If v8.1 is installed, there is nothing to paste for them.
+In v8.3 only **5 (OPACUserCSS)** and **6 (OPACUserJS)** change. Files
+1–4 and 7–10 are unchanged in content; only their names and header
+comments carry the new number. If v8.2 is installed, there is nothing to
+paste for them.
 
 ---
+
+## v8.3 — refinement, phones and tablets
+
+A version fit to present: the six issues found in v8.2, the eleven from
+testing on a real phone, and the rest of a full audit of every page.
+Audit: [`audits/v8.3-audit.md`](audits/v8.3-audit.md). Plan:
+[`audits/v8.3-plan.md`](audits/v8.3-plan.md).
+
+**Two things change in Koha:** OPACUserCSS and OPACUserJS. v8.2 is live
+(checked 14 Nov 2026), so nothing else needs pasting.
+
+**Already done in the admin (14 Nov 2026):** the OPAC description of
+not-for-loan value -2 is now "Read in library only (Click and Collect)".
+With "&" in it, Koha's results showed no title for any record with two
+or more such copies. Recorded, with the old value, in the Click & Collect
+project log §4. Don't put the "&" back.
+
+### Installing it
+
+1. **Back up first.** Copy the current OPACUserCSS and OPACUserJS into a
+   dated note and the project log (the v8.2 copies are also in
+   [`../legacy/v8.2/`](../legacy/v8.2/)).
+2. **OPACUserCSS** — replace the whole value with `OPACUserCSS_V8.3.paste.css`.
+3. **OPACUserJS** — replace the **whole** value with `OPACUserJS_V8.3.paste.js`.
+4. Check, signed in, on a phone and a computer: a search with
+   "Available now" on, the results on a phone, Checkout history on a
+   phone, and the login page signed out.
+
+### What changes for readers
+
+- **Results.** The sticky bar stays one line on a computer with a filter
+  on (Collection and Item type fold into Filters when there isn't room).
+  Bigger covers and titles, text at a readable length, no "/ author" in
+  titles. On phones: bigger covers, one line of buttons (Click & Collect,
+  then the cart and ⋯ as icons), nearly two results a screen; Select
+  titles fits in two lines.
+- **Every page on a phone.** The search band is one row (it was four on
+  the home and account pages), there is room under it, and breadcrumbs
+  are gone. Breadcrumbs are also gone from results and the login page.
+- **Account pages.** On phones, tables are cards with labelled lines (no
+  green "+"), and "Your account: *page*" at the top opens the account
+  menu as a sheet; on tablets, as a pull-out. On computers the menu stays
+  in view as you scroll. DataTables' search and More options share one
+  line.
+- **Header.** The cart count is a copper pill on the cart icon, read out
+  as "Cart, 2 titles". "Clear" (search history) leaves the account menu;
+  it is still on the Search history page.
+- **Login.** "ITS number" and "Password" without colons; "Send an email"
+  with the address under it, instead of a pill that broke mid-word.
+- **Self-checkout.** The catalogue footer no longer shows on the kiosk.
+
+### Known and left as they are
+
+- **Relevance with a filter on** (issue 1): Koha's search engine (Zebra)
+  stops ranking by relevance whenever a limit such as "Available now" is
+  added. Not something the OPAC's CSS or JS can change; see the audit's
+  admin-side notes.
+- The footer watermark ends in a hard edge on iPhone Safari (backlog
+  note); not reproducible in Chrome, left for a device check.
+- The kiosk's "Submit" label: kiosk v2.
+
+### How v8.3 was tested
+
+On the live catalogue with the masters swapped in (live-swap, no change
+in Koha), in frames at 390, 768, 1024, 1200, 1300 and 1440px and right
+to left, with the audit's probe on every page in it (sideways scroll,
+44px targets, 13/14px text, contrast, accessible names) and screenshots
+of each fix. No real Click & Collect order was placed.
 
 ## v8.2 — simpler results, record page and cart; a new Click & Collect dialog
 

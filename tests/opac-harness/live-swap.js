@@ -10,12 +10,12 @@
    rewrites the document. From v8.1 OPACUserJS carries Click & Collect
    (Part E) itself, so the whole live script is replaced; for older
    versions partE:true adds the old separate Part E file.
-   Options: version ("V8.2"), partE (bool), rtl (bool), probe (bool: times
+   Options: version ("V8.3"), partE (bool), rtl (bool), probe (bool: times
    the Click & Collect buttons into window.__ccFirst / __ccAll, in ms). */
 window.ajLiveSwap = async function (opt) {
   opt = opt || {};
   var B = "http://127.0.0.1:8765/";
-  var v = opt.version || "V8.2";
+  var v = opt.version || "V8.3";
   var get = function (u) { return fetch(u, { cache: "no-store" }).then(function (r) { return r.text(); }); };
   var parts = await Promise.all([
     get(location.href),
